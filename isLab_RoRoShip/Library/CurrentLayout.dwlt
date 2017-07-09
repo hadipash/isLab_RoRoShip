@@ -20,7 +20,7 @@ MonoBehaviour:
   m_ShowMode: 4
   m_Title: 
   m_RootView: {fileID: 6}
-  m_MinSize: {x: 950, y: 300}
+  m_MinSize: {x: 950, y: 542}
   m_MaxSize: {x: 10000, y: 10000}
 --- !u!114 &2
 MonoBehaviour:
@@ -252,8 +252,8 @@ MonoBehaviour:
     y: 0
     width: 922
     height: 442
-  m_MinSize: {x: 200, y: 200}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 204, y: 221}
+  m_MaxSize: {x: 4004, y: 4021}
   m_ActualView: {fileID: 16}
   m_Panes:
   - {fileID: 16}
@@ -324,18 +324,18 @@ MonoBehaviour:
     m_ShowAllHits: 0
     m_SearchArea: 0
     m_Folders:
-    - Assets/Matarials
+    - Assets
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/Matarials
+  - Assets
   m_LastFoldersGridSize: -1
-  m_LastProjectPath: C:\Users\syndr\Desktop\project\Unity\isLab_RoRoShip
+  m_LastProjectPath: C:\Users\syndr\Desktop\project\RoRoShip\isLab_RoRoShip
   m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 56290000
-    m_LastClickedID: 10582
+    m_SelectedIDs: b2240000
+    m_LastClickedID: 9394
     m_ExpandedIDs: 00000000b224000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -391,7 +391,7 @@ MonoBehaviour:
   m_ListAreaState:
     m_SelectedInstanceIDs: 
     m_LastClickedInstanceID: 0
-    m_HadKeyboardFocusLastEvent: 1
+    m_HadKeyboardFocusLastEvent: 0
     m_ExpandedInstanceIDs: c6230000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -482,21 +482,21 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 4a48feffb648feff8e49feff1a77feffb677feff9078feffe2fbffff00000000
+    m_ExpandedIDs: 04c7fffff6dfffff1af9ffff52faffffe2fbffff000000005c250000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
-      m_Name: Main Camera
-      m_OriginalName: Main Camera
+      m_Name: 
+      m_OriginalName: 
       m_EditFieldRect:
         serializedVersion: 2
         x: 0
         y: 0
         width: 0
         height: 0
-      m_UserData: 10796
+      m_UserData: 0
       m_IsWaitingForDelay: 0
       m_IsRenaming: 0
-      m_OriginalEventType: 0
+      m_OriginalEventType: 11
       m_IsRenamingFilename: 0
       m_ClientGUIView: {fileID: 4}
     m_SearchString: 
@@ -537,9 +537,9 @@ MonoBehaviour:
   m_isRotationLocked: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 59.517117, y: 26.9699, z: 60.275158}
+    m_Target: {x: 77.58344, y: 67.280426, z: 70.03549}
     speed: 2
-    m_Value: {x: 59.517117, y: 26.9699, z: 60.275158}
+    m_Value: {x: 77.58344, y: 67.280426, z: 70.03549}
   m_RenderMode: 0
   m_ValidateTrueMetals: 0
   m_SceneViewState:
@@ -562,9 +562,9 @@ MonoBehaviour:
       speed: 2
       m_Value: 0
   m_Rotation:
-    m_Target: {x: -0.07190303, y: 0.92713684, z: -0.28103268, w: -0.23720865}
+    m_Target: {x: -0.084625855, y: 0.9020932, z: -0.2067675, w: -0.3692067}
     speed: 2
-    m_Value: {x: -0.07190303, y: 0.92713684, z: -0.28103268, w: -0.23720865}
+    m_Value: {x: -0.084625855, y: 0.9020932, z: -0.2067675, w: -0.3692067}
   m_Size:
     m_Target: 22
     speed: 2
