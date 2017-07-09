@@ -48,13 +48,13 @@ public class CameraScript : MonoBehaviour {
 		}*/
         if (Input.GetKey(KeyCode.W)) { // 카메라 상 이동
             cameraY += cameraSpeedY;
-			if (cameraY > 80)
-				cameraY = 80;
+			if (cameraY > 80.0f)
+				cameraY = 80.0f;
         }
         if (Input.GetKey(KeyCode.S)) { // 카메라 하 이동
             cameraY -= cameraSpeedY;
-			if (cameraY < 0)
-				cameraY = 0;
+			if (cameraY < 5.0f)
+				cameraY = 5.0f;
         }
 		if (Input.GetKey(KeyCode.A)) { // 카메라 좌 이동
 			angle += cameraSpeedX;
