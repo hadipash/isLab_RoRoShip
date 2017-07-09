@@ -30,7 +30,7 @@ public class CameraScript : MonoBehaviour {
 		cameraZ = 85.0f * Mathf.Cos(angle * Mathf.Deg2Rad);
 
 		transform.position = new Vector3(cameraX, cameraY, cameraZ);
-		transform.rotation = Quaternion.LookRotation(new Vector3(-1*cameraX, -1*cameraY+5.0f, -1*cameraZ));
+		transform.rotation = Quaternion.LookRotation(new Vector3(-1*cameraX, -0.7f*cameraY, -1*cameraZ));
 		//transform.rotation = Quaternion.LookRotation(new Vector3(30.0f, 0.0f, 30.0f));
 		/*if (Input.GetKey(KeyCode.Alpha1)) {
 			transform.position = new Vector3(60.0f, 30.0f, -60.0f);
@@ -48,9 +48,13 @@ public class CameraScript : MonoBehaviour {
 		}*/
         if (Input.GetKey(KeyCode.W)) { // 카메라 상 이동
             cameraY += cameraSpeedY;
+			if (cameraY > 80)
+				cameraY = 80;
         }
         if (Input.GetKey(KeyCode.S)) { // 카메라 하 이동
             cameraY -= cameraSpeedY;
+			if (cameraY < 0)
+				cameraY = 0;
         }
 		if (Input.GetKey(KeyCode.A)) { // 카메라 좌 이동
 			angle += cameraSpeedX;
