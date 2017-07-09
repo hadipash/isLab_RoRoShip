@@ -69,4 +69,22 @@ public class CameraScript : MonoBehaviour {
 
 		}*/
 	}
+
+	public void CameraSpeedUp() {
+		cameraSpeedX += 0.2f;
+		cameraSpeedY += 0.2f;
+		if (cameraSpeedX > 5.0f) {
+			cameraSpeedX = 5.0f;
+			cameraSpeedY = 5.0f;
+		}
+	}
+
+	public void CameraSpeedDown() {
+		cameraSpeedX -= 0.2f;
+		cameraSpeedY -= 0.2f;
+		if (cameraSpeedX < 0.2f) {
+			cameraSpeedX = 0.2f;
+			cameraSpeedY = 0.2f;
+		}
+	}
 }
