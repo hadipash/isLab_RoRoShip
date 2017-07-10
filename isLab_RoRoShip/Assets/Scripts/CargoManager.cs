@@ -33,6 +33,6 @@ public class CargoManager : MonoBehaviour {
 		cargoNumTextbox.text = "화물 수 : " + cargoNum;
 		cargoDataTextbox.text = "화물 정보 : " + currentCargoData;
 		Instantiate(cargo1, transform);
-		Debug.Log(currentCargoData);
+		//Debug.Log(currentCargoData);
 	}
 }
