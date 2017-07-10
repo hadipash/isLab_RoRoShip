@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class CargoCreater : MonoBehaviour {
+	public GameObject cargo1;
 
 	// Use this for initialization
 	void Start () {
@@ -19,7 +20,7 @@ public class CargoCreater : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (Input.GetKeyDown(KeyCode.Space)) { // 화물 생성
-			
+			Instantiate(cargo1, transform);
 		}
 	}
 }
