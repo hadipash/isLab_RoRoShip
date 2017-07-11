@@ -68,8 +68,8 @@ public class CargoScript : MonoBehaviour {
 				float dif = targetY - transform.position.z;
 				if (dif > cargoSpeed)
 					dif = cargoSpeed;
-				if (dif < cargoSpeed)
-					dif = cargoSpeed;
+				if (dif < -cargoSpeed)
+					dif = -cargoSpeed;
 				transform.Translate(new Vector3(0, 0, dif));
 			}
 			else if (targetY == transform.position.z) {
