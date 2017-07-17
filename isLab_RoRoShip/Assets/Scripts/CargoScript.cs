@@ -14,7 +14,7 @@ public class CargoScript : MonoBehaviour {
 	void Start () {
 		//cargoManager = 
 		moveData = CargoManager.currentCargoData;
-		Debug.Log("in cargo : " + moveData);
+		//Debug.Log("in cargo : " + moveData);
 		//Move();
 		string[] data = moveData.Split(';');
 		newData = new int[data.Length];

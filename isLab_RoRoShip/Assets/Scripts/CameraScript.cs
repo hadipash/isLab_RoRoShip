@@ -12,6 +12,7 @@ using UnityEngine;
 public class CameraScript : MonoBehaviour {
 	public float cameraSpeedX;
 	public float cameraSpeedY;
+	public static float cameraDistance;
 
 	float cameraX, cameraY, cameraZ, angle;
 
@@ -26,8 +27,8 @@ public class CameraScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		cameraX = 85.0f * Mathf.Sin(angle * Mathf.Deg2Rad);
-		cameraZ = 85.0f * Mathf.Cos(angle * Mathf.Deg2Rad);
+		cameraX = cameraDistance * Mathf.Sin(angle * Mathf.Deg2Rad);
+		cameraZ = cameraDistance * Mathf.Cos(angle * Mathf.Deg2Rad) * 0.5f;
 
 		transform.position = new Vector3(cameraX, cameraY, cameraZ);
 		transform.rotation = Quaternion.LookRotation(new Vector3(-1*cameraX, -0.7f*cameraY, -1*cameraZ));
