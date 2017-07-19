@@ -9,8 +9,12 @@ General functions and data for position determination
 from common.LayoutInterface import *
 from common.typeInfoReader import *
 import time
+
 typeList = TypeInfoReader().preTypeList
+
+
 # 순서를 받지 못할 때 사용할 임시 순서 리스트를 만들어주는 함수
+# Get list of all objects from a json file
 def getObjectSampleList():
     f = open("../common/cargo_input.json", 'r')
     js = json.loads(f.read())
@@ -21,10 +25,11 @@ def getObjectSampleList():
     objectList = []
 
     for data in dataList:
-        object = Object(data["groupId"], data["cargoId"], typeList[int(data["cargoType"])-1])
+        object = Object(data["groupId"], data["cargoId"], typeList[int(data["cargoType"]) - 1])
         objectList.append(object)
 
     return objectList
+
 
 # 임시로 만들어 둔 라우팅 모듈 클래스
 class RoutingModule:
@@ -52,26 +57,27 @@ class Rectangle:
 
     # 겹치는지 확인하는 함수
     def isIntersect(self, rectangle):
-        if(self.topLeft.x > rectangle.bottomRight.x): return False
-        if(self.bottomRight.x < rectangle.topLeft.x): return False
-        if(self.topLeft.y > rectangle.bottomRight.y): return False
-        if(self.bottomRight.y < rectangle.topLeft.y): return False
+        if (self.topLeft.x > rectangle.bottomRight.x): return False
+        if (self.bottomRight.x < rectangle.topLeft.x): return False
+        if (self.topLeft.y > rectangle.bottomRight.y): return False
+        if (self.bottomRight.y < rectangle.topLeft.y): return False
         return True
 
     # 겹치는지 좌상단 좌표와 너비, 높이를 받아서 확인하는 함수
     def isIntersectArea(self, topLeftX, topLeftY, width, height):
-        if(self.topLeft.x > topLeftX + width -1): return False
+        if (self.topLeft.x > topLeftX + width - 1): return False
         # if(self.topLeft.x > topLeftX + width): return False
-        if(self.bottomRight.x < topLeftX): return False
-        if(self.topLeft.y > topLeftY + height -1): return False
+        if (self.bottomRight.x < topLeftX): return False
+        if (self.topLeft.y > topLeftY + height - 1): return False
         # if(self.topLeft.y > topLeftY + height): return False
-        if(self.bottomRight.y < topLeftY): return False
+        if (self.bottomRight.y < topLeftY): return False
         return True
 
     def equal(self, rectangle):
-        if(self.topLeft.equal(rectangle.topLeft) and self.bottomRight.equal(rectangle.bottomRight)):
+        if (self.topLeft.equal(rectangle.topLeft) and self.bottomRight.equal(rectangle.bottomRight)):
             return True
         return False
+
 
 # GridSearcher 에서 사용할 클래스
 class Candidate:
@@ -84,6 +90,7 @@ class Candidate:
 
     def __eq__(self, another):
         return self.coordinate == another.coordinate and self.isTransformed == another.isTransformed
+
 
 # heap 에서 사용하는 클래스
 class ScoreResult:
@@ -101,7 +108,6 @@ class ScoreResult:
         # 점수 계산
         self.score = self.getScore()
 
-
     def getScore(self):
         score = 0
         # if(self.candidate.isTransformed == False):
@@ -112,24 +118,24 @@ class ScoreResult:
 
         # self.score = -1 * effScore
         # self.score = distScore - effScore * 2
-        score +=  (self.distScore*30 - self.effScore)
+        score += (self.distScore * 30 - self.effScore)
         # score = self.distScore*1000000 - self.effScore
         # score += self.distScore
         return score
         # self.score += -1 * effScore
 
-
     # 점수가 높을수록 좋도록 설계
     def __cmp__(self, other):
-        if(self.score > other.score):
+        if (self.score > other.score):
             return -1
-        elif(self.score == other.score):
-            if(self.candidate.isTransformed):
+        elif (self.score == other.score):
+            if (self.candidate.isTransformed):
                 return 1
             else:
                 return -1
         else:
             return 1
+
 
 # 시간을 재어 성능을 측정하는데 쓰는 클래스
 class PerformanceTimer:
@@ -148,6 +154,7 @@ class PerformanceTimer:
 
     def sPrint(self):
         return self.performanceTitle + " : " + str(self.result)
+
 
 # 연산 횟수를 측정하는데 쓰는 클래스
 class PerformanceCounter:

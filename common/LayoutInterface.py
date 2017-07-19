@@ -19,7 +19,7 @@ ENTER_ID = 8
 
 
 # 화물의 종류를 나타내는 클래스
-# Class for defining types of objects
+# Class for defining types of objects to be placed on a vessel
 class Type:
     def __init__(self, width, height, wheelbase, steeringAngle):
         self.width = width
@@ -27,10 +27,12 @@ class Type:
 
         self.L = wheelbase
         self.a = steeringAngle
-        if (wheelbase <= 0):
+
+        if wheelbase <= 0:
             self.min_R = 12000 / 1000  # standard grid size로 나눠야함.
         else:
             self.min_R = cal_radius(wheelbase, steeringAngle)
+
         self.min_R = int(math.ceil(self.min_R))
         self.radius = pythagoras(self.min_R, self.L)
         self.radius = int(math.ceil(self.radius))
@@ -53,6 +55,7 @@ class Object:
         # 해당 물체의 고유 id
         self.id = id
         # 물체의 방향전환 결과
+        # Whether an object is rotated or not (default value false)
         self.isTransformed = False
         # 물체의 타입
         self.type = type
@@ -252,7 +255,7 @@ class Space:
 
 
 # 선박의 정보를 파싱하는 클래스
-# Class for retrieving information about the vessel from json file
+# Class for retrieving information about a vessel from a json file
 class ShipInfoParser:
     def __init__(self):
         # json 파일을 읽고 정보를 저장
@@ -260,7 +263,8 @@ class ShipInfoParser:
         self.standradSize = configJSON["standardSize"]
         self.ShipInfo = Ship(int(configJSON["shipSize"]["width"]), int(configJSON["shipSize"]["height"]))
 
-        # 입구 정보를 리스트로 관리.
+        # 입구 정보를 리스트로 관리
+        # List of entrances
         self.EnterInfoList = []
         for enterInfo in configJSON["enterInfo"]["positions"]:
             self.EnterInfoList.append(Enter(Coordinate(enterInfo["coordinate"]["X"], enterInfo["coordinate"]["Y"]),
@@ -268,7 +272,8 @@ class ShipInfoParser:
                                             enterInfo["volume"]["height"],
                                             enterInfo["id"]))
 
-        # 장애물 정보를 리스트로 관리.
+        # 장애물 정보를 리스트로 관리
+        # List of obstacles on a vessel
         self.ObstacleInfoList = []
         for obstacleInfo in configJSON["obstacleInfo"]["positions"]:
             self.ObstacleInfoList.append(

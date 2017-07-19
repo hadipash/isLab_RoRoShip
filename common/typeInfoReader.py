@@ -10,27 +10,31 @@ from common.LayoutInterface import *
 
 TypeInfoPath = "../common/freight_list.json"
 
+
 # 미리 정해진 화물들의 타입 정보를 읽어오는 클래스
-class TypeInfoReader :
+# Class for reading types of cargoes
+class TypeInfoReader:
     def __init__(self):
         # 정보를 읽어와 변수에 담아둔다
         self.preTypeList = preprocessTypeList(TypeInfoPath)
 
+
 # 사용 샘플
 def main():
-
     # 생성
     typeReader = TypeInfoReader()
 
     # 생성 확인
     i = 0
     for type in typeReader.preTypeList:
-        i+=1
-        print str(i) + " 번째 타입::   width :" + str(type.width) + ", height :" + str(type.height) + ", Wheel base :" + str(type.L) + ", steerAngle :" + str(type.a) + ", minRadius :" + str(type.min_R)
+        i += 1
+        print str(i) + " 번째 타입::   width :" + str(type.width) + ", height :" + str(
+            type.height) + ", Wheel base :" + str(type.L) + ", steerAngle :" + str(type.a) + ", minRadius :" + str(
+            type.min_R)
+
 
 # 타입 리스트를 가져오도록 전처리하는 함수
 def preprocessTypeList(typeInfoPath):
-
     parser = ShipInfoParser()
 
     typeInfo = readJSON(typeInfoPath)
@@ -52,6 +56,7 @@ def readJSON(filename):
     js = json.loads(f.read())
     f.close()
     return js
+
 
 if __name__ == '__main__':
     main()

@@ -23,6 +23,7 @@ class GridSearcher(PositionAlgorithm):
         self.space = space
 
         # 배치된 사각형을 가지고 있을 리스트
+        # List of placed objects
         self.settedObjectList = []
         self.settedSize = 0
 
@@ -36,7 +37,7 @@ class GridSearcher(PositionAlgorithm):
 
         # 가장 작은 화물과 가장 큰 화물을 가져와 저장한다.
         # 이때 가장 작은 화물을 후보해 제거를 위한 용도로 사용한다.
-        # 가장 큰 화물은 후보해 평가시 effectCehck 에서 사용한다. 이는 제안방안의 간섭검사를 하는 부분이다.
+        # 가장 큰 화물은 후보해 평가시 effectCheck 에서 사용한다. 이는 제안방안의 간섭검사를 하는 부분이다.
         self.delType = typeRelation[0]
         self.delObject = Object(0, -1, self.delType)
         self.largestType = typeRelation[len(typeRelation)-1]

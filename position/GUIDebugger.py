@@ -19,9 +19,11 @@ from common.typeInfoReader import *
 typeList = TypeInfoReader().preTypeList
 EVT_OBJECT_RESULT_ID = wx.NewId()
 
+
 def EVT_RESULT(win, func):
     """Define Result Event."""
     win.Connect(-1, -1, EVT_OBJECT_RESULT_ID, func)
+
 
 # 이벤트 결과를 받을 클래스
 class ObjectEvent(wx.PyEvent):
@@ -35,20 +37,27 @@ class ObjectEvent(wx.PyEvent):
         self.object = object
         self.isSet = isSet
 
+
 # Gui 틀이 될 Grid 클래스
 class GridFrame(wx.Frame):
     def __init__(self, parent, title, space):
         # cell 의 크기를 설정
         cellSize = 5
         # wxframe 을 초기화 한다
-        wx.Frame.__init__(self, parent, -1, title, pos=(0, 0), size=(cellSize*space.width, cellSize*space.height + 150))
+        wx.Frame.__init__(self, parent, -1, title, pos=(0, 0),
+                          size=(cellSize * space.width, cellSize * space.height + 150))
         self.CentreOnScreen(wx.BOTH)
 
-        self.ColorList = [wx.TheColourDatabase.Find("GRAY"), wx.RED, wx.CYAN, wx.TheColourDatabase.Find("AQUAMARINE"), wx.TheColourDatabase.Find("BROWN"),
-                          wx.TheColourDatabase.Find("CORAL"), wx.TheColourDatabase.Find("GOLD"), wx.TheColourDatabase.Find("KHAKI"),
-                        wx.TheColourDatabase.Find("MAGENTA"), wx.TheColourDatabase.Find("NAVY"), wx.TheColourDatabase.Find("PURPLE"),
-                        wx.TheColourDatabase.Find("SEA GREEN"), wx.TheColourDatabase.Find("TURQUOISE"), wx.TheColourDatabase.Find("YELLOW"),
-                        wx.TheColourDatabase.Find("TAN"), wx.TheColourDatabase.Find("SIENNA"), wx.TheColourDatabase.Find("PLUM")]
+        self.ColorList = [wx.TheColourDatabase.Find("GRAY"), wx.RED, wx.CYAN, wx.TheColourDatabase.Find("AQUAMARINE"),
+                          wx.TheColourDatabase.Find("BROWN"),
+                          wx.TheColourDatabase.Find("CORAL"), wx.TheColourDatabase.Find("GOLD"),
+                          wx.TheColourDatabase.Find("KHAKI"),
+                          wx.TheColourDatabase.Find("MAGENTA"), wx.TheColourDatabase.Find("NAVY"),
+                          wx.TheColourDatabase.Find("PURPLE"),
+                          wx.TheColourDatabase.Find("SEA GREEN"), wx.TheColourDatabase.Find("TURQUOISE"),
+                          wx.TheColourDatabase.Find("YELLOW"),
+                          wx.TheColourDatabase.Find("TAN"), wx.TheColourDatabase.Find("SIENNA"),
+                          wx.TheColourDatabase.Find("PLUM")]
 
         # 후보해 검색을 시각적으로 표현하기 위한 변수들
         self.xCacheRange = []
@@ -79,16 +88,15 @@ class GridFrame(wx.Frame):
         for j in range(width):
             grid.SetColSize(j, cellSize)
 
-
         # 이미 배치된 입구나 사각형 정보를 grid 에 표현한다
         for i in range(height):
             for j in range(width):
-                targetVertex = space.getVertex(Coordinate(j,i))
-                if(targetVertex.unit != None):
-                    if(targetVertex.unit.groupId == OBSTACLE_ID):
+                targetVertex = space.getVertex(Coordinate(j, i))
+                if (targetVertex.unit != None):
+                    if (targetVertex.unit.groupId == OBSTACLE_ID):
                         # 장애물은 검은색
                         grid.SetCellBackgroundColour(i, j, wx.BLACK)
-                    if(targetVertex.unit.groupId == ENTER_ID):
+                    if (targetVertex.unit.groupId == ENTER_ID):
                         # 입구는 파란색
                         grid.SetCellBackgroundColour(i, j, wx.BLUE)
 
@@ -114,7 +122,6 @@ class GridFrame(wx.Frame):
 
         self.SetSizer(sizer)
 
-
     # 이벤트 처리 핸들러
     def handler(self, evt):
 
@@ -132,13 +139,13 @@ class GridFrame(wx.Frame):
 
         # 후보 탐색 하는 상태인지 화물 배치 상태인지 봐가며 색을 결정한다.
         targetColor = self.ColorList[0]
-        if(evt.isSet):
+        if (evt.isSet):
             targetColor = self.ColorList[1]
 
         # x 값과 y 값의 범위를 결정한다
         self.yCacheRange = range(evt.leftTopCoordinate.y, evt.leftTopCoordinate.y + height)
         self.xCacheRange = range(evt.leftTopCoordinate.x, evt.leftTopCoordinate.x + width)
-        if(evt.isSet):
+        if (evt.isSet):
             self.yCacheRange = []
             self.xCacheRange = []
 
@@ -174,6 +181,7 @@ class GridFrame(wx.Frame):
     def onGoButton(self, event):
         self.worker.goUntilEnd()
 
+
 # 화물을 탐색하는 것도 보여주고 싶을때 사용하는 이벤트 생성기 클래스
 class ObjectEventEmitter:
     def __init__(self, eventTarget):
@@ -183,6 +191,7 @@ class ObjectEventEmitter:
     # 이벤트 발생 함수
     def emit(self, leftTopCoordinate, obejct, isSet):
         wx.PostEvent(self.eventTarget, ObjectEvent(leftTopCoordinate, obejct, isSet))
+
 
 # Gui 윈도우 클래스
 class SimpleApp(wx.App):
@@ -196,6 +205,7 @@ class SimpleApp(wx.App):
 
     def OnExit(self):
         pass
+
 
 # 알고리즘을 수행시킬 thread
 class WorkerThread(threading.Thread):
@@ -215,7 +225,6 @@ class WorkerThread(threading.Thread):
 
         # 이벤트를 실행하는 클래스를 넘겨준다
         self.pm.setEventEmitter(self.eventEmitter)
-
 
         self.totalAlgorithmTime = 0
 
@@ -246,13 +255,13 @@ class WorkerThread(threading.Thread):
         for object in ObjectList:
 
             # Gui 제어 변수들을 보고 화면을 제어하는 코드
-            if(self.go != True):
+            if (self.go != True):
                 # 한 스텝씩 진행하지 않고 끝까지 수행하는 상태가 아니라면
-                while(self.next != True):
+                while (self.next != True):
                     # 다음 배치 버튼을 누를때까지 무한 대기
                     time.sleep(0.01)
 
-            if(checkObject):
+            if (checkObject):
                 print "실패 후 배치되는 화물의 크기 : " + str(object.getWidth()) + " * " + str(object.getHeight())
 
             # 다음 배치 변수를 다시 False 로 바꾼다
@@ -261,7 +270,7 @@ class WorkerThread(threading.Thread):
             check1 = time.time()
             coordinate = self.pm.setObjectPosition(object)
             # 화물을 배치하는 코드
-            if(coordinate != None):
+            if (coordinate != None):
                 # 배치 잘 됨
                 # print str(object.id) + " 번째 화물 배치 좌표 : " + " (" +str(coordinate.x) + ", " + str(coordinate.y) + "),\t" + "화물 방향 전환 : " + str(object.isTransformed) + ",\t 화물 크기 : " + str(object.getWidth()) + "*" + str(object.getHeight())
                 usingVertex += object.getWidth() * object.getHeight()
@@ -277,10 +286,9 @@ class WorkerThread(threading.Thread):
                 self.totalAlgorithmTime = self.totalAlgorithmTime + check2 - check1
                 break
 
-
             processedDataCnt += 1
         print "총 걸린 시간 : " + str(self.totalAlgorithmTime)
-        print "남은 면적 : " + str(self.space.width*self.space.height - usingVertex)
+        print "남은 면적 : " + str(self.space.width * self.space.height - usingVertex)
         # print "총 사용한 vertex 수 : " + str(usingVertex)
         print "processedDataCnt : " + str(processedDataCnt)
 
@@ -297,6 +305,7 @@ class WorkerThread(threading.Thread):
 # Gui 프로그램 실행하는 main
 def main():
     SimpleApp(redirect=False).MainLoop()
+
 
 if __name__ == '__main__':
     main()
