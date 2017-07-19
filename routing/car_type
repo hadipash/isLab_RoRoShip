@@ -1,0 +1,13 @@
+import min_radius
+
+class car_type_class:
+	def __init__(self, width=2000, height=4000, L=3000, a=50):
+		self.width = width
+		self.height = height
+		self.L = L
+		self.a = a
+		if(L == -1): #
+			self.min_R = 12000 # standard grid size로 나눠야함.
+		else:
+			self.min_R = min_radius.cal_radius(L,a)
+		self.min_R = int(math.ceil(self.min_R))

@@ -1,0 +1,14 @@
+from routing.graph import *
+
+class graph:
+	def __init__(self, Type, Space)
+		-> LayoutInterface.py에 선언된 Type과 Space 그대로 넣으시면됩니다.
+
+	def graph_initt(self)
+		-> graph 생성. type과 space 선언후 바로 생성
+
+	def isPossible(self, s_x,s_y,e_x,e_y, ent_x, ent_y, ent_w, ent_h)
+		-> 화물을 놓을 위치 top_left, bottom_right, 입구의 top_left 점, 입구의 width, height를 입력하여 True가 출력되면 경로 존재.
+
+	def graph_update(self, s_x, s_y, e_x, e_y)
+		-> 화물의 위치를 정한 뒤, 화물이 놓아진 top_left, bottom_right 에 해당하는 각 점을 입력해 그래프 갱신. 

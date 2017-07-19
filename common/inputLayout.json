@@ -1,0 +1,30 @@
+{
+	"standardSize": 1000,
+	"shipSize":{
+		"width":50000, "height":100000
+	},
+	"enterInfo":{
+		"cnt":2,
+		"positions":[
+			{"coordinate":{"X":0, "Y":47000}, "volume":{"width":2000, "height":6000}, "id":90001},
+			{"coordinate":{"X":22000, "Y":0}, "volume":{"width":6000, "height":2000}, "id":90002}
+		]
+	},
+	"obstacleInfo":{
+		"cnt":8,
+		"positions":[
+			{"coordinate":{"X":10000, "Y":12500}, "volume":{"width":400, "height":400}, "id":80001},
+			{"coordinate":{"X":39000, "Y":12500}, "volume":{"width":400, "height":400}, "id":80002},
+			{"coordinate":{"X":10000, "Y":25000}, "volume":{"width":400, "height":400}, "id":80003},
+			{"coordinate":{"X":39000, "Y":25000}, "volume":{"width":400, "height":400}, "id":80004},
+			{"coordinate":{"X":10000, "Y":37500}, "volume":{"width":400, "height":400}, "id":80005},
+			{"coordinate":{"X":39000, "Y":37500}, "volume":{"width":400, "height":400}, "id":80006},
+			{"coordinate":{"X":10000, "Y":62500}, "volume":{"width":400, "height":400}, "id":80009},
+			{"coordinate":{"X":39000, "Y":62500}, "volume":{"width":400, "height":400}, "id":80010},
+			{"coordinate":{"X":10000, "Y":75000}, "volume":{"width":400, "height":400}, "id":80011},
+			{"coordinate":{"X":39000, "Y":75000}, "volume":{"width":400, "height":400}, "id":80012},
+			{"coordinate":{"X":10000, "Y":87500}, "volume":{"width":400, "height":400}, "id":80013},
+			{"coordinate":{"X":39000, "Y":87500}, "volume":{"width":400, "height":400}, "id":80014}
+		]
+	}
+}
