@@ -27,13 +27,15 @@ class PositionModule:
     def __init__(self, space, typeList, algoType):
         self.space = space
         self.typeList = typeList
+
         # 상황에 따라 아래 알고리즘 수행
-        if(algoType == 'MaxRects'):
+        # Algorithm for placing cargoes
+        if algoType == 'MaxRects':
             self.algorithmModule = MaxRects(space, typeList)
         else:
             self.algorithmModule = GridSearcher(space, typeList)
 
-    #화물의 리스트를 받아 화물 배치
+    # 화물의 리스트를 받아 화물 배치
     def setPosition(self, ObjectList):
         """
         :param ObjectList: 순서가 결정 된 화물 리스트

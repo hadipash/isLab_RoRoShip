@@ -28,9 +28,8 @@ def main():
     i = 0
     for type in typeReader.preTypeList:
         i += 1
-        print str(i) + " 번째 타입::   width :" + str(type.width) + ", height :" + str(
-            type.height) + ", Wheel base :" + str(type.L) + ", steerAngle :" + str(type.a) + ", minRadius :" + str(
-            type.min_R)
+        print str(i) + " 번째 타입::   width :" + str(type.width) + ", height :" + str(type.height) + \
+              ", Wheel base :" + str(type.L) + ", steerAngle :" + str(type.a) + ", minRadius :" + str(type.min_R)
 
 
 # 타입 리스트를 가져오도록 전처리하는 함수

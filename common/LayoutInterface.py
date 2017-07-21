@@ -328,10 +328,8 @@ class ShipInfoParser:
         coordinateYData = self.distanceToCellFloor(obstacleData.coordinate.y)
         obstacleJSONData["coordinate"]["Y"] = coordinateYData["cellCnt"]
 
-        obstacleJSONData["volume"]["width"] = self.distanceToCellCeil(obstacleData.width + coordinateXData["remain"])[
-            "cellCnt"]
-        obstacleJSONData["volume"]["height"] = self.distanceToCellCeil(obstacleData.height + coordinateYData["remain"])[
-            "cellCnt"]
+        obstacleJSONData["volume"]["width"] = self.distanceToCellCeil(obstacleData.width + coordinateXData["remain"])["cellCnt"]
+        obstacleJSONData["volume"]["height"] = self.distanceToCellCeil(obstacleData.height + coordinateYData["remain"])["cellCnt"]
 
         obstacleJSONData["id"] = obstacleData.id
 

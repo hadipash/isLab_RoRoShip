@@ -10,6 +10,7 @@ The Maximal Rectangles algorithm for an object placement
 from IPositionAlgorithm import *
 from commonClass import *
 
+
 # algorithm. 삽입 가능 공간을 관리 하는 객체
 # 연구사례 중 maximal Rectangle 을 구현한 것
 class MaxRects(PositionAlgorithm):
@@ -34,7 +35,9 @@ class MaxRects(PositionAlgorithm):
     def initializeSpace(self):
 
         # 먼저 선박의 크기 만큼 사각형을 만들어 리스트에 넣는다
-        self.rectList.append(Rectangle(Coordinate(0+self.boundary,0+self.boundary), Coordinate(self.space.width-1-self.boundary, self.space.height-1-self.boundary)))
+        self.rectList.append(Rectangle(Coordinate(0 + self.boundary, 0 + self.boundary),
+                                       Coordinate(self.space.width - 1 - self.boundary,
+                                                  self.space.height - 1 - self.boundary)))
 
         # 이미 처리한 장애물, 입구를 저장하는 리스트
         processedObject = []
@@ -48,14 +51,14 @@ class MaxRects(PositionAlgorithm):
                 targetVertex = self.space.getVertex(coordinate)
 
                 # 해당 좌표에 다른 물체가 있는지 확인한다
-                if(targetVertex.isOccupied()):
+                if (targetVertex.isOccupied()):
                     # 이미 처리했던 장애물이라면 처리하지 않는다
                     alreadyProcess = self.alreadyPreProcessed(targetVertex, processedObject)
-                    if(alreadyProcess == False):
+                    if (alreadyProcess == False):
                         # 현재 좌표에 있는 화물
                         # 그 사각형을 MaxRects 방법으로 나눈다.
-                        targetRect = Rectangle(coordinate, Coordinate(coordinate.x + targetVertex.unit.getWidth() -1, coordinate.y + targetVertex.unit.getHeight() - 1))
-
+                        targetRect = Rectangle(coordinate, Coordinate(coordinate.x + targetVertex.unit.getWidth() - 1,
+                                                                      coordinate.y + targetVertex.unit.getHeight() - 1))
 
                         # 현재 사각형들을 임시로 저장 할 리스트. 바로 탐색하지 않는 이유는 탐색하는 도중 list가 변경되기 때문이다.
                         searchList = []
@@ -64,7 +67,7 @@ class MaxRects(PositionAlgorithm):
 
                         # 임시로 저장했던 리스트를 바탕으로 기존 사각형들을 탐색하며, 현재 장애물과 겹치는 사각형들을 분할한다.
                         for rect in searchList:
-                            if(rect.isInclude(targetRect)):
+                            if (rect.isInclude(targetRect)):
                                 self.divide(rect, targetRect)
 
                         # 처리한 장애물 목록에 현재 장애물을 넣는다
@@ -92,10 +95,10 @@ class MaxRects(PositionAlgorithm):
             # 정방향 배치
             remainWidth = rect.width - Object.getWidth()
             remainHeight = rect.height - Object.getHeight()
-            if((remainWidth >= 0 and remainHeight >= 0) and (remainWidth < fitValue or remainHeight < fitValue)):
+            if ((remainWidth >= 0 and remainHeight >= 0) and (remainWidth < fitValue or remainHeight < fitValue)):
                 width = Object.getWidth()
                 height = Object.getHeight()
-                bottomRight = Coordinate(rect.topLeft.x+width, rect.topLeft.y+height)
+                bottomRight = Coordinate(rect.topLeft.x + width, rect.topLeft.y + height)
 
                 # 라우팅 확인
                 if self.isSetEnable(rect.topLeft, bottomRight, Object):
@@ -107,10 +110,10 @@ class MaxRects(PositionAlgorithm):
             # 방향 전환
             remainWidth = rect.width - Object.getHeight()
             remainHeight = rect.height - Object.getWidth()
-            if((remainWidth >= 0 and remainHeight >= 0) and (remainWidth < fitValue or remainHeight < fitValue)):
+            if ((remainWidth >= 0 and remainHeight >= 0) and (remainWidth < fitValue or remainHeight < fitValue)):
                 width = Object.getHeight()
                 height = Object.getWidth()
-                bottomRight = Coordinate(rect.topLeft.x+width, rect.topLeft.y+height)
+                bottomRight = Coordinate(rect.topLeft.x + width, rect.topLeft.y + height)
 
                 # 라우팅 확인
                 if self.isSetEnable(rect.topLeft, bottomRight, Object):
@@ -120,10 +123,8 @@ class MaxRects(PositionAlgorithm):
                     fitRect = rect
                     fitCoordinate = rect.topLeft
 
-
-
         # 맞는 사각형이 없는 상황. 알고리즘 종료
-        if(fitRect == None):
+        if (fitRect == None):
             return None
 
         # 배치될 사각형의 좌상단 좌표를 리턴
@@ -145,18 +146,18 @@ class MaxRects(PositionAlgorithm):
             # 이벤트 발생
             self.emitter.emit(topLeftCoordinate, Object, True)
 
-
     # 화물(사각형)을 배치하는 함수
     # 화물(사각형)을 배치하고 난 뒤 남은 영역의 사각형을 만들고, 이 때 포함관계를 가진 사각형들을 제거한다
     def insert(self, Object, targetCoordinate):
         width = Object.getWidth()
         height = Object.getHeight()
-        if(Object.isTransformed):
+        if (Object.isTransformed):
             width = Object.getHeight()
             height = Object.getWidth()
 
         # 배치된 화물 사각형
-        insertRect = Rectangle(targetCoordinate, Coordinate(targetCoordinate.x+width-1, targetCoordinate.y+height-1))
+        insertRect = Rectangle(targetCoordinate,
+                               Coordinate(targetCoordinate.x + width - 1, targetCoordinate.y + height - 1))
 
         # 임시로 현재 사각형 리스트를 deep copy 하여 이를 기준으로 사각형들을 조정한다
         tmpRectList = []
@@ -174,10 +175,14 @@ class MaxRects(PositionAlgorithm):
         self.delTargetRect(targetRect)
 
         # 사각형을 4개로 만든 뒤
-        topRect = Rectangle(Coordinate(targetRect.topLeft.x, targetRect.topLeft.y), Coordinate(targetRect.bottomRight.x, insertRect.topLeft.y-1))
-        bottomRect = Rectangle(Coordinate(targetRect.topLeft.x, insertRect.bottomRight.y+1), Coordinate(targetRect.bottomRight.x, targetRect.bottomRight.y))
-        leftRect = Rectangle(Coordinate(targetRect.topLeft.x, targetRect.topLeft.y), Coordinate(insertRect.topLeft.x-1, targetRect.bottomRight.y))
-        rightRect = Rectangle(Coordinate(insertRect.bottomRight.x+1, targetRect.topLeft.y), Coordinate(targetRect.bottomRight.x, targetRect.bottomRight.y))
+        topRect = Rectangle(Coordinate(targetRect.topLeft.x, targetRect.topLeft.y),
+                            Coordinate(targetRect.bottomRight.x, insertRect.topLeft.y - 1))
+        bottomRect = Rectangle(Coordinate(targetRect.topLeft.x, insertRect.bottomRight.y + 1),
+                               Coordinate(targetRect.bottomRight.x, targetRect.bottomRight.y))
+        leftRect = Rectangle(Coordinate(targetRect.topLeft.x, targetRect.topLeft.y),
+                             Coordinate(insertRect.topLeft.x - 1, targetRect.bottomRight.y))
+        rightRect = Rectangle(Coordinate(insertRect.bottomRight.x + 1, targetRect.topLeft.y),
+                              Coordinate(targetRect.bottomRight.x, targetRect.bottomRight.y))
 
         # 각 사각형을 추가한다
         self.addRectangle(topRect)
@@ -201,6 +206,6 @@ class MaxRects(PositionAlgorithm):
     # 사각형 merge 가능한지 체크하는 함수
     def isAvailableRectMerge(self, newRect):
         for rect in self.rectList:
-            if rect.isInclude(newRect) :
+            if rect.isInclude(newRect):
                 return True
         return False

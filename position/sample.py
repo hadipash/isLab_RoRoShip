@@ -21,6 +21,7 @@ def main():
     space = Space()
 
     # 위치 결정 모듈 생성
+    # Initialize positioning module (use 'GridSearch' algorithm as default)
     positionModule = PositionModule(space, typeList, "GridSearcher")
 
     performance.start()
