@@ -6,7 +6,6 @@ Sample program
 """
 
 from PositionModule import *
-from routing.graph import *
 
 
 def main():

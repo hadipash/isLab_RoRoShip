@@ -10,10 +10,9 @@ Default system interface
 # import wx.grid
 
 import json
-
-SHIP_LAYOUT_INFO = "../common/inputLayout.json"
 from routing.min_radius import *
 
+SHIP_LAYOUT_INFO = "../common/inputLayout.json"
 OBSTACLE_ID = 9
 ENTER_ID = 8
 
@@ -132,7 +131,6 @@ class Space:
         self.vertexArr = []
 
         # 파서를 사용하여 선박의 정보를 가져온다
-        parser = ShipInfoParser()
         self.width = int(parser.parseShipInfo()["width"])
         self.height = int(parser.parseShipInfo()["height"])
 
