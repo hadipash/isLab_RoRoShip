@@ -131,6 +131,7 @@ class Space:
         self.vertexArr = []
 
         # 파서를 사용하여 선박의 정보를 가져온다
+        parser = ShipInfoParser()
         self.width = int(parser.parseShipInfo()["width"])
         self.height = int(parser.parseShipInfo()["height"])
 
