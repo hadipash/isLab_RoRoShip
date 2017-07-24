@@ -17,7 +17,7 @@ class Parser:
     def __init__(self):
         # json 파일을 읽고 정보를 저장
         configJSON = self.readJSON(SHIP_LAYOUT_INFO)
-        self.standradSize = configJSON["standardSize"]
+        self.standardSize = configJSON["standardSize"]
         self.ShipInfo = Ship(int(configJSON["shipSize"]["width"]), int(configJSON["shipSize"]["height"]))
 
         # 입구 정보를 리스트로 관리
@@ -48,9 +48,8 @@ class Parser:
 
     # 배의 정보를 cell로 변환해서 json 데이터로 리턴
     def parseShipInfo(self):
-        shipJSONData = {}
-        shipJSONData["width"] = self.distanceToCellFloor(self.ShipInfo.width)["cellCnt"]
-        shipJSONData["height"] = self.distanceToCellFloor(self.ShipInfo.height)["cellCnt"]
+        shipJSONData = {"width": self.distanceToCellFloor(self.ShipInfo.width)["cellCnt"],
+                        "height": self.distanceToCellFloor(self.ShipInfo.height)["cellCnt"]}
         return shipJSONData
 
     # 입구들의 좌표와 크기를 cell로 변환해서 json 리스트로 리턴
@@ -85,10 +84,10 @@ class Parser:
         coordinateYData = self.distanceToCellFloor(obstacleData.coordinate.y)
         obstacleJSONData["coordinate"]["Y"] = coordinateYData["cellCnt"]
 
-        obstacleJSONData["volume"]["width"] = self.distanceToCellCeil(obstacleData.width + coordinateXData["remain"])[
-            "cellCnt"]
-        obstacleJSONData["volume"]["height"] = self.distanceToCellCeil(obstacleData.height + coordinateYData["remain"])[
-            "cellCnt"]
+        obstacleJSONData["volume"]["width"] = self.distanceToCellCeil(obstacleData.width +
+                                                                      coordinateXData["remain"])["cellCnt"]
+        obstacleJSONData["volume"]["height"] = self.distanceToCellCeil(obstacleData.height +
+                                                                       coordinateYData["remain"])["cellCnt"]
 
         obstacleJSONData["id"] = obstacleData.id
 
@@ -98,23 +97,23 @@ class Parser:
     # json 으로 리턴
     def distanceToCellCeil(self, distance):
         jsonData = {}
-        cellCnt = distance / self.standradSize
-        if (distance % self.standradSize != 0):
+        cellCnt = distance / self.standardSize
+        if distance % self.standardSize != 0:
             cellCnt = cellCnt + 1
 
         jsonData["cellCnt"] = cellCnt
-        jsonData["remain"] = distance % self.standradSize
+        jsonData["remain"] = distance % self.standardSize
         return jsonData
 
     # 길이를 cell 로 변환할 때 내림처리 하는 함수
     # json 으로 리턴
     def distanceToCellFloor(self, distance):
         jsonData = {}
-        cellCnt = distance / self.standradSize
+        cellCnt = distance / self.standardSize
         jsonData["cellCnt"] = cellCnt
-        jsonData["remain"] = distance % self.standradSize
+        jsonData["remain"] = distance % self.standardSize
         return jsonData
 
     # 실제 부피로 계산하는 함수
     def convertRealVolume(self, cellCnt):
-        return cellCnt * self.standradSize * self.standradSize
+        return cellCnt * self.standardSize * self.standardSize

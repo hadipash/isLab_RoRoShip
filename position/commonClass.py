@@ -9,8 +9,6 @@ General functions and data for position determination
 from common.InitializationCode import *
 import time
 
-# typeList = TypeInfoReader().preTypeList
-
 
 # 순서를 받지 못할 때 사용할 임시 순서 리스트를 만들어주는 함수
 # Get list of all objects from a json file
@@ -24,8 +22,7 @@ def getObjectSampleList():
     objectList = []
 
     for data in dataList:
-        object = Object(data["groupId"], data["cargoId"], typeList[int(data["cargoType"]) - 1])
-        objectList.append(object)
+        objectList.append(Object(data["groupId"], data["cargoId"], typeList[int(data["cargoType"]) - 1]))
 
     return objectList
 

@@ -12,7 +12,6 @@ import heapq
 from commonClass import *
 from IPositionAlgorithm import *
 from position.commonClass import *
-from common.typeInfoReader import *
 
 
 # 알고리즘 수행하는 클래스 중 하나
@@ -138,7 +137,7 @@ class GridSearcher(PositionAlgorithm):
                 inObjectX = (coordiX > TLCoordinate.x - 1) and (coordiX < BRCoordinate.x + 1)
 
                 # 배치된 화물내부라면
-                if (inObjectX and inObjectY):
+                if inObjectX and inObjectY:
                     # 제거할 후보해 리스트에 추가
                     removeCandidateList.append(Candidate(Coordinate(coordiX, coordiY), False))
                     removeCandidateList.append(Candidate(Coordinate(coordiX, coordiY), True))
@@ -178,7 +177,7 @@ class GridSearcher(PositionAlgorithm):
             height = Object.getWidth()
 
         # 배치할 위치가 있다면
-        if (resultCoordinate != None):
+        if resultCoordinate != None:
             # 배치화물 리스트에 배치된 영역을 사각형 객체로 만들어 append 한다. 이는 빈자리 탐색, 간섭검사에서 사용이 가능
             afterX = resultCoordinate.x + width - 1
             afterY = resultCoordinate.y + height - 1
@@ -233,10 +232,10 @@ class GridSearcher(PositionAlgorithm):
             self.searchCandidateCount.add()
 
             # 여기서 좌상단에 배치가 가능한지 체크. 배치가 안되면 그대로 걸러냄.
-            isProperLeft = (coordinate.x + Width <= self.space.width - 1) and (
-                self.space.getVertexx(coordinate.x + 1, coordinate.y).isOccupied() == False)
-            isProperTop = (coordinate.y + Height <= self.space.height - 1) and (
-                self.space.getVertexx(coordinate.x, coordinate.y + 1).isOccupied() == False)
+            isProperLeft = (coordinate.x + Width <= self.space.width - 1) and\
+                           (self.space.getVertexx(coordinate.x + 1, coordinate.y).isOccupied() == False)
+            isProperTop = (coordinate.y + Height <= self.space.height - 1) and\
+                          (self.space.getVertexx(coordinate.x, coordinate.y + 1).isOccupied() == False)
 
             # 주변 벽을 보고 기준좌표를 옮기는 코드
             # 원래는 좌상단 기준으로 배치를 하지만, 좌상단 기준으로 배치를 할 수 없는 경우도 있다.(후보해가 선박의 좌하단 모서리 or 우하단 모서리)
