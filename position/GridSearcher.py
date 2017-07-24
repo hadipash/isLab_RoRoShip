@@ -14,12 +14,12 @@ from IPositionAlgorithm import *
 from position.commonClass import *
 from common.typeInfoReader import *
 
+
 # 알고리즘 수행하는 클래스 중 하나
 class GridSearcher(PositionAlgorithm):
     def __init__(self, space, typeList):
         # super class 세팅 및 초기값 세팅
         PositionAlgorithm.__init__(self, space, typeList)
-        shipInfoParser = ShipInfoParser()
         self.space = space
 
         # 배치된 사각형을 가지고 있을 리스트
@@ -80,7 +80,7 @@ class GridSearcher(PositionAlgorithm):
                 self.candidate.append(Candidate(Coordinate(startX - x, startY - y), True))
 
         # 입구 정보를 가져온다.
-        self.Enters = shipInfoParser.parseEnterInfo()
+        self.Enters = parser.parseEnterInfo()
         # 입구 맞은편 면 전체를 후보해로 리스트에 append
         # 해당 후보해들은 큰 화물이 입력될 때 큰 회전반경으로 구석에 가지 못하는 경우가 있다. 즉, 직진으로만 들어오므로 맞은편도 후보해로 넣음.
         startX = 0
@@ -234,9 +234,9 @@ class GridSearcher(PositionAlgorithm):
 
             # 여기서 좌상단에 배치가 가능한지 체크. 배치가 안되면 그대로 걸러냄.
             isProperLeft = (coordinate.x + Width <= self.space.width - 1) and (
-            self.space.getVertexx(coordinate.x + 1, coordinate.y).isOccupied() == False)
+                self.space.getVertexx(coordinate.x + 1, coordinate.y).isOccupied() == False)
             isProperTop = (coordinate.y + Height <= self.space.height - 1) and (
-            self.space.getVertexx(coordinate.x, coordinate.y + 1).isOccupied() == False)
+                self.space.getVertexx(coordinate.x, coordinate.y + 1).isOccupied() == False)
 
             # 주변 벽을 보고 기준좌표를 옮기는 코드
             # 원래는 좌상단 기준으로 배치를 하지만, 좌상단 기준으로 배치를 할 수 없는 경우도 있다.(후보해가 선박의 좌하단 모서리 or 우하단 모서리)

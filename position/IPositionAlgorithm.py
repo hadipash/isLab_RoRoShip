@@ -7,7 +7,6 @@ Interface of GridSearcher class for MaxRects class
 """
 
 from routing.graph import *
-from common.LayoutInterface import *
 from common.typeInfoReader import *
 
 # 내부 알고리즘 인터페이스 클래스
@@ -27,11 +26,9 @@ class PositionAlgorithm:
             Graph.graph_initt()
             self.RM.append(Graph)
 
-        # 입구 정보를 가져오기 위해 선박 parser 를 가져온다
-        shipParser = ShipInfoParser()
         # enterList 에 메인 입구(입구 2개 중 )
         self.enterList = []
-        for enter in reversed(shipParser.parseEnterInfo()):
+        for enter in reversed(parser.parseEnterInfo()):
             self.enterList.append(enter)
 
         # 이벤트 emitter 를 사용하는지 체크

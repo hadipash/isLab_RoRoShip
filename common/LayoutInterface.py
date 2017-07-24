@@ -16,7 +16,7 @@ SHIP_LAYOUT_INFO = "../common/inputLayout.json"
 OBSTACLE_ID = 9
 ENTER_ID = 8
 
-
+"""
 # 화물의 종류를 나타내는 클래스
 # Class for defining types of objects to be placed on a vessel
 class Type:
@@ -43,8 +43,9 @@ class Type:
 
     def __eq__(self, other):
         return self.width == other.width and self.height == other.height and self.L == other.L and self.a == other.a
+"""
 
-
+"""
 # 물체를 표현하는 클래스
 # Class for objects to be placed
 class Object:
@@ -121,8 +122,9 @@ class Vertex:
             return True
         else:
             return False
+"""
 
-
+"""
 # 선박의 공간을 관리하는 클래스
 # Class for management free space of a vessel
 class Space:
@@ -251,8 +253,9 @@ class Space:
                     return Coordinate(i, j)
         # 찾는것이 없다면 None 리턴
         return None
+"""
 
-
+"""
 # 선박의 정보를 파싱하는 클래스
 # Class for retrieving information about a vessel from a json file
 class ShipInfoParser:
@@ -358,8 +361,9 @@ class ShipInfoParser:
     # 실제 부피로 계산하는 함수
     def convertRealVolume(self, cellCnt):
         return cellCnt * self.standradSize * self.standradSize
+"""
 
-
+"""
 # 선박 클래스
 class Ship:
     def __init__(self, width, height):
@@ -382,3 +386,4 @@ class Enter(Obstacle):
     def __init__(self, coordinate, width, height, id):
         Obstacle.__init__(self, coordinate, width, height, id)
         self.isEnter = True
+"""

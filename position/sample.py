@@ -9,6 +9,7 @@ from PositionModule import *
 
 
 def main():
+    initialize()
     # 성능 측정기 생성
     # Declare performance measurement unit
     performance = PerformanceTimer("해 평가 소요 시간")
@@ -16,8 +17,6 @@ def main():
     # 입력 데이터 생성
     # Retrieve input data from files
     ObjectList = getObjectSampleList()
-    # typeList = TypeInfoReader().preTypeList # Commented by Rustam
-    space = Space()
 
     # 위치 결정 모듈 생성
     # Initialize positioning module (use 'GridSearch' algorithm as default)

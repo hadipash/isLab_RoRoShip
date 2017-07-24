@@ -6,11 +6,10 @@
 General functions and data for position determination
 """
 
-from common.LayoutInterface import *
-from common.typeInfoReader import *
+from common.InitializationCode import *
 import time
 
-typeList = TypeInfoReader().preTypeList
+# typeList = TypeInfoReader().preTypeList
 
 
 # 순서를 받지 못할 때 사용할 임시 순서 리스트를 만들어주는 함수

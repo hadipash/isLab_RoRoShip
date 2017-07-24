@@ -7,15 +7,14 @@ which later used across all modules
 """
 
 from typeInfoReader import *
-from LayoutInterface import *
 
 # Extensively used variables across all the program
 typeList = None     # List of objects types
-parser = None       # Parser of json files
+space = None        # available free space on a vessel
 
 
 def initialize():
-    global parser
-    parser = ShipInfoParser()
+    global space
+    space = Space()
     global typeList
     typeList = TypeInfoReader().preTypeList

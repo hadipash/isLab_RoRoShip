@@ -6,7 +6,7 @@
 Change real sizes according to the cell size
 """
 
-from common.LayoutInterface import *
+from FreeSpace import *
 
 TypeInfoPath = "../common/freight_list.json"
 
@@ -34,8 +34,6 @@ def main():
 
 # 타입 리스트를 가져오도록 전처리하는 함수
 def preprocessTypeList(typeInfoPath):
-    parser = ShipInfoParser()
-
     typeInfo = readJSON(typeInfoPath)
 
     tmpTypeList = []
