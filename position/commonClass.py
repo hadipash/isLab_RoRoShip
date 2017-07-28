@@ -7,6 +7,7 @@ General functions and data for position determination
 """
 
 from common.InitializationCode import *
+import common.InitializationCode as ic
 import time
 
 
@@ -22,7 +23,7 @@ def getObjectSampleList():
     objectList = []
 
     for data in dataList:
-        objectList.append(Object(data["groupId"], data["cargoId"], typeList[int(data["cargoType"]) - 1]))
+        objectList.append(Object(data["groupId"], data["cargoId"], ic.typeList[int(data["cargoType"]) - 1]))
 
     return objectList
 
@@ -53,24 +54,24 @@ class Rectangle:
 
     # 겹치는지 확인하는 함수
     def isIntersect(self, rectangle):
-        if (self.topLeft.x > rectangle.bottomRight.x): return False
-        if (self.bottomRight.x < rectangle.topLeft.x): return False
-        if (self.topLeft.y > rectangle.bottomRight.y): return False
-        if (self.bottomRight.y < rectangle.topLeft.y): return False
+        if self.topLeft.x > rectangle.bottomRight.x: return False
+        if self.bottomRight.x < rectangle.topLeft.x: return False
+        if self.topLeft.y > rectangle.bottomRight.y: return False
+        if self.bottomRight.y < rectangle.topLeft.y: return False
         return True
 
     # 겹치는지 좌상단 좌표와 너비, 높이를 받아서 확인하는 함수
     def isIntersectArea(self, topLeftX, topLeftY, width, height):
-        if (self.topLeft.x > topLeftX + width - 1): return False
+        if self.topLeft.x > topLeftX + width - 1: return False
         # if(self.topLeft.x > topLeftX + width): return False
-        if (self.bottomRight.x < topLeftX): return False
-        if (self.topLeft.y > topLeftY + height - 1): return False
+        if self.bottomRight.x < topLeftX: return False
+        if self.topLeft.y > topLeftY + height - 1: return False
         # if(self.topLeft.y > topLeftY + height): return False
-        if (self.bottomRight.y < topLeftY): return False
+        if self.bottomRight.y < topLeftY: return False
         return True
 
     def equal(self, rectangle):
-        if (self.topLeft.equal(rectangle.topLeft) and self.bottomRight.equal(rectangle.bottomRight)):
+        if self.topLeft.equal(rectangle.topLeft) and self.bottomRight.equal(rectangle.bottomRight):
             return True
         return False
 
@@ -122,10 +123,10 @@ class ScoreResult:
 
     # 점수가 높을수록 좋도록 설계
     def __cmp__(self, other):
-        if (self.score > other.score):
+        if self.score > other.score:
             return -1
-        elif (self.score == other.score):
-            if (self.candidate.isTransformed):
+        elif self.score == other.score:
+            if self.candidate.isTransformed:
                 return 1
             else:
                 return -1

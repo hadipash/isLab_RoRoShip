@@ -18,3 +18,4 @@ def initialize():
     space = Space()
     global typeList
     typeList = TypeInfoReader().preTypeList
+    x = 0

@@ -31,7 +31,7 @@ class graph:
         self.Space = np.ones(shape=(Space.width, Space.height))
         for x in range(Space.width):
             for y in range(Space.height):
-                self.Space[x][y] = Space.vertexArr[y][x].isOccupied() # space[50][200] vertex[200][50]
+                self.Space[x][y] = Space.cellArr[y][x].isOccupied() # space[50][200] vertex[200][50]
         self.RB = np.zeros(shape=(Space.width, Space.height, 4, 4))
         
         '''
