@@ -14,7 +14,7 @@ import wx.lib.newevent
 
 from position.GridSearcher import *
 from position.PositionModule import *
-from common.typeInfoReader import *
+from common.InitializationCode import *
 
 typeList = TypeInfoReader().preTypeList
 EVT_OBJECT_RESULT_ID = wx.NewId()
@@ -92,11 +92,11 @@ class GridFrame(wx.Frame):
         for i in range(height):
             for j in range(width):
                 targetVertex = space.getVertex(Coordinate(j, i))
-                if (targetVertex.unit != None):
-                    if (targetVertex.unit.groupId == OBSTACLE_ID):
+                if targetVertex.unit != None:
+                    if targetVertex.unit.groupId == OBSTACLE_ID:
                         # 장애물은 검은색
                         grid.SetCellBackgroundColour(i, j, wx.BLACK)
-                    if (targetVertex.unit.groupId == ENTER_ID):
+                    if targetVertex.unit.groupId == ENTER_ID:
                         # 입구는 파란색
                         grid.SetCellBackgroundColour(i, j, wx.BLUE)
 
@@ -128,7 +128,7 @@ class GridFrame(wx.Frame):
         # 화물을 탐색하는 것은 회색, 배치되는것은 빨간색으로 칠하는 코드
         height = evt.object.getHeight()
         width = evt.object.getWidth()
-        if (evt.object.isTransformed == True):
+        if evt.object.isTransformed == True:
             height = evt.object.getWidth()
             width = evt.object.getHeight()
 
@@ -139,13 +139,13 @@ class GridFrame(wx.Frame):
 
         # 후보 탐색 하는 상태인지 화물 배치 상태인지 봐가며 색을 결정한다.
         targetColor = self.ColorList[0]
-        if (evt.isSet):
+        if evt.isSet:
             targetColor = self.ColorList[1]
 
         # x 값과 y 값의 범위를 결정한다
         self.yCacheRange = range(evt.leftTopCoordinate.y, evt.leftTopCoordinate.y + height)
         self.xCacheRange = range(evt.leftTopCoordinate.x, evt.leftTopCoordinate.x + width)
-        if (evt.isSet):
+        if evt.isSet:
             self.yCacheRange = []
             self.xCacheRange = []
 
@@ -255,13 +255,13 @@ class WorkerThread(threading.Thread):
         for object in ObjectList:
 
             # Gui 제어 변수들을 보고 화면을 제어하는 코드
-            if (self.go != True):
+            if self.go != True:
                 # 한 스텝씩 진행하지 않고 끝까지 수행하는 상태가 아니라면
                 while (self.next != True):
                     # 다음 배치 버튼을 누를때까지 무한 대기
                     time.sleep(0.01)
 
-            if (checkObject):
+            if checkObject:
                 print "실패 후 배치되는 화물의 크기 : " + str(object.getWidth()) + " * " + str(object.getHeight())
 
             # 다음 배치 변수를 다시 False 로 바꾼다
@@ -270,7 +270,7 @@ class WorkerThread(threading.Thread):
             check1 = time.time()
             coordinate = self.pm.setObjectPosition(object)
             # 화물을 배치하는 코드
-            if (coordinate != None):
+            if coordinate != None:
                 # 배치 잘 됨
                 # print str(object.id) + " 번째 화물 배치 좌표 : " + " (" +str(coordinate.x) + ", " + str(coordinate.y) + "),\t" + "화물 방향 전환 : " + str(object.isTransformed) + ",\t 화물 크기 : " + str(object.getWidth()) + "*" + str(object.getHeight())
                 usingVertex += object.getWidth() * object.getHeight()
@@ -304,6 +304,7 @@ class WorkerThread(threading.Thread):
 
 # Gui 프로그램 실행하는 main
 def main():
+    initialize()
     SimpleApp(redirect=False).MainLoop()
 
 

@@ -7,8 +7,8 @@ Interface of GridSearcher class for MaxRects class
 """
 
 from routing.graph import *
-from common.LayoutInterface import *
 from common.typeInfoReader import *
+
 
 # 내부 알고리즘 인터페이스 클래스
 # 내부 알고리즘들이 필요한 함수들을 정의하고
@@ -27,11 +27,9 @@ class PositionAlgorithm:
             Graph.graph_initt()
             self.RM.append(Graph)
 
-        # 입구 정보를 가져오기 위해 선박 parser 를 가져온다
-        shipParser = ShipInfoParser()
         # enterList 에 메인 입구(입구 2개 중 )
         self.enterList = []
-        for enter in reversed(shipParser.parseEnterInfo()):
+        for enter in reversed(parser.parseEnterInfo()):
             self.enterList.append(enter)
 
         # 이벤트 emitter 를 사용하는지 체크
@@ -60,15 +58,17 @@ class PositionAlgorithm:
         # 적절한 라우팅 모듈 가져오기
         propRM = None
         for RModule in self.RM:
-            if(RModule.Type == Object.type):
+            if (RModule.Type == Object.type):
                 propRM = RModule
                 break
 
         # 입구들 갯수만큼 검사
         # 입구를 미리 sort 하여 상단 입구 먼저 물어보도록 사용
         for enter in self.enterList:
-            if(propRM.isPossible(leftTopCoordinate.x, leftTopCoordinate.y, rightBottomCoordinate.x, rightBottomCoordinate.y,
-                                 enter["coordinate"]["X"], enter["coordinate"]["Y"], enter["volume"]["width"], enter["volume"]["height"], path, 0)):
+            if (propRM.isPossible(leftTopCoordinate.x, leftTopCoordinate.y, rightBottomCoordinate.x,
+                                  rightBottomCoordinate.y,
+                                  enter["coordinate"]["X"], enter["coordinate"]["Y"], enter["volume"]["width"],
+                                  enter["volume"]["height"], path, 0)):
                 isPossible = True
                 break
 
@@ -81,13 +81,15 @@ class PositionAlgorithm:
 
         width = Object.getWidth()
         height = Object.getHeight()
-        if(Object.isTransformed):
+        if Object.isTransformed:
             width = Object.getHeight()
             height = Object.getWidth()
 
         # 라우팅 모듈쪽에 업데이트 시키는것.
-        self.updateCnt +=1
-        print "update Cnt : " + str(self.updateCnt) + ", coordinateX : " + str(topleftCoordinate.x) + ", coordinateY : "+ str(topleftCoordinate.y)
+        self.updateCnt += 1
+        print "update Cnt : " + str(self.updateCnt) + ", coordinateX : " + str(
+            topleftCoordinate.x) + ", coordinateY : " + str(topleftCoordinate.y)
         for rModule in self.RM:
-            rModule.graph_update(topleftCoordinate.x, topleftCoordinate.y, topleftCoordinate.x + width -1, topleftCoordinate.y + height -1)
+            rModule.graph_update(topleftCoordinate.x, topleftCoordinate.y, topleftCoordinate.x + width - 1,
+                                 topleftCoordinate.y + height - 1)
         pass

@@ -8,7 +8,7 @@ Interface for position determination module
 
 from GridSearcher import *
 from MaxRects import *
-from IPositionAlgorithm import *
+
 
 # 외부에서 알고리즘 결과를 받을 클래스
 class PositionResult:
@@ -21,6 +21,7 @@ class PositionResult:
     # 해당 클래스에 담겨있는 정보를 출력하는 함수
     def getInfo(self):
         print "isAllSetted : " + str(self.isAllSetted) + ", remainArea : " + str(self.remainArea)
+
 
 # 외부에서 사용하는 인터페이스
 class PositionModule:
@@ -52,7 +53,7 @@ class PositionModule:
             # 배치할 위치 탐색. 탐색에 성공하면 배치할 영역의 좌상단 좌표를 리턴 받는다
             tlCoordinate = self.setObjectPosition(object)
 
-            if(tlCoordinate != None):
+            if tlCoordinate != None:
                 # 배치할 위치가 있다면 사용한 영역 계산
                 usingVertex += object.getWidth() * object.getHeight()
                 # 레이아웃 업데이트
@@ -65,7 +66,7 @@ class PositionModule:
             processedDataCnt += 1
 
         # 남은 공간 계산 및 결과 만들기
-        result = PositionResult(isSuccess, self.space.width*self.space.height - usingVertex)
+        result = PositionResult(isSuccess, self.space.width * self.space.height - usingVertex)
         return result
 
     # 개별 화물을 받아 화물을 배치 시도
@@ -82,7 +83,6 @@ class PositionModule:
     def updateLayout(self, coordinate, object):
         self.space.setObject(object, coordinate)
         self.algorithmModule.updateLayout(coordinate, object)
-
 
     # Gui 프로그램에서 해당 함수를 통해 이벤트를 전달할 수 있는 객체를 준다
     # 프로그램에서는 해당 객체를 통해 특정 시점에 이벤트를 발생 시킴
