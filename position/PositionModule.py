@@ -53,7 +53,7 @@ class PositionModule:
             # 배치할 위치 탐색. 탐색에 성공하면 배치할 영역의 좌상단 좌표를 리턴 받는다
             tlCoordinate = self.setObjectPosition(object)
 
-            if (tlCoordinate != None):
+            if tlCoordinate != None:
                 # 배치할 위치가 있다면 사용한 영역 계산
                 usingVertex += object.getWidth() * object.getHeight()
                 # 레이아웃 업데이트

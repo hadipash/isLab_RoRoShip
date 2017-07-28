@@ -81,7 +81,7 @@ class PositionAlgorithm:
 
         width = Object.getWidth()
         height = Object.getHeight()
-        if (Object.isTransformed):
+        if Object.isTransformed:
             width = Object.getHeight()
             height = Object.getWidth()
 
