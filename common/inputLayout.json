@@ -1,30 +1,216 @@
 {
 	"standardSize": 1000,
-	"shipSize":{
-		"width":50000, "height":100000
-	},
-	"enterInfo":{
-		"cnt":2,
-		"positions":[
-			{"coordinate":{"X":0, "Y":47000}, "volume":{"width":2000, "height":6000}, "id":90001},
-			{"coordinate":{"X":22000, "Y":0}, "volume":{"width":6000, "height":2000}, "id":90002}
+
+	"gridSize": 0,
+
+	"loadingSpaceList": {
+		"cnt":3,
+		"loadingSpace": [
+			{"floor":1, "width":24500, "length":130000, "height":4700},
+			{"floor":2, "width":22000, "length":130000, "height":2300},
+			{"floor":3, "width":19500, "length":130000, "height":2100}
 		]
 	},
-	"obstacleInfo":{
-		"cnt":8,
-		"positions":[
-			{"coordinate":{"X":10000, "Y":12500}, "volume":{"width":400, "height":400}, "id":80001},
-			{"coordinate":{"X":39000, "Y":12500}, "volume":{"width":400, "height":400}, "id":80002},
-			{"coordinate":{"X":10000, "Y":25000}, "volume":{"width":400, "height":400}, "id":80003},
-			{"coordinate":{"X":39000, "Y":25000}, "volume":{"width":400, "height":400}, "id":80004},
-			{"coordinate":{"X":10000, "Y":37500}, "volume":{"width":400, "height":400}, "id":80005},
-			{"coordinate":{"X":39000, "Y":37500}, "volume":{"width":400, "height":400}, "id":80006},
-			{"coordinate":{"X":10000, "Y":62500}, "volume":{"width":400, "height":400}, "id":80009},
-			{"coordinate":{"X":39000, "Y":62500}, "volume":{"width":400, "height":400}, "id":80010},
-			{"coordinate":{"X":10000, "Y":75000}, "volume":{"width":400, "height":400}, "id":80011},
-			{"coordinate":{"X":39000, "Y":75000}, "volume":{"width":400, "height":400}, "id":80012},
-			{"coordinate":{"X":10000, "Y":87500}, "volume":{"width":400, "height":400}, "id":80013},
-			{"coordinate":{"X":39000, "Y":87500}, "volume":{"width":400, "height":400}, "id":80014}
+
+	"notLoadableSpaceList" : {
+		"cnt":3,
+		"notLoadableSpace":[
+			{"floor":1,
+				"coordinate":{"X":0, "Y":0, "Z":-2100},
+				"width":0,
+				"length":0},
+			{"floor":2,
+				"coordinate":{"X":0, "Y":0, "Z":0},
+				"width":0,
+				"length":0},
+			{"floor":3,
+				"coordinate":{"X":0, "Y":0, "Z":2300},
+				"width":0,
+				"length":0}
+		]
+	},
+
+	"enterList":{
+		"cnt":1,
+		"enter":[
+			{"floor":2,
+				"coordinate":{"X":62500, "Y":129000, "Z":0},
+				"volume":{"width":5000, "length":1000},
+				"id":"enter_01"}
+		]
+	},
+
+	"obstacleList":{
+		"cnt":12,
+		"obstacle":[
+			{"floor":1,
+				"coordinate":{"X":7950, "Y":77500, "Z":-2100},
+				"volume":{"width":1000, "length":1000},
+				"id":"pillar_101"},
+			{"floor":1,
+				"coordinate":{"X":16000, "Y":77500, "Z":-2100},
+				"volume":{"width":1000, "length":1000},
+				"id":"pillar_102"},
+			{"floor":1,
+				"coordinate":{"X":7950, "Y":103500, "Z":-2100},
+				"volume":{"width":1000, "length":1000},
+				"id":"pillar_103"},
+			{"floor":1,
+				"coordinate":{"X":16000, "Y":103500, "Z":-2100}
+			, "volume":{"width":1000, "length":1000},
+				"id":"pillar_104"},
+			{"floor":2,
+				"coordinate":{"X":7950, "Y":25500, "Z":0},
+				"volume":{"width":1000, "length":1000},
+				"id":"pillar_201"},
+			{"floor":2,
+				"coordinate":{"X":16000, "Y":25500, "Z":0},
+				"volume":{"width":1000, "length":1000},
+				"id":"pillar_202"},
+			{"floor":2,
+				"coordinate":{"X":7950, "Y":51500, "Z":0},
+				"volume":{"width":1000, "length":1000},
+				"id":"pillar_203"},
+			{"floor":2,
+				"coordinate":{"X":16000, "Y":51500, "Z":0},
+				"volume":{"width":1000, "length":1000},
+				"id":"pillar_204"},
+			{"floor":2,
+				"coordinate":{"X":7950, "Y":77500, "Z":0},
+				"volume":{"width":1000, "length":1000},
+				"id":"pillar_205"},
+			{"floor":2,
+				"coordinate":{"X":16000, "Y":77500, "Z":0},
+				"volume":{"width":1000, "length":1000},
+				"id":"pillar_206"},
+			{"floor":2,
+				"coordinate":{"X":7950, "Y":103500, "Z":0},
+				"volume":{"width":1000, "length":1000},
+				"id":"pillar_207"},
+			{"floor":2,
+				"coordinate":{"X":16000, "Y":103500, "Z":0},
+				"volume":{"width":1000, "length":1000},
+				"id":"pillar_208"},
+			{"floor":3,
+				"coordinate":{"X":7950, "Y":25500, "Z":2300},
+				"volume":{"width":1000, "length":1000},
+				"id":"pillar_301"},
+			{"floor":3,
+				"coordinate":{"X":16000, "Y":25500, "Z":2300},
+				"volume":{"width":1000, "length":1000},
+				"id":"pillar_302"},
+			{"floor":3,
+				"coordinate":{"X":7950, "Y":51500, "Z":2300},
+				"volume":{"width":1000, "length":1000},
+				"id":"pillar_303"},
+			{"floor":3,
+				"coordinate":{"X":16000, "Y":51500, "Z":2300},
+				"volume":{"width":1000, "length":1000},
+				"id":"pillar_304"},
+			{"floor":3,
+				"coordinate":{"X":7950, "Y":77500, "Z":2300},
+				"volume":{"width":1000, "length":1000},
+				"id":"pillar_305"},
+			{"floor":3,
+				"coordinate":{"X":16000, "Y":77500, "Z":2300},
+				"volume":{"width":1000, "length":1000},
+				"id":"pillar_306"},
+			{"floor":3,
+				"coordinate":{"X":7950, "Y":103500, "Z":2300},
+				"volume":{"width":1000, "length":1000},
+				"id":"pillar_307"},
+			{"floor":3,
+				"coordinate":{"X":16000, "Y":103500, "Z":2300},
+				"volume":{"width":1000, "length":1000},
+				"id":"pillar_308"}
+		]
+	},
+
+	"floatingDeckList":{
+		"cnt": 11,
+		"floatingDeck":[
+			{"floor":1,
+				"coordinate":{"X":10000, "Y":12500, "Z":-2100},
+				"volume":{"width":400, "length":400},
+				"id":70001,
+				"lifting_height":0},
+			{"floor":1,
+				"coordinate":{"X":39000, "Y":12500, "Z":-2100},
+				"volume":{"width":400, "length":400},
+				"id":70002,
+				"lifting_height":0},
+			{"floor":2,
+				"coordinate":{"X":10000, "Y":25000, "Z":0},
+				"volume":{"width":400, "length":400},
+				"id":70003,
+				"lifting_height":0},
+			{"floor":2,
+				"coordinate":{"X":39000, "Y":25000, "Z":0},
+				"volume":{"width":400, "length":400},
+				"id":70004,
+				"lifting_height":0},
+			{"floor":2,
+				"coordinate":{"X":10000, "Y":37500, "Z":0},
+				"volume":{"width":400, "length":400},
+				"id":70005,
+				"lifting_height":0},
+			{"floor":2,
+				"coordinate":{"X":39000, "Y":62500, "Z":0},
+				"volume":{"width":400, "length":400},
+				"id":70016,
+				"lifting_height":0},
+			{"floor":3,
+				"coordinate":{"X":39000, "Y":37500, "Z":2300},
+				"volume":{"width":400, "length":400},
+				"id":70007,
+				"lifting_height":0},
+			{"floor":3,
+				"coordinate":{"X":10000, "Y":62500, "Z":2300},
+				"volume":{"width":400, "length":400},
+				"id":70008,
+				"lifting_height":0},
+			{"floor":3,
+				"coordinate":{"X":39000, "Y":62500, "Z":2300},
+				"volume":{"width":400, "length":400},
+				"id":70009,
+				"lifting_height":0},
+			{"floor":3,
+				"coordinate":{"X":39000, "Y":62500, "Z":2300},
+				"volume":{"width":400, "length":400},
+				"id":70010,
+				"lifting_height":0},
+			{"floor":3,
+				"coordinate":{"X":39000, "Y":62500, "Z":2300},
+				"volume":{"width":400, "length":400},
+				"id":70011,
+				"lifting_height":0}
+		]
+	},
+
+	"rampList":{
+		"cnt": 2,
+		"ramp":[
+			{"floor":1,
+				"coordinate":{"X":10000, "Y":12500, "Z":-2100},
+				"volume":{"width":400, "length":400},
+				"id":"ramp_01",
+				"connection":{"lower_floor":1, "upper_floor":2}},
+			{"floor":2,
+				"coordinate":{"X":39000, "Y":12500, "Z":0},
+				"volume":{"width":400, "length":400},
+				"id":"ramp_02",
+				"connection":{"lower_floor":2, "upper_floor":3}}
+		]
+	},
+
+	"slopeList":{
+		"cnt": 1,
+		"slope":[
+			{"floor":2,
+				"coordinate":{"X":10000, "Y":12500, "Z":0},
+				"volume":{"width":400, "length":400},
+				"id":60001,
+				"direction":0}
 		]
 	}
 }

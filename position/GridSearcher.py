@@ -145,8 +145,8 @@ class GridSearcher(PositionAlgorithm):
                         (coordiX == TLCoordinate.x - 1 or coordiX == BRCoordinate.x + 1)):
 
                     # 벽면에서 boundary 만큼 떨어져 있는지 확인
-                    isInXBound = (coordiX >= self.boundary and coordiX <= self.space.width - 1 - self.boundary)
-                    isInYBound = (coordiY >= self.boundary and coordiY <= self.space.height - 1 - self.boundary)
+                    isInXBound = (self.boundary <= coordiX <= self.space.width - 1 - self.boundary)
+                    isInYBound = (self.boundary <= coordiY <= self.space.height - 1 - self.boundary)
 
                     # 벽면 boundary 에 속하지 않으며 화물 주변의 좌표들을 모두 후보해로 append
                     if (isInXBound and isInYBound and (self.space.getVertexx(coordiX, coordiY).isOccupied() == False)):
@@ -170,7 +170,7 @@ class GridSearcher(PositionAlgorithm):
         # 회전에 따라 width와 height 를 결정한다
         width = Object.getWidth()
         height = Object.getHeight()
-        if (Object.isTransformed):
+        if Object.isTransformed:
             width = Object.getHeight()
             height = Object.getWidth()
 
@@ -216,7 +216,7 @@ class GridSearcher(PositionAlgorithm):
             Height = Object.getHeight()
             Width = Object.getWidth()
             transStr = "세로로 길게 배치"
-            if (candidate.isTransformed):
+            if candidate.isTransformed:
                 transStr = "가로로 길게 배치"
                 Height = Object.getWidth()
                 Width = Object.getHeight()
@@ -238,7 +238,7 @@ class GridSearcher(PositionAlgorithm):
             # 주변 벽을 보고 기준좌표를 옮기는 코드
             # 원래는 좌상단 기준으로 배치를 하지만, 좌상단 기준으로 배치를 할 수 없는 경우도 있다.(후보해가 선박의 좌하단 모서리 or 우하단 모서리)
             # 이때는 좌측, 우측 배치가 가능한지 미리 계산해둔 boolean 값을 사용하여 후보해를 조절해준다.
-            if (isProperLeft and isProperTop):
+            if isProperLeft and isProperTop:
                 # 좌측 상단 배치가 가능하므로 후보해를 그대로 사용한다
                 targetCoordinate = coordinate
             elif ((isProperLeft == False) and isProperTop):
@@ -257,7 +257,7 @@ class GridSearcher(PositionAlgorithm):
                 if ((coordinate.x - Width + 1 >= self.boundary) and (coordinate.y - Height + 1 >= self.boundary)):
                     targetCoordinate = Coordinate(coordinate.x - Width + 1, coordinate.y - Height + 1)
 
-            if (targetCoordinate):
+            if targetCoordinate:
                 # 후보해 조절에 성공한 경우
                 pass
             else:
@@ -504,7 +504,7 @@ class GridSearcher(PositionAlgorithm):
             maxX = rightCoordiX + self.largestType.width - 1
 
         minY = self.boundary
-        if (upLimit):
+        if upLimit:
             # 위쪽에 장애물이 있는 경우
             EffectCnt -= 5
             minY = coordinate.y
@@ -514,7 +514,7 @@ class GridSearcher(PositionAlgorithm):
 
         maxY = self.space.height - 1 - self.boundary
         bottomCoordiY = coordinate.y + Height - 1
-        if (bottomLimit):
+        if bottomLimit:
             # 아래쪽에 장애물이 있는 경우
             EffectCnt -= 5
             maxY = bottomCoordiY
@@ -527,7 +527,7 @@ class GridSearcher(PositionAlgorithm):
 
         # x 의 boundary value 1
         minXtr = self.boundary
-        if (leftLimit):
+        if leftLimit:
             EffectCnt -= 5
             minXtr = coordinate.x
         if (coordinate.x - self.largestType.height > self.boundary):
@@ -535,14 +535,14 @@ class GridSearcher(PositionAlgorithm):
         # 1을 한번 더 빼주는 이유는 한칸 띄워야 라우팅이 잘 되기 때문
         maxXtr = self.space.width - 1 - self.boundary
         rightCoordiXtr = coordinate.x + Width - 1
-        if (rightLimit):
+        if rightLimit:
             EffectCnt -= 5
             maxXtr = rightCoordiX
         if (rightCoordiXtr + self.largestType.height < self.space.width - self.boundary):
             maxXtr = rightCoordiXtr + self.largestType.height - 1
 
         minYtr = self.boundary
-        if (upLimit):
+        if upLimit:
             EffectCnt -= 5
             minYtr = coordinate.y
         if (coordinate.y - self.largestType.width > self.boundary):
@@ -550,7 +550,7 @@ class GridSearcher(PositionAlgorithm):
 
         maxYtr = self.space.height - 1 - self.boundary
         bottomCoordiYtr = coordinate.y + Height - 1
-        if (bottomLimit):
+        if bottomLimit:
             EffectCnt -= 5
             maxYtr = bottomCoordiY
         if (bottomCoordiYtr + self.largestType.width < self.space.height - self.boundary):
