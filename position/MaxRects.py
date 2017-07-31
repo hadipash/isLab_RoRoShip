@@ -48,13 +48,13 @@ class MaxRects(PositionAlgorithm):
 
                 # 지정된 좌표를 가져와서
                 coordinate = Coordinate(i, j)
-                targetVertex = self.space.getVertex(coordinate)
+                targetVertex = self.space.getVertex(coordinate.x, coordinate.y)
 
                 # 해당 좌표에 다른 물체가 있는지 확인한다
-                if (targetVertex.isOccupied()):
+                if targetVertex.isOccupied():
                     # 이미 처리했던 장애물이라면 처리하지 않는다
                     alreadyProcess = self.alreadyPreProcessed(targetVertex, processedObject)
-                    if (alreadyProcess == False):
+                    if not alreadyProcess:
                         # 현재 좌표에 있는 화물
                         # 그 사각형을 MaxRects 방법으로 나눈다.
                         targetRect = Rectangle(coordinate, Coordinate(coordinate.x + targetVertex.unit.getWidth() - 1,
@@ -142,7 +142,7 @@ class MaxRects(PositionAlgorithm):
         PositionAlgorithm.updateLayout(self, topLeftCoordinate, Object)
 
         # Gui 에 표현하기 위한 코드
-        if (self.enableEmitter):
+        if self.enableEmitter:
             # 이벤트 발생
             self.emitter.emit(topLeftCoordinate, Object, True)
 
@@ -186,11 +186,8 @@ class MaxRects(PositionAlgorithm):
 
         # 각 사각형을 추가한다
         self.addRectangle(topRect)
-
         self.addRectangle(bottomRect)
-
         self.addRectangle(leftRect)
-
         self.addRectangle(rightRect)
 
     # 나누어진 사각형을 사각형 리스트에 추가하는 함수

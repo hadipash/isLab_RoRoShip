@@ -6,7 +6,7 @@ Classes and functions to parse json files
 """
 
 import json
-from Miscellaneous import *
+from FreeSpace import *
 
 SHIP_LAYOUT_INFO = "../common/inputLayout.json"
 

@@ -5,24 +5,23 @@
 Class for handling an available free space of a vessel
 """
 
-from Parser import *
+from Miscellaneous import *
 
 OBSTACLE_ID = 9
 ENTER_ID = 8
-
-parser = Parser()
 
 
 # 선박의 공간을 관리하는 클래스
 # Class for management free space of a vessel
 class Space:
-    def __init__(self):
+    def __init__(self, width, height, entrancesList, obstaclesList):
         # cell 들을 2차원 배열로 저장할 변수
         self.cellArr = []
 
-        # 파서를 사용하여 선박의 정보를 가져온다
-        self.width = int(parser.parseShipInfo()["width"])
-        self.height = int(parser.parseShipInfo()["height"])
+        self.width = width
+        self.height = height
+        # self.width = int(parser.parseShipInfo()["width"])
+        # self.height = int(parser.parseShipInfo()["height"])
 
         # 2차원 배열에 cell 인스턴스들을 생성한다
         for i in range(self.height):
@@ -31,7 +30,7 @@ class Space:
                 self.cellArr[i].append(Cell())
 
         # 입구 정보를 grid 에 배치
-        enterInfo = parser.parseEnterInfo()
+        enterInfo = entrancesList
         for enter in enterInfo:
             enterObject = Object(ENTER_ID, enter["id"],
                                  Type(enter["volume"]["width"], enter["volume"]["height"], 0, 50))
@@ -39,7 +38,7 @@ class Space:
             self.setObject(enterObject, enterCoordinate)
 
         # 장애물 정보를 grid 에 배치
-        obstacleInfo = parser.parseObstacleInfo()
+        obstacleInfo = obstaclesList
         for obstacle in obstacleInfo:
             obstacleObject = Object(OBSTACLE_ID, obstacle["id"],
                                     Type(obstacle["volume"]["width"], obstacle["volume"]["height"], 0, 50))
@@ -53,30 +52,17 @@ class Space:
                 rowContent = rowContent + str(self.cellArr[i][j].getObjectId()) + " "
             print(rowContent)
 
-    # 주어진 좌표에서 너비와 높이만큼 비어있는지 확인하는 함수
-    def isEmptyArea(self, coordinate, width, height):
-        for i in range(coordinate.y, coordinate.y + height + 1):
-            for j in range(coordinate.x, coordinate.x + width + 1):
-                if ((i < self.height) and (j < self.width)):
-                    if self.cellArr[i][j].isOccupied():
-                        return False
-        return True
-
     # 주어진 좌상단 좌표에서 너비와 높이만큼 비어있는지 확인하는 함수
-    def isEmptyAreaWithXY(self, x, y, width, height):
+    def isEmptyArea(self, x, y, width, height):
         for i in range(y, y + height):
             for j in range(x, x + width):
-                if ((i < self.height) and (j < self.width)):
+                if (i < self.height) and (j < self.width):
                     if self.cellArr[i][j].isOccupied():
                         return False
         return True
 
     # 해당 좌표의 vertex를 가져온다.
-    def getVertex(self, coordinate):
-        return self.cellArr[coordinate.y][coordinate.x]
-
-    # 해당 좌표의 vertex를 가져온다. 이 때 좌표 객체가 아닌 단순히 x 와 y 값을 이용
-    def getVertexx(self, x, y):
+    def getVertex(self, x, y):
         return self.cellArr[y][x]
 
     # 주어진 목적지에 Object 를 배치하는 함수
@@ -87,7 +73,7 @@ class Space:
             return False
 
         # 방향 전환했는지 체크
-        if (Object.isTransformed):
+        if Object.isTransformed:
             height = Object.getWidth()
             width = Object.getHeight()
         else:
@@ -112,7 +98,7 @@ class Space:
             return False
 
         # 방향 전환했는지 체크
-        if (Object.isTransform):
+        if Object.isTransform:
             height = Object.width + Coordinate.y
             width = Object.height + Coordinate.x
         else:
@@ -135,7 +121,7 @@ class Space:
         # 배열 뒤지기
         for i in range(self.height):
             for j in range(self.width):
-                if (self.cellArr[i][j].isOccupied() & self.cellArr[i][j].isSameObject(Object)):
+                if self.cellArr[i][j].isOccupied() and self.cellArr[i][j].isSameObject(Object):
                     # 찾는 좌표 리턴
                     return Coordinate(i, j)
         # 찾는것이 없다면 None 리턴

@@ -149,7 +149,7 @@ class GridSearcher(PositionAlgorithm):
                     isInYBound = (self.boundary <= coordiY <= self.space.height - 1 - self.boundary)
 
                     # 벽면 boundary 에 속하지 않으며 화물 주변의 좌표들을 모두 후보해로 append
-                    if (isInXBound and isInYBound and (self.space.getVertexx(coordiX, coordiY).isOccupied() == False)):
+                    if (isInXBound and isInYBound and (self.space.getVertex(coordiX, coordiY).isOccupied() == False)):
                         self.candidate.append(Candidate(Coordinate(coordiX, coordiY), False))
                         self.candidate.append(Candidate(Coordinate(coordiX, coordiY), True))
 
@@ -231,9 +231,9 @@ class GridSearcher(PositionAlgorithm):
 
             # 여기서 좌상단에 배치가 가능한지 체크. 배치가 안되면 그대로 걸러냄.
             isProperLeft = (coordinate.x + Width <= self.space.width - 1) and\
-                           (self.space.getVertexx(coordinate.x + 1, coordinate.y).isOccupied() == False)
+                           (self.space.getVertex(coordinate.x + 1, coordinate.y).isOccupied() == False)
             isProperTop = (coordinate.y + Height <= self.space.height - 1) and\
-                          (self.space.getVertexx(coordinate.x, coordinate.y + 1).isOccupied() == False)
+                          (self.space.getVertex(coordinate.x, coordinate.y + 1).isOccupied() == False)
 
             # 주변 벽을 보고 기준좌표를 옮기는 코드
             # 원래는 좌상단 기준으로 배치를 하지만, 좌상단 기준으로 배치를 할 수 없는 경우도 있다.(후보해가 선박의 좌하단 모서리 or 우하단 모서리)
@@ -391,7 +391,7 @@ class GridSearcher(PositionAlgorithm):
     # 이 함수는 x, y 2개의 변수를 받아서 사용
     def isEmptyArea(self, x, y, width, height):
         # 기존에 빈 공간 탐지하던 방법
-        return self.space.isEmptyAreaWithXY(x, y, width, height)
+        return self.space.isEmptyArea(x, y, width, height)
 
         # 새로운 방법
         # 이미 배치된 화물들과 겹치는지 체크하는 방법
@@ -406,7 +406,7 @@ class GridSearcher(PositionAlgorithm):
     # 이 함수는 coordinate 객체를 받아서 사용
     def isEmptyAreaCoordinate(self, coordinate, width, height):
         # 기존에 빈 공간 탐지하던 방법
-        return self.space.isEmptyAreaWithXY(coordinate.x, coordinate.y, width, height)
+        return self.space.isEmptyArea(coordinate.x, coordinate.y, width, height)
 
         # 새로운 방법
         # 이미 배치된 화물들과 겹치는지 체크하는 방법
@@ -445,7 +445,7 @@ class GridSearcher(PositionAlgorithm):
             leftLimit = True
         else:
             for y in range(coordinate.y, coordinate.y + Height):
-                if (self.space.getVertexx(coordinate.x - 1, y).isOccupied()):
+                if (self.space.getVertex(coordinate.x - 1, y).isOccupied()):
                     leftLimit = True
                     break
 
@@ -454,7 +454,7 @@ class GridSearcher(PositionAlgorithm):
             rightLimit = True
         else:
             for y in range(coordinate.y, coordinate.y + Height):
-                if (self.space.getVertexx(coordinate.x + Width, y).isOccupied()):
+                if (self.space.getVertex(coordinate.x + Width, y).isOccupied()):
                     rightLimit = True
                     break
 
@@ -463,7 +463,7 @@ class GridSearcher(PositionAlgorithm):
             upLimit = True
         else:
             for x in range(coordinate.x, coordinate.x + Width):
-                if (self.space.getVertexx(x, coordinate.y - 1).isOccupied()):
+                if (self.space.getVertex(x, coordinate.y - 1).isOccupied()):
                     upLimit = True
                     break
 
@@ -472,7 +472,7 @@ class GridSearcher(PositionAlgorithm):
             bottomLimit = True
         else:
             for x in range(coordinate.x, coordinate.x + Width):
-                if (self.space.getVertexx(x, coordinate.y + Height).isOccupied()):
+                if (self.space.getVertex(x, coordinate.y + Height).isOccupied()):
                     bottomLimit = True
                     break
 

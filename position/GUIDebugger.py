@@ -91,7 +91,7 @@ class GridFrame(wx.Frame):
         # 이미 배치된 입구나 사각형 정보를 grid 에 표현한다
         for i in range(height):
             for j in range(width):
-                targetVertex = space.getVertex(Coordinate(j, i))
+                targetVertex = space.getVertex(j, i)
                 if targetVertex.unit != None:
                     if targetVertex.unit.groupId == OBSTACLE_ID:
                         # 장애물은 검은색
