@@ -115,24 +115,25 @@ class Cell:
 
 
 # 선박 클래스
-class Ship:
-    def __init__(self, width, height):
+class Floor:
+    def __init__(self, width, length, height):
         self.width = width
+        self.length = length
         self.height = height
 
 
 # 장애물 클래스
 class Obstacle:
-    def __init__(self, coordinate, width, height, id):
+    def __init__(self, coordinate, width, length, id):
         self.coordinate = coordinate
         self.width = width
-        self.height = height
+        self.height = length
         self.isEnter = False
         self.id = id
 
 
 # 입구 클래스
 class Enter(Obstacle):
-    def __init__(self, coordinate, width, height, id):
-        Obstacle.__init__(self, coordinate, width, height, id)
+    def __init__(self, coordinate, width, length, id):
+        Obstacle.__init__(self, coordinate, width, length, id)
         self.isEnter = True

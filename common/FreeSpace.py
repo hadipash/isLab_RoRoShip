@@ -14,14 +14,13 @@ ENTER_ID = 8
 # 선박의 공간을 관리하는 클래스
 # Class for management free space of a vessel
 class Space:
-    def __init__(self, width, height, entrancesList, obstaclesList):
+    def __init__(self, floorData, entrancesList, obstaclesList):
         # cell 들을 2차원 배열로 저장할 변수
         self.cellArr = []
 
-        self.width = width
-        self.height = height
-        # self.width = int(parser.parseShipInfo()["width"])
-        # self.height = int(parser.parseShipInfo()["height"])
+        self.width = floorData['width']
+        self.length = floorData['length']
+        self.height = floorData['height']
 
         # 2차원 배열에 cell 인스턴스들을 생성한다
         for i in range(self.height):

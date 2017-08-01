@@ -18,26 +18,46 @@ class Parser:
         # json 파일을 읽고 정보를 저장
         configJSON = self.readJSON(SHIP_LAYOUT_INFO)
         self.standardSize = configJSON["standardSize"]
-        self.ShipInfo = Ship(int(configJSON["shipSize"]["width"]), int(configJSON["shipSize"]["height"]))
+
+        # Get information about floors
+        self.FloorInfoList = []
+        for floor in configJSON["loadingSpaceList"]["loadingSpace"]:
+            self.FloorInfoList.append(Floor(floor["width"], floor["length"], floor["height"]))
 
         # 입구 정보를 리스트로 관리
         # List of entrances
         self.EnterInfoList = []
-        for enterInfo in configJSON["enterInfo"]["positions"]:
-            self.EnterInfoList.append(Enter(Coordinate(enterInfo["coordinate"]["X"], enterInfo["coordinate"]["Y"]),
-                                            enterInfo["volume"]["width"],
-                                            enterInfo["volume"]["height"],
-                                            enterInfo["id"]))
+        for enterInfo in configJSON["enterList"]["enter"]:
+            flNum = enterInfo["floor"]
+            self.EnterInfoList[flNum].append(
+                Enter(Coordinate(enterInfo["coordinate"]["X"], enterInfo["coordinate"]["Y"]),
+                      enterInfo["volume"]["width"],
+                      enterInfo["volume"]["length"],
+                      enterInfo["id"]))
 
         # 장애물 정보를 리스트로 관리
         # List of obstacles on a vessel
         self.ObstacleInfoList = []
-        for obstacleInfo in configJSON["obstacleInfo"]["positions"]:
-            self.ObstacleInfoList.append(
+        for obstacleInfo in configJSON["obstacleList"]["obstacle"]:
+            flNum = obstacleInfo["floor"]
+            self.ObstacleInfoList[flNum].append(
                 Obstacle(Coordinate(obstacleInfo["coordinate"]["X"], obstacleInfo["coordinate"]["Y"]),
                          obstacleInfo["volume"]["width"],
-                         obstacleInfo["volume"]["height"],
+                         obstacleInfo["volume"]["length"],
                          obstacleInfo["id"]))
+
+        # Convert all data about floors, entrances and obstacles into cell representation
+        self.floors = []
+        for i in range(0, len(self.FloorInfoList)):
+            self.floors.append(Space(
+                self.parseFloorInfo(self.FloorInfoList[i]),
+                self.parseEnterInfo(self.EnterInfoList[i]),
+                self.parseObstacleInfo(self.ObstacleInfoList[i])
+            ))
+
+    # Get information about floors with already placed entrances and obstacles on them
+    def getFloorsInfo(self):
+        return self.floors
 
     # json 파일을 읽어오는 함수
     def readJSON(self, filename):
@@ -46,73 +66,69 @@ class Parser:
         f.close()
         return js
 
-    # 배의 정보를 cell로 변환해서 json 데이터로 리턴
-    def parseShipInfo(self):
-        shipJSONData = {"width": self.distanceToCellFloor(self.ShipInfo.width)["cellCnt"],
-                        "height": self.distanceToCellFloor(self.ShipInfo.height)["cellCnt"]}
-        return shipJSONData
+    # 배의 정보를 cell로 변환해서 dictionary로 리턴
+    def parseFloorInfo(self, floor):
+        floorData = {'width': self.distanceToCellFloor(floor.width)['cellCnt'],
+                     'length': self.distanceToCellFloor(floor.height)['cellCnt'],
+                     'height': self.distanceToCellFloor(floor.height)['cellCnt']}
+        return floorData
 
-    # 입구들의 좌표와 크기를 cell로 변환해서 json 리스트로 리턴
-    def parseEnterInfo(self):
+    # 입구들의 좌표와 크기를 cell로 변환해서 dictionary로 리턴
+    def parseEnterInfo(self, entrances):
         enterList = []
-        for enterData in self.EnterInfoList:
-            enterJSONData = self.parseObstacle(enterData)
-            enterList.append(enterJSONData)
+
+        for enterData in entrances:
+            enterList.append(self.parseObstacle(enterData))
 
         return enterList
 
-    # 장애물들의 좌표와 크기를 cell로 변환해서 json 리스트로 리턴
-    def parseObstacleInfo(self):
+    # 장애물들의 좌표와 크기를 cell로 변환해서 dictionary로 리턴
+    def parseObstacleInfo(self, obstacles):
         obstacleList = []
-        for obstacleData in self.ObstacleInfoList:
-            obstacleJSONData = self.parseObstacle(obstacleData)
 
-            # obstacleList.append(json.dump(obstacleJSONData))
-            obstacleList.append(obstacleJSONData)
+        for obstacleData in obstacles:
+            obstacleList.append(self.parseObstacle(obstacleData))
 
         return obstacleList
 
     # 장애물들의 좌표와 크기를 cell로 변환
     def parseObstacle(self, obstacleData):
-        obstacleJSONData = {}
-        obstacleJSONData["coordinate"] = {}
-        obstacleJSONData["volume"] = {}
+        x = self.distanceToCellFloor(obstacleData.coordinate.x)
+        y = self.distanceToCellFloor(obstacleData.coordinate.y)
 
-        coordinateXData = self.distanceToCellFloor(obstacleData.coordinate.x)
-        obstacleJSONData["coordinate"]["X"] = coordinateXData["cellCnt"]
+        obstacle = {
+            'coordinate': {
+                'X': x['cellCnt'],
+                'Y': y['cellCnt']
+            },
+            'volume': {
+                'width': self.distanceToCellCeil(obstacleData.width + x['remain'])['cellCnt'],
+                'length': self.distanceToCellCeil(obstacleData.length + y['remain'])['cellCnt']
+            },
+            'id': obstacleData.id
+        }
 
-        coordinateYData = self.distanceToCellFloor(obstacleData.coordinate.y)
-        obstacleJSONData["coordinate"]["Y"] = coordinateYData["cellCnt"]
-
-        obstacleJSONData["volume"]["width"] = self.distanceToCellCeil(obstacleData.width +
-                                                                      coordinateXData["remain"])["cellCnt"]
-        obstacleJSONData["volume"]["height"] = self.distanceToCellCeil(obstacleData.height +
-                                                                       coordinateYData["remain"])["cellCnt"]
-
-        obstacleJSONData["id"] = obstacleData.id
-
-        return obstacleJSONData
+        return obstacle
 
     # 길이를 cell 로 변환할 때 올림처리 하는 함수
-    # json 으로 리턴
     def distanceToCellCeil(self, distance):
-        jsonData = {}
-        cellCnt = distance / self.standardSize
-        if distance % self.standardSize != 0:
-            cellCnt = cellCnt + 1
+        quotient = distance / self.standardSize
+        remainder = distance % self.standardSize
 
-        jsonData["cellCnt"] = cellCnt
-        jsonData["remain"] = distance % self.standardSize
-        return jsonData
+        data = {
+            'cellCnt': (quotient + 1 if remainder else quotient),
+            'remain': remainder
+        }
+
+        return data
 
     # 길이를 cell 로 변환할 때 내림처리 하는 함수
-    # json 으로 리턴
     def distanceToCellFloor(self, distance):
-        jsonData = {}
-        cellCnt = distance / self.standardSize
-        jsonData["cellCnt"] = cellCnt
-        jsonData["remain"] = distance % self.standardSize
-        return jsonData
+        data = {
+            'cellCnt': distance / self.standardSize,
+            'remain': distance % self.standardSize
+        }
+        return data
 
     # 실제 부피로 계산하는 함수
     def convertRealVolume(self, cellCnt):
