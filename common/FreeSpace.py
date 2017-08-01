@@ -23,25 +23,25 @@ class Space:
         self.height = floorData['height']
 
         # 2차원 배열에 cell 인스턴스들을 생성한다
-        for i in range(self.height):
+        for i in range(self.length):
             self.cellArr.append([])
             for j in range(self.width):
                 self.cellArr[i].append(Cell())
 
         # 입구 정보를 grid 에 배치
-        enterInfo = entrancesList
-        for enter in enterInfo:
-            enterObject = Object(ENTER_ID, enter["id"],
-                                 Type(enter["volume"]["width"], enter["volume"]["height"], 0, 50))
-            enterCoordinate = Coordinate(enter["coordinate"]["X"], enter["coordinate"]["Y"])
-            self.setObject(enterObject, enterCoordinate)
+        for enter in entrancesList:
+            if enter is not None:
+                enterObject = Object(ENTER_ID, enter['id'],
+                                     Type(enter['volume']['width'], enter['volume']['length'], 0, 50))
+                enterCoordinate = Coordinate(enter['coordinate']['X'], enter['coordinate']['Y'])
+                self.setObject(enterObject, enterCoordinate)
 
         # 장애물 정보를 grid 에 배치
-        obstacleInfo = obstaclesList
-        for obstacle in obstacleInfo:
-            obstacleObject = Object(OBSTACLE_ID, obstacle["id"],
-                                    Type(obstacle["volume"]["width"], obstacle["volume"]["height"], 0, 50))
-            self.setObject(obstacleObject, Coordinate(obstacle["coordinate"]["X"], obstacle["coordinate"]["Y"]))
+        for obstacle in obstaclesList:
+            if obstacle is not None:
+                obstacleObject = Object(OBSTACLE_ID, obstacle['id'],
+                                        Type(obstacle['volume']['width'], obstacle['volume']['length'], 0, 50))
+                self.setObject(obstacleObject, Coordinate(obstacle['coordinate']['X'], obstacle['coordinate']['Y']))
 
     # 현재 레이아웃을 console 에 그리는 함수
     def draw(self):
@@ -65,62 +65,62 @@ class Space:
         return self.cellArr[y][x]
 
     # 주어진 목적지에 Object 를 배치하는 함수
-    def setObject(self, Object, Coordinate):
+    def setObject(self, obj, coor):
         # Guard condition
         # Object 가 없으면 무시
-        if Object == None:
+        if obj is None:
             return False
 
         # 방향 전환했는지 체크
-        if Object.isTransformed:
-            height = Object.getWidth()
-            width = Object.getHeight()
+        if obj.isTransformed:
+            length = obj.getWidth()
+            width = obj.getLength()
         else:
-            height = Object.getHeight()
-            width = Object.getWidth()
+            length = obj.getLength()
+            width = obj.getWidth()
 
         # 배치 실행
-        for i in range(Coordinate.y, Coordinate.y + height):
-            for j in range(Coordinate.x, Coordinate.x + width):
+        for i in range(coor.y, coor.y + length):
+            for j in range(coor.x, coor.x + width):
                 # python 은 call by reference
-                self.cellArr[i][j].unit = Object
+                self.cellArr[i][j].unit = obj
         return True
 
     # 주어진 물체를 공간에서 제거하는 함수
-    def delObject(self, Object):
+    def delObject(self, obj):
         # 주어진 물체가 있는 좌표를 찾아온다
-        targetCoord = self.searchObject(Object)
+        targetCoord = self.searchObject(obj)
 
         # Guard condition
         # Object 가 없으면 무시
-        if targetCoord == None:
+        if targetCoord is None:
             return False
 
         # 방향 전환했는지 체크
-        if Object.isTransform:
-            height = Object.width + Coordinate.y
-            width = Object.height + Coordinate.x
+        if obj.isTransform:
+            length = obj.width + targetCoord.y
+            width = obj.length + targetCoord.x
         else:
-            height = Object.height + Coordinate.y
-            width = Object.width + Coordinate.x
+            length = obj.length + targetCoord.y
+            width = obj.width + targetCoord.x
 
-        for i in range(targetCoord.y, height):
+        for i in range(targetCoord.y, length):
             for j in range(targetCoord.x, width):
                 # None 값으로 해당 좌표에 있는 unit 정보를 없애준다
                 self.cellArr[i][j].unit = None
         return True
 
     # 주어진 Object 를 찾아 Coordinate 를 넘겨주는 함수
-    def searchObject(self, Object):
+    def searchObject(self, obj):
         # Guard condition
         # Object 가 없으면 무시
-        if Object == None:
+        if obj is None:
             return None
 
         # 배열 뒤지기
-        for i in range(self.height):
+        for i in range(self.length):
             for j in range(self.width):
-                if self.cellArr[i][j].isOccupied() and self.cellArr[i][j].isSameObject(Object):
+                if self.cellArr[i][j].isOccupied() and self.cellArr[i][j].isSameObject(obj):
                     # 찾는 좌표 리턴
                     return Coordinate(i, j)
         # 찾는것이 없다면 None 리턴

@@ -11,9 +11,9 @@ from routing.min_radius import *
 # 화물의 종류를 나타내는 클래스
 # Class for defining types of objects to be placed on a vessel
 class Type:
-    def __init__(self, width, height, wheelbase, steeringAngle):
+    def __init__(self, width, length, wheelbase, steeringAngle):
         self.width = width
-        self.height = height
+        self.length = length
 
         self.L = wheelbase
         self.a = steeringAngle
@@ -33,7 +33,7 @@ class Type:
         # self.steeringAngle = steeringAngle
 
     def __eq__(self, other):
-        return self.width == other.width and self.height == other.height and self.L == other.L and self.a == other.a
+        return self.width == other.width and self.length == other.length and self.L == other.L and self.a == other.a
 
 
 # 물체를 표현하는 클래스
@@ -53,8 +53,8 @@ class Object:
     def getWidth(self):
         return self.type.width
 
-    def getHeight(self):
-        return self.type.height
+    def getLength(self):
+        return self.type.length
 
 
 # 좌표를 지칭하는데 사용하는 클래스
@@ -93,7 +93,7 @@ class Cell:
 
     # 해당 좌표가 이미 선점 되었는지 확인하는 변수
     def isOccupied(self):
-        if self.unit != None:
+        if self.unit is not None:
             return True
         else:
             return False

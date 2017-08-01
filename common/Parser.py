@@ -55,10 +55,6 @@ class Parser:
                 self.parseObstacleInfo(self.ObstacleInfoList[i])
             ))
 
-    # Get information about floors with already placed entrances and obstacles on them
-    def getFloorsInfo(self):
-        return self.floors
-
     # json 파일을 읽어오는 함수
     def readJSON(self, filename):
         f = open(filename, 'r')
@@ -69,8 +65,8 @@ class Parser:
     # 배의 정보를 cell로 변환해서 dictionary로 리턴
     def parseFloorInfo(self, floor):
         floorData = {'width': self.distanceToCellFloor(floor.width)['cellCnt'],
-                     'length': self.distanceToCellFloor(floor.height)['cellCnt'],
-                     'height': self.distanceToCellFloor(floor.height)['cellCnt']}
+                     'length': self.distanceToCellFloor(floor.length)['cellCnt'],
+                     'height': floor.height}
         return floorData
 
     # 입구들의 좌표와 크기를 cell로 변환해서 dictionary로 리턴
@@ -115,19 +111,15 @@ class Parser:
         quotient = distance / self.standardSize
         remainder = distance % self.standardSize
 
-        data = {
-            'cellCnt': (quotient + 1 if remainder else quotient),
-            'remain': remainder
-        }
+        data = {'cellCnt': (quotient + 1 if remainder else quotient),
+                'remain': remainder}
 
         return data
 
     # 길이를 cell 로 변환할 때 내림처리 하는 함수
     def distanceToCellFloor(self, distance):
-        data = {
-            'cellCnt': distance / self.standardSize,
-            'remain': distance % self.standardSize
-        }
+        data = {'cellCnt': distance / self.standardSize,
+                'remain': distance % self.standardSize}
         return data
 
     # 실제 부피로 계산하는 함수
