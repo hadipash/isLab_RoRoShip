@@ -72,7 +72,7 @@ class Coordinate:
         print ("X : " + str(self.x) + ",   Y : " + str(self.y))
 
     def equal(self, coordinate):
-        if (self.x == coordinate.x and self.y == coordinate.y):
+        if self.x == coordinate.x and self.y == coordinate.y:
             return True
         return False
 
@@ -101,14 +101,14 @@ class Cell:
     # 해당 좌표에 존재하는 Object의 Id 를 리턴
     # Return object's id located at certain coordinates
     def getObjectId(self):
-        if self.unit != None:
+        if self.unit is not None:
             return self.unit.id
         else:
             return 0
 
     # 같은 Obejct 인지 확인
-    def isSameObject(self, Object):
-        if self.unit.id == Object.id:
+    def isSameObject(self, obj):
+        if self.unit.id == obj.id:
             return True
         else:
             return False

@@ -10,11 +10,13 @@ from common.InitializationCode import *
 import common.InitializationCode as ic
 import time
 
+CARGO_INPUT_LIST = "../common/cargo_input.json"
+
 
 # 순서를 받지 못할 때 사용할 임시 순서 리스트를 만들어주는 함수
 # Get list of all objects from a json file
 def getObjectSampleList():
-    f = open("../common/cargo_input.json", 'r')
+    f = open(CARGO_INPUT_LIST, 'r')
     js = json.loads(f.read())
     f.close()
 
@@ -42,8 +44,6 @@ class Rectangle:
         self.bottomRight = bottomRight
         self.width = bottomRight.x - topLeft.x + 1
         self.height = bottomRight.y - topLeft.y + 1
-        # self.width = bottomRight.x - topLeft.x
-        # self.height = bottomRight.y - topLeft.y
 
     # 파라미터로 들어온 rect 가 현재 사각형에 포함되는지 확인하는 함수
     def isInclude(self, rectangle):
