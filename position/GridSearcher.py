@@ -149,7 +149,7 @@ class GridSearcher(PositionAlgorithm):
                     isInYBound = (self.boundary <= coordiY <= self.space.height - 1 - self.boundary)
 
                     # 벽면 boundary 에 속하지 않으며 화물 주변의 좌표들을 모두 후보해로 append
-                    if (isInXBound and isInYBound and (self.space.getVertex(coordiX, coordiY).isOccupied() == False)):
+                    if isInXBound and isInYBound and not self.space.getVertex(coordiX, coordiY).isOccupied():
                         self.candidate.append(Candidate(Coordinate(coordiX, coordiY), False))
                         self.candidate.append(Candidate(Coordinate(coordiX, coordiY), True))
 
@@ -162,23 +162,23 @@ class GridSearcher(PositionAlgorithm):
 
     # 외부에서 사용될 함수
     # 입력받은 화물이 배치될 장소를 찾는다
-    def searchPosition(self, Object):
+    def searchPosition(self, obj):
 
         # search 함수를 사용하여 화물의 배치위치를 가져온다
-        resultCoordinate = self.search(Object)
+        resultCoordinate = self.search(obj)
 
         # 회전에 따라 width와 height 를 결정한다
-        width = Object.getWidth()
-        height = Object.getHeight()
-        if Object.isTransformed:
-            width = Object.getHeight()
-            height = Object.getWidth()
+        width = obj.getWidth()
+        length = obj.getLength()
+        if obj.isTransformed:
+            width = obj.getLength()
+            length = obj.getWidth()
 
         # 배치할 위치가 있다면
-        if resultCoordinate != None:
+        if resultCoordinate is not None:
             # 배치화물 리스트에 배치된 영역을 사각형 객체로 만들어 append 한다. 이는 빈자리 탐색, 간섭검사에서 사용이 가능
             afterX = resultCoordinate.x + width - 1
-            afterY = resultCoordinate.y + height - 1
+            afterY = resultCoordinate.y + length - 1
             newCoordi = Coordinate(afterX, afterY)
             self.settedObjectList.append(Rectangle(resultCoordinate, newCoordi))
             # 화물의 후보해를 조절한다
@@ -188,13 +188,13 @@ class GridSearcher(PositionAlgorithm):
 
         # 로그 출력
         print self.routingCount.sPrint() + "\t " + self.routingTime.sPrint() + "\t " + self.searchCandidateTime.sPrint() + "\t " + self.searchCandidateCount.sPrint() + "\t " + self.calEffectTime.sPrint() + "\t " + self.calDistanceTime.sPrint()
-        self.settedSize = self.settedSize + Object.getWidth() * Object.getHeight()
+        self.settedSize = self.settedSize + obj.getWidth() * obj.getLength()
 
         # 배치 좌표 리턴
         return resultCoordinate
 
     # 후보해를 뒤지며 평가를 진행하여 배치 위치를 찾아내는 함수
-    def search(self, Object):
+    def search(self, obj):
         # 후보 위치 중에서 적절한 위치를 탐색
         # 마지막엔 적절한 좌표를 리턴
         # 적절한 좌표가 없으면 None 리턴
@@ -213,13 +213,13 @@ class GridSearcher(PositionAlgorithm):
         for candidate in self.candidate:
 
             # 후보의 방향에 따라 가로와 세로를 결정
-            Height = Object.getHeight()
-            Width = Object.getWidth()
+            Length = obj.getLength()
+            Width = obj.getWidth()
             transStr = "세로로 길게 배치"
             if candidate.isTransformed:
                 transStr = "가로로 길게 배치"
-                Height = Object.getWidth()
-                Width = Object.getHeight()
+                Length = obj.getWidth()
+                Width = obj.getLength()
 
             # 후보해의 좌표를 가져온다
             coordinate = candidate.coordinate
@@ -232,7 +232,7 @@ class GridSearcher(PositionAlgorithm):
             # 여기서 좌상단에 배치가 가능한지 체크. 배치가 안되면 그대로 걸러냄.
             isProperLeft = (coordinate.x + Width <= self.space.width - 1) and\
                            (self.space.getVertex(coordinate.x + 1, coordinate.y).isOccupied() == False)
-            isProperTop = (coordinate.y + Height <= self.space.height - 1) and\
+            isProperTop = (coordinate.y + Length <= self.space.height - 1) and\
                           (self.space.getVertex(coordinate.x, coordinate.y + 1).isOccupied() == False)
 
             # 주변 벽을 보고 기준좌표를 옮기는 코드
@@ -241,21 +241,21 @@ class GridSearcher(PositionAlgorithm):
             if isProperLeft and isProperTop:
                 # 좌측 상단 배치가 가능하므로 후보해를 그대로 사용한다
                 targetCoordinate = coordinate
-            elif ((isProperLeft == False) and isProperTop):
+            elif isProperTop and not isProperLeft:
                 # 후보좌표가 화물의 좌측이 되면 화물을 배치할 수 없는 상태
                 # 그러므로 후보해 위치에 화물의 우상단으로 맞춰 배치할 수 있도록 좌표를 조절한다
                 if coordinate.x - Width + 1 >= self.boundary:
                     targetCoordinate = Coordinate(coordinate.x - Width + 1, coordinate.y)
-            elif (isProperLeft and (isProperTop == False)):
+            elif isProperLeft and not isProperTop:
                 # 후보좌표가 화물의 상단이 되면 화물을 배치할 수 없는 상태
                 # 그러므로 후보해 위치에 화물의 하단으로 맞춰 배치할 수 있도록 좌표를 조절한다
-                if (coordinate.y - Height + 1 >= self.boundary):
-                    targetCoordinate = Coordinate(coordinate.x, coordinate.y - Height + 1)
+                if coordinate.y - Length + 1 >= self.boundary:
+                    targetCoordinate = Coordinate(coordinate.x, coordinate.y - Length + 1)
             else:
                 # 후보좌표가 화물의 좌측 및 상단이 되면 화물을 배치할 수 없는 상태
                 # 그러므로 후보해 위치에 화물의 우하단으로 맞춰 배치할 수 있도록 좌표를 조절한다
-                if ((coordinate.x - Width + 1 >= self.boundary) and (coordinate.y - Height + 1 >= self.boundary)):
-                    targetCoordinate = Coordinate(coordinate.x - Width + 1, coordinate.y - Height + 1)
+                if (coordinate.x - Width + 1 >= self.boundary) and (coordinate.y - Length + 1 >= self.boundary):
+                    targetCoordinate = Coordinate(coordinate.x - Width + 1, coordinate.y - Length + 1)
 
             if targetCoordinate:
                 # 후보해 조절에 성공한 경우
@@ -267,22 +267,22 @@ class GridSearcher(PositionAlgorithm):
             # 성능 측정 모듈 시작(빈자리 탐색 시간을 계산)
             self.searchEmptyAreaTimer.start()
             # 주어진 영역이 비어있는지 확인
-            isEmpty = self.isEmptyAreaCoordinate(targetCoordinate, Width, Height)
+            isEmpty = self.isEmptyAreaCoordinate(targetCoordinate, Width, Length)
             self.searchEmptyAreaTimer.end()
 
             # 해당 후보위치가 비어있다면
             if isEmpty:
                 # 후보해에 맞게 객체의 방향을 돌려줌
-                Object.isTransformed = candidate.isTransformed
+                obj.isTransformed = candidate.isTransformed
 
                 self.calEffectTime.start()
                 # 간섭검사 평가
-                effects = self.checkEffect(Object, targetCoordinate)
+                effects = self.checkEffect(obj, targetCoordinate)
                 self.calEffectTime.end()
 
                 self.calDistanceTime.start()
                 # 입구와의 거리 평가
-                enterDistance = self.checkEnterDistance(Object, targetCoordinate, 1)
+                enterDistance = self.checkEnterDistance(obj, targetCoordinate, 1)
                 self.calDistanceTime.end()
 
                 # heap 에 처리할 아이템 생성
@@ -307,19 +307,19 @@ class GridSearcher(PositionAlgorithm):
             candidate = scoreResult.candidate
 
             # 같은 좌표가 등장할 수가 있다. 그것을 제거하기 위한 코드
-            if (cacheCoordi == candidate.coordinate and cacheTrans == candidate.isTransformed):
+            if cacheCoordi == candidate.coordinate and cacheTrans == candidate.isTransformed:
                 continue
 
             # 방향에 따라 가로, 세로 길이를 정하며 화물의 방향도 정해준다
-            Height = Object.getHeight()
-            Width = Object.getWidth()
+            Height = obj.getHeight()
+            Width = obj.getWidth()
             transStr = "세로로 길게 배치"
-            Object.isTransformed = False
+            obj.isTransformed = False
             if candidate.isTransformed:
                 transStr = "가로로 길게 배치"
-                Height = Object.getWidth()
-                Width = Object.getHeight()
-                Object.isTransformed = True
+                Height = obj.getWidth()
+                Width = obj.getHeight()
+                obj.isTransformed = True
 
             # 중복 좌표를 제거하기 위한 캐시값을 업데이트 한다
             cacheCoordi = targetCoordi
@@ -336,25 +336,25 @@ class GridSearcher(PositionAlgorithm):
             # 프로그램 최종 시연을 위해 추가된 코드
             if self.enableEmitter:
                 # 이벤트 발생
-                self.emitter.emit(targetCoordi, Object, False)
+                self.emitter.emit(targetCoordi, obj, False)
                 # 이벤트를 발생시키면 알고리즘 계산을 멈춰 gui에서 너무 빨리 보이지 않도록 한다
                 time.sleep(0.2)
 
             # 배치가 가능한지 확인한다
-            if (self.isSetEnable(targetCoordi, brCoordinate, Object) == True):
+            if self.isSetEnable(targetCoordi, brCoordinate, obj):
                 # 배치가 가능한 경우
                 properCoordinate = targetCoordi
 
                 # 해당 위치에 배치가 가능하다고 Gui 에 이벤트를 발생시킨다
                 if self.enableEmitter:
-                    self.emitter.emit(targetCoordi, Object, True)
+                    self.emitter.emit(targetCoordi, obj, True)
                     time.sleep(0.1)
 
                 # 로그를 출력
                 print "candidate " + str(heapCounter) + "번째  후보좌표 : ( " + str(candidate.coordinate.x) + ", " + str(
                     candidate.coordinate.y) + " )" + ", 변환좌표 : ( {}, {} ) ".format(
-                    targetCoordi.x, targetCoordi.y) + "\t {}*{}".format(Object.getWidth(),
-                                                                        Object.getHeight()) + "\t " + transStr + ", 전체 score : {}, 거리 : {}, 영향력 : {}".format(
+                    targetCoordi.x, targetCoordi.y) + "\t {}*{}".format(obj.getWidth(),
+                                                                        obj.getHeight()) + "\t " + transStr + ", 전체 score : {}, 거리 : {}, 영향력 : {}".format(
                     scoreResult.getScore(), scoreResult.distScore, scoreResult.effScore)
 
                 # 배치할 위치를 찾았다면 탐색 종료
@@ -363,23 +363,23 @@ class GridSearcher(PositionAlgorithm):
                 # 후보해에 배치가 불가능한 경우
                 delStr = "  후보해 제거 안됨"
                 tmpWidth = self.delObject.getWidth()
-                tmpHeight = self.delObject.getHeight()
+                tmpLength = self.delObject.getLength()
                 if candidate.isTransformed:
-                    tmpWidth = self.delObject.getHeight()
-                    tmpHeight = self.delObject.getWidth()
+                    tmpWidth = self.delObject.getLength()
+                    tmpLength = self.delObject.getWidth()
 
-                tmpBrCoordinate = Coordinate(targetCoordi.x + tmpWidth - 1, targetCoordi.y + tmpHeight - 1)
+                tmpBrCoordinate = Coordinate(targetCoordi.x + tmpWidth - 1, targetCoordi.y + tmpLength - 1)
 
                 # 가장 작은 크기의 화물을 배치시켜 보고, 불가능 하다면 후보해를 제거함
-                if (self.isSetEnable(targetCoordi, tmpBrCoordinate, self.delObject, path=0) == False):
+                if not self.isSetEnable(targetCoordi, tmpBrCoordinate, self.delObject, path=0):
                     self.candidate.remove(candidate)
                     delStr = "  후보해 제거됨"
 
                 # 로그 출력
                 print "candidate " + str(heapCounter) + "번째  후보좌표 : ( " + str(candidate.coordinate.x) + ", " + str(
                     candidate.coordinate.y) + " )" + ", 변환좌표 : ( {}, {} ) ".format(
-                    targetCoordi.x, targetCoordi.y) + "\t {}*{}".format(Object.getWidth(),
-                                                                        Object.getHeight()) + "\t " + transStr + ", 전체 score : {}, 거리 : {}, 영향력 : {}".format(
+                    targetCoordi.x, targetCoordi.y) + "\t {}*{}".format(obj.getWidth(),
+                                                                        obj.getHeight()) + "\t " + transStr + ", 전체 score : {}, 거리 : {}, 영향력 : {}".format(
                     scoreResult.getScore(), scoreResult.distScore, scoreResult.effScore) + delStr
 
         self.routingTime.end()
@@ -389,9 +389,9 @@ class GridSearcher(PositionAlgorithm):
 
     # 빈 공간을 탐색하는 함수
     # 이 함수는 x, y 2개의 변수를 받아서 사용
-    def isEmptyArea(self, x, y, width, height):
+    def isEmptyArea(self, x, y, width, length):
         # 기존에 빈 공간 탐지하던 방법
-        return self.space.isEmptyArea(x, y, width, height)
+        return self.space.isEmptyArea(x, y, width, length)
 
         # 새로운 방법
         # 이미 배치된 화물들과 겹치는지 체크하는 방법
@@ -418,7 +418,7 @@ class GridSearcher(PositionAlgorithm):
         # return True
 
     # 평가요소2. 간섭검사
-    def checkEffect(self, Object, coordinate):
+    def checkEffect(self, obj, coordinate):
         # 물체가 해당 좌표에 배치 되었을 경우 다른 타입의 화물에 주는 영향을 체크
         # 해당 위치에서 다른 화물에 주는 간섭의 수를 리턴
 
@@ -429,11 +429,11 @@ class GridSearcher(PositionAlgorithm):
         EffectCnt = 0
 
         # 화물의 방향을 보고 가로, 세로 길이 결정
-        Width = Object.getWidth()
-        Height = Object.getHeight()
-        if Object.isTransformed:
-            Width = Object.getHeight()
-            Height = Object.getWidth()
+        Width = obj.getWidth()
+        Length = obj.getLength()
+        if obj.isTransformed:
+            Width = obj.getLength()
+            Length = obj.getWidth()
 
         leftLimit = False
         rightLimit = False
@@ -444,8 +444,8 @@ class GridSearcher(PositionAlgorithm):
         if coordinate.x == 0 + self.boundary:
             leftLimit = True
         else:
-            for y in range(coordinate.y, coordinate.y + Height):
-                if (self.space.getVertex(coordinate.x - 1, y).isOccupied()):
+            for y in range(coordinate.y, coordinate.y + Length):
+                if self.space.getVertex(coordinate.x - 1, y).isOccupied():
                     leftLimit = True
                     break
 
@@ -453,8 +453,8 @@ class GridSearcher(PositionAlgorithm):
         if coordinate.x + Width - 1 == self.space.width - 1 - self.boundary:
             rightLimit = True
         else:
-            for y in range(coordinate.y, coordinate.y + Height):
-                if (self.space.getVertex(coordinate.x + Width, y).isOccupied()):
+            for y in range(coordinate.y, coordinate.y + Length):
+                if self.space.getVertex(coordinate.x + Width, y).isOccupied():
                     rightLimit = True
                     break
 
@@ -463,16 +463,16 @@ class GridSearcher(PositionAlgorithm):
             upLimit = True
         else:
             for x in range(coordinate.x, coordinate.x + Width):
-                if (self.space.getVertex(x, coordinate.y - 1).isOccupied()):
+                if self.space.getVertex(x, coordinate.y - 1).isOccupied():
                     upLimit = True
                     break
 
         # 아래쪽 확인
-        if coordinate.y + Height - 1 == self.space.height - 1 - self.boundary:
+        if coordinate.y + Length - 1 == self.space.height - 1 - self.boundary:
             bottomLimit = True
         else:
             for x in range(coordinate.x, coordinate.x + Width):
-                if (self.space.getVertex(x, coordinate.y + Height).isOccupied()):
+                if self.space.getVertex(x, coordinate.y + Length).isOccupied():
                     bottomLimit = True
                     break
 
@@ -482,9 +482,9 @@ class GridSearcher(PositionAlgorithm):
         # 이때 minX 와 maxX 로 x 범위를 구하고
         # minY 와 maxY 로 y 범위를 구한다
 
-        # boundary 를 확보해야 라우팅이 잘 되기 때문에 boudnary 를 계산한다
+        # boundary 를 확보해야 라우팅이 잘 되기 때문에 boundary 를 계산한다
         minX = self.boundary
-        if (leftLimit):
+        if leftLimit:
             # 왼편에 장애물이 있는 경우
             EffectCnt -= 5
             minX = coordinate.x
@@ -495,11 +495,11 @@ class GridSearcher(PositionAlgorithm):
         # boundary 를 확보해야 라우팅이 잘 되기 때문에 boudnary 를 계산한다
         maxX = self.space.width - 1 - self.boundary
         rightCoordiX = coordinate.x + Width - 1
-        if (rightLimit):
+        if rightLimit:
             # 오른편에 장애물이 있는 경우
             EffectCnt -= 5
             maxX = rightCoordiX
-        if (rightCoordiX + self.largestType.width < self.space.width - self.boundary):
+        if rightCoordiX + self.largestType.width < self.space.width - self.boundary:
             # 오른편에 장애물이 없는 경우
             maxX = rightCoordiX + self.largestType.width - 1
 
@@ -508,17 +508,17 @@ class GridSearcher(PositionAlgorithm):
             # 위쪽에 장애물이 있는 경우
             EffectCnt -= 5
             minY = coordinate.y
-        if (coordinate.y - self.largestType.height > self.boundary):
+        if coordinate.y - self.largestType.height > self.boundary:
             # 위쪽에 장애물이 없는 경우
             minY = coordinate.y - self.largestType.height + 1
 
         maxY = self.space.height - 1 - self.boundary
-        bottomCoordiY = coordinate.y + Height - 1
+        bottomCoordiY = coordinate.y + Length - 1
         if bottomLimit:
             # 아래쪽에 장애물이 있는 경우
             EffectCnt -= 5
             maxY = bottomCoordiY
-        if (bottomCoordiY + self.largestType.height < self.space.height - self.boundary):
+        if bottomCoordiY + self.largestType.height < self.space.height - self.boundary:
             # 아래쪽에 장애물이 없는 경우
             maxY = bottomCoordiY + self.largestType.height - 1
 
@@ -530,7 +530,7 @@ class GridSearcher(PositionAlgorithm):
         if leftLimit:
             EffectCnt -= 5
             minXtr = coordinate.x
-        if (coordinate.x - self.largestType.height > self.boundary):
+        if coordinate.x - self.largestType.height > self.boundary:
             minXtr = coordinate.x - self.largestType.height + 1
         # 1을 한번 더 빼주는 이유는 한칸 띄워야 라우팅이 잘 되기 때문
         maxXtr = self.space.width - 1 - self.boundary
@@ -538,22 +538,22 @@ class GridSearcher(PositionAlgorithm):
         if rightLimit:
             EffectCnt -= 5
             maxXtr = rightCoordiX
-        if (rightCoordiXtr + self.largestType.height < self.space.width - self.boundary):
+        if rightCoordiXtr + self.largestType.height < self.space.width - self.boundary:
             maxXtr = rightCoordiXtr + self.largestType.height - 1
 
         minYtr = self.boundary
         if upLimit:
             EffectCnt -= 5
             minYtr = coordinate.y
-        if (coordinate.y - self.largestType.width > self.boundary):
+        if coordinate.y - self.largestType.width > self.boundary:
             minYtr = coordinate.y - self.largestType.width + 1
 
         maxYtr = self.space.height - 1 - self.boundary
-        bottomCoordiYtr = coordinate.y + Height - 1
+        bottomCoordiYtr = coordinate.y + Length - 1
         if bottomLimit:
             EffectCnt -= 5
             maxYtr = bottomCoordiY
-        if (bottomCoordiYtr + self.largestType.width < self.space.height - self.boundary):
+        if bottomCoordiYtr + self.largestType.width < self.space.height - self.boundary:
             maxYtr = bottomCoordiYtr + self.largestType.width - 1
 
         cntOcc = 0
@@ -583,17 +583,17 @@ class GridSearcher(PositionAlgorithm):
         return EffectCnt
 
     # 평가요소 2. 입구와의 거리 계산
-    def checkEnterDistance(self, Object, coordinate, EntNum):
+    def checkEnterDistance(self, obj, coordinate, EntNum):
         # 물체가 해당 좌표에 배치 되었을 경우 입구와 얼마나 멀리 있는지 체크
         # 해당 위치에서 입구까지의 거리를 리턴
         Enters = self.Enters
 
         # 방향에 따라 가로인지 세로인지 결정
-        Width = Object.getWidth()
-        Height = Object.getHeight()
-        if (Object.isTransformed):  # 돌린 방향
-            Width = Object.getHeight()
-            Height = Object.getWidth()
+        Width = obj.getWidth()
+        Length = obj.getLength()
+        if obj.isTransformed:  # 돌린 방향
+            Width = obj.getLength()
+            Length = obj.getWidth()
 
         # 화물의
         ObjectCenterX = coordinate.x + Width / 2
@@ -604,8 +604,8 @@ class GridSearcher(PositionAlgorithm):
 
         # 입구와의 거리계산
         # 직선거리로 계산
-        EnterCenterX = Enter["coordinate"]["X"] + (Enter["volume"]["width"] / 2)
-        EnterCenterY = Enter["coordinate"]["Y"] + (Enter["volume"]["height"] / 2)
+        EnterCenterX = Enter['coordinate']['X'] + (Enter['volume']['width'] / 2)
+        EnterCenterY = Enter['coordinate']['Y'] + (Enter['volume']['length'] / 2)
         EnterDistance = math.sqrt(abs(ObjectCenterX - EnterCenterX) ** 2 + abs(ObjectCenterY - EnterCenterY) ** 2)
 
         # 결과값 리턴

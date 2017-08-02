@@ -14,9 +14,9 @@ from commonClass import *
 # algorithm. 삽입 가능 공간을 관리 하는 객체
 # 연구사례 중 maximal Rectangle 을 구현한 것
 class MaxRects(PositionAlgorithm):
-    def __init__(self, space, typeList):
+    def __init__(self):
         # super 클래스 초기화
-        PositionAlgorithm.__init__(self, space, typeList)
+        PositionAlgorithm.__init__(self)
 
         # 배치 가능 사각형 리스트
         self.rectList = []
@@ -26,9 +26,9 @@ class MaxRects(PositionAlgorithm):
 
     # 외부에서 사용될 함수
     # 입력받은 화물이 배치될 장소를 찾는다
-    def searchPosition(self, Obejct):
+    def searchPosition(self, obj):
         # search 함수를 사용하여 배치될 위치를 찾는다.
-        coordinate = self.search(Obejct)
+        coordinate = self.search(obj)
         return coordinate
 
     # 알고리즘을 실행하기 전 space 의 구조를 파악하여 적재 가능 사각형을 정리하는 함수
@@ -67,7 +67,7 @@ class MaxRects(PositionAlgorithm):
 
                         # 임시로 저장했던 리스트를 바탕으로 기존 사각형들을 탐색하며, 현재 장애물과 겹치는 사각형들을 분할한다.
                         for rect in searchList:
-                            if (rect.isInclude(targetRect)):
+                            if rect.isInclude(targetRect):
                                 self.divide(rect, targetRect)
 
                         # 처리한 장애물 목록에 현재 장애물을 넣는다
@@ -77,7 +77,7 @@ class MaxRects(PositionAlgorithm):
     def alreadyPreProcessed(self, targetVertex, processedObject):
         alreadyProcess = False
         for object in processedObject:
-            if (targetVertex.isSameObject(object)):
+            if targetVertex.isSameObject(object):
                 alreadyProcess = True
                 break
         return alreadyProcess
@@ -85,7 +85,7 @@ class MaxRects(PositionAlgorithm):
     # 화물을 집어넣을 사각형을 검색하는 함수
     # 여기서 Best Area Fit, Best Short Side Fit, Best Long Side Fit 사용에 따라 결과가 달라진다
     # 현재는 Best Long Side Fit
-    def search(self, Object):
+    def search(self, obj):
         fitValue = 1000000
         fitRect = None
         fitCoordinate = None
@@ -93,38 +93,38 @@ class MaxRects(PositionAlgorithm):
         # 후보 사각형 리스트를 모두 뒤지면서 비교
         for rect in self.rectList:
             # 정방향 배치
-            remainWidth = rect.width - Object.getWidth()
-            remainHeight = rect.height - Object.getHeight()
-            if ((remainWidth >= 0 and remainHeight >= 0) and (remainWidth < fitValue or remainHeight < fitValue)):
-                width = Object.getWidth()
-                height = Object.getHeight()
+            remainWidth = rect.width - obj.getWidth()
+            remainHeight = rect.height - obj.getHeight()
+            if (remainWidth >= 0 and remainHeight >= 0) and (remainWidth < fitValue or remainHeight < fitValue):
+                width = obj.getWidth()
+                height = obj.getHeight()
                 bottomRight = Coordinate(rect.topLeft.x + width, rect.topLeft.y + height)
 
                 # 라우팅 확인
-                if self.isSetEnable(rect.topLeft, bottomRight, Object):
-                    Object.isTransformed = False
+                if self.isSetEnable(rect.topLeft, bottomRight, obj):
+                    obj.isTransformed = False
                     fitValue = min(remainWidth, remainHeight)
                     fitRect = rect
                     fitCoordinate = rect.topLeft
 
             # 방향 전환
-            remainWidth = rect.width - Object.getHeight()
-            remainHeight = rect.height - Object.getWidth()
-            if ((remainWidth >= 0 and remainHeight >= 0) and (remainWidth < fitValue or remainHeight < fitValue)):
-                width = Object.getHeight()
-                height = Object.getWidth()
+            remainWidth = rect.width - obj.getHeight()
+            remainHeight = rect.height - obj.getWidth()
+            if (remainWidth >= 0 and remainHeight >= 0) and (remainWidth < fitValue or remainHeight < fitValue):
+                width = obj.getHeight()
+                height = obj.getWidth()
                 bottomRight = Coordinate(rect.topLeft.x + width, rect.topLeft.y + height)
 
                 # 라우팅 확인
-                if self.isSetEnable(rect.topLeft, bottomRight, Object):
+                if self.isSetEnable(rect.topLeft, bottomRight, obj):
                     # 배치가 되는지 확인
-                    Object.isTransformed = True
+                    obj.isTransformed = True
                     fitValue = min(remainWidth, remainHeight)
                     fitRect = rect
                     fitCoordinate = rect.topLeft
 
         # 맞는 사각형이 없는 상황. 알고리즘 종료
-        if (fitRect == None):
+        if fitRect is None:
             return None
 
         # 배치될 사각형의 좌상단 좌표를 리턴
@@ -132,28 +132,28 @@ class MaxRects(PositionAlgorithm):
 
     # 레이아웃을 업데이트 하는 함수
     # 화물을 배치하여 사각형들을 조절한다
-    def updateLayout(self, topLeftCoordinate, Object):
+    def updateLayout(self, topLeftCoordinate, obj):
 
         # 사각형을 배치하는 함수 사용
         # search 함수 실행 후 화물 배치에 적절하다고 판단된 사각형(cacheRect) 에 화물 배치
-        self.insert(Object, topLeftCoordinate)
+        self.insert(obj, topLeftCoordinate)
 
         # 라우팅 모듈쪽 업데이트하기 위한 함수
-        PositionAlgorithm.updateLayout(self, topLeftCoordinate, Object)
+        PositionAlgorithm.updateLayout(self, topLeftCoordinate, obj)
 
         # Gui 에 표현하기 위한 코드
         if self.enableEmitter:
             # 이벤트 발생
-            self.emitter.emit(topLeftCoordinate, Object, True)
+            self.emitter.emit(topLeftCoordinate, obj, True)
 
     # 화물(사각형)을 배치하는 함수
     # 화물(사각형)을 배치하고 난 뒤 남은 영역의 사각형을 만들고, 이 때 포함관계를 가진 사각형들을 제거한다
-    def insert(self, Object, targetCoordinate):
-        width = Object.getWidth()
-        height = Object.getHeight()
-        if (Object.isTransformed):
-            width = Object.getHeight()
-            height = Object.getWidth()
+    def insert(self, obj, targetCoordinate):
+        width = obj.getWidth()
+        height = obj.getHeight()
+        if obj.isTransformed:
+            width = obj.getHeight()
+            height = obj.getWidth()
 
         # 배치된 화물 사각형
         insertRect = Rectangle(targetCoordinate,
@@ -166,7 +166,7 @@ class MaxRects(PositionAlgorithm):
 
         # 현재 사각형 리스트들과 추가된 사각형들을 비교하며 사각형을 나누는 작업을 한다
         for rect in tmpRectList:
-            if (rect.isIntersect(insertRect)):
+            if rect.isIntersect(insertRect):
                 self.divide(rect, insertRect)
 
     # 사각형 나누는 함수
@@ -193,7 +193,7 @@ class MaxRects(PositionAlgorithm):
     # 나누어진 사각형을 사각형 리스트에 추가하는 함수
     def addRectangle(self, rect):
         # 적절한 사각형이 아니라면 추가하지 않는다
-        if (rect.width > 0 and rect.height > 0 and self.isAvailableRectMerge(rect) == False):
+        if rect.width > 0 and rect.height > 0 and not self.isAvailableRectMerge(rect):
             self.rectList.append(rect)
 
     # 넘겨받은 사각형을 rectList 에서 제거

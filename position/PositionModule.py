@@ -12,29 +12,26 @@ from MaxRects import *
 
 # 외부에서 알고리즘 결과를 받을 클래스
 class PositionResult:
-    def __init__(self, isAllSetted, remainArea):
+    def __init__(self, isAllSet, remainArea):
         # 모두 배치되었는지를 저장하는 변수
-        self.isAllSetted = isAllSetted
+        self.isAllSet = isAllSet
         # 남은 공간을 저장하는 변수
         self.remainArea = remainArea
 
     # 해당 클래스에 담겨있는 정보를 출력하는 함수
     def getInfo(self):
-        print "isAllSetted : " + str(self.isAllSetted) + ", remainArea : " + str(self.remainArea)
+        print "isAllSet : " + str(self.isAllSet) + ", remainArea : " + str(self.remainArea)
 
 
 # 외부에서 사용하는 인터페이스
 class PositionModule:
-    def __init__(self, space, typeList, algoType):
-        self.space = space
-        self.typeList = typeList
-
+    def __init__(self, algoType):
         # 상황에 따라 아래 알고리즘 수행
         # Algorithm for placing cargoes
         if algoType == 'MaxRects':
-            self.algorithmModule = MaxRects(space, typeList)
+            self.algorithmModule = MaxRects()
         else:
-            self.algorithmModule = GridSearcher(space, typeList)
+            self.algorithmModule = GridSearcher()
 
     # 화물의 리스트를 받아 화물 배치
     def setPosition(self, ObjectList):
@@ -48,16 +45,16 @@ class PositionModule:
         usingVertex = 0
 
         # list 에 있는 모든 object 를 배치
-        for object in ObjectList:
+        for obj in ObjectList:
 
             # 배치할 위치 탐색. 탐색에 성공하면 배치할 영역의 좌상단 좌표를 리턴 받는다
-            tlCoordinate = self.setObjectPosition(object)
+            tlCoordinate = self.setObjectPosition(obj)
 
-            if tlCoordinate != None:
+            if tlCoordinate is not None:
                 # 배치할 위치가 있다면 사용한 영역 계산
-                usingVertex += object.getWidth() * object.getHeight()
+                usingVertex += obj.getWidth() * obj.getHeight()
                 # 레이아웃 업데이트
-                self.updateLayout(tlCoordinate, object)
+                self.updateLayout(tlCoordinate, obj)
             else:
                 # 배치 실패. 원래 코드.
                 isSuccess = False
