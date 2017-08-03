@@ -67,19 +67,19 @@ class PositionModule:
         return result
 
     # 개별 화물을 받아 화물을 배치 시도
-    def setObjectPosition(self, Object):
+    def setObjectPosition(self, obj):
         """
-        :param Object: 개별 화물
+        :param obj: 개별 화물
         :return: 화물 배치 결과로써 단순히 배치된 좌표를 리턴. 배치를 못 할 경우 좌표가 None.
         """
 
-        coordinate = self.algorithmModule.searchPosition(Object)
+        coordinate = self.algorithmModule.searchPosition(obj)
         return coordinate
 
     # 라우팅 모듈에 화물이 배치되어 레이아웃이 갱신되었음을 알리는 함수
-    def updateLayout(self, coordinate, object):
-        self.space.setObject(object, coordinate)
-        self.algorithmModule.updateLayout(coordinate, object)
+    def updateLayout(self, coordinate, obj):
+        self.space.setObject(obj, coordinate)
+        self.algorithmModule.updateLayout(coordinate, obj)
 
     # Gui 프로그램에서 해당 함수를 통해 이벤트를 전달할 수 있는 객체를 준다
     # 프로그램에서는 해당 객체를 통해 특정 시점에 이벤트를 발생 시킴

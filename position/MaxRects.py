@@ -24,60 +24,56 @@ class MaxRects(PositionAlgorithm):
         # 맨 초반 장애물들을 탐색하며 선박에 배치 가능한 사각형을 만든다
         self.initializeSpace()
 
-    # 외부에서 사용될 함수
-    # 입력받은 화물이 배치될 장소를 찾는다
-    def searchPosition(self, obj):
-        # search 함수를 사용하여 배치될 위치를 찾는다.
-        coordinate = self.search(obj)
-        return coordinate
-
     # 알고리즘을 실행하기 전 space 의 구조를 파악하여 적재 가능 사각형을 정리하는 함수
     def initializeSpace(self):
-
         # 먼저 선박의 크기 만큼 사각형을 만들어 리스트에 넣는다
-        self.rectList.append(Rectangle(Coordinate(0 + self.boundary, 0 + self.boundary),
-                                       Coordinate(self.space.width - 1 - self.boundary,
-                                                  self.space.height - 1 - self.boundary)))
+        # first, represent all floors as single rectangles
+        for f in range(0, len(floors)):
+            self.rectList.append(Rectangle(Coordinate(0 + self.boundary, 0 + self.boundary),
+                                              Coordinate(floors[f].width - 1 - self.boundary,
+                                                         floors[f].length - 1 - self.boundary)))
 
         # 이미 처리한 장애물, 입구를 저장하는 리스트
+        # list of processed objects
         processedObject = []
 
         # 모든 공간을 뒤지며 장애물을 찾는다
-        for j in range(self.space.height):
-            for i in range(self.space.width):
+        for f in range(0, len(floors)):
+            for j in range(floors[f].length):
+                for i in range(floors[f].width):
+                    # 지정된 좌표를 가져와서
+                    coordinate = Coordinate(i, j)
+                    targetVertex = floors[f].getVertex(coordinate.x, coordinate.y)
 
-                # 지정된 좌표를 가져와서
-                coordinate = Coordinate(i, j)
-                targetVertex = self.space.getVertex(coordinate.x, coordinate.y)
+                    # 해당 좌표에 다른 물체가 있는지 확인한다
+                    if targetVertex.isOccupied():
+                        # 이미 처리했던 장애물이라면 처리하지 않는다
+                        alreadyProcessed = self.alreadyPreProcessed(targetVertex, processedObject)
+                        if not alreadyProcessed:
+                            # 현재 좌표에 있는 화물
+                            # 그 사각형을 MaxRects 방법으로 나눈다.
+                            targetRect = Rectangle(coordinate,
+                                                   Coordinate(coordinate.x + targetVertex.unit.getWidth() - 1,
+                                                              coordinate.y + targetVertex.unit.getLength() - 1))
 
-                # 해당 좌표에 다른 물체가 있는지 확인한다
-                if targetVertex.isOccupied():
-                    # 이미 처리했던 장애물이라면 처리하지 않는다
-                    alreadyProcess = self.alreadyPreProcessed(targetVertex, processedObject)
-                    if not alreadyProcess:
-                        # 현재 좌표에 있는 화물
-                        # 그 사각형을 MaxRects 방법으로 나눈다.
-                        targetRect = Rectangle(coordinate, Coordinate(coordinate.x + targetVertex.unit.getWidth() - 1,
-                                                                      coordinate.y + targetVertex.unit.getHeight() - 1))
+                            # 현재 사각형들을 임시로 저장 할 리스트. 바로 탐색하지 않는 이유는 탐색하는 도중 list가 변경되기 때문이다.
+                            searchList = []
+                            for rect in self.rectList:
+                                searchList.append(rect)
 
-                        # 현재 사각형들을 임시로 저장 할 리스트. 바로 탐색하지 않는 이유는 탐색하는 도중 list가 변경되기 때문이다.
-                        searchList = []
-                        for rect in self.rectList:
-                            searchList.append(rect)
+                            # 임시로 저장했던 리스트를 바탕으로 기존 사각형들을 탐색하며, 현재 장애물과 겹치는 사각형들을 분할한다.
+                            for rect in searchList:
+                                if rect.isInclude(targetRect):
+                                    self.divide(rect, targetRect)
 
-                        # 임시로 저장했던 리스트를 바탕으로 기존 사각형들을 탐색하며, 현재 장애물과 겹치는 사각형들을 분할한다.
-                        for rect in searchList:
-                            if rect.isInclude(targetRect):
-                                self.divide(rect, targetRect)
-
-                        # 처리한 장애물 목록에 현재 장애물을 넣는다
-                        processedObject.append(targetVertex.unit)
+                            # 처리한 장애물 목록에 현재 장애물을 넣는다
+                            processedObject.append(targetVertex.unit)
 
     # 이미 처리했던 장애물인지 확인하는 함수
     def alreadyPreProcessed(self, targetVertex, processedObject):
         alreadyProcess = False
-        for object in processedObject:
-            if targetVertex.isSameObject(object):
+        for obj in processedObject:
+            if targetVertex.isSameObject(obj):
                 alreadyProcess = True
                 break
         return alreadyProcess
@@ -85,7 +81,7 @@ class MaxRects(PositionAlgorithm):
     # 화물을 집어넣을 사각형을 검색하는 함수
     # 여기서 Best Area Fit, Best Short Side Fit, Best Long Side Fit 사용에 따라 결과가 달라진다
     # 현재는 Best Long Side Fit
-    def search(self, obj):
+    def searchPosition(self, obj):
         fitValue = 1000000
         fitRect = None
         fitCoordinate = None
@@ -94,8 +90,8 @@ class MaxRects(PositionAlgorithm):
         for rect in self.rectList:
             # 정방향 배치
             remainWidth = rect.width - obj.getWidth()
-            remainHeight = rect.height - obj.getHeight()
-            if (remainWidth >= 0 and remainHeight >= 0) and (remainWidth < fitValue or remainHeight < fitValue):
+            remainLength = rect.length - obj.getLength()
+            if (remainWidth >= 0 and remainLength >= 0) and (remainWidth < fitValue or remainLength < fitValue):
                 width = obj.getWidth()
                 height = obj.getHeight()
                 bottomRight = Coordinate(rect.topLeft.x + width, rect.topLeft.y + height)
@@ -103,14 +99,14 @@ class MaxRects(PositionAlgorithm):
                 # 라우팅 확인
                 if self.isSetEnable(rect.topLeft, bottomRight, obj):
                     obj.isTransformed = False
-                    fitValue = min(remainWidth, remainHeight)
+                    fitValue = min(remainWidth, remainLength)
                     fitRect = rect
                     fitCoordinate = rect.topLeft
 
             # 방향 전환
             remainWidth = rect.width - obj.getHeight()
-            remainHeight = rect.height - obj.getWidth()
-            if (remainWidth >= 0 and remainHeight >= 0) and (remainWidth < fitValue or remainHeight < fitValue):
+            remainLength = rect.height - obj.getWidth()
+            if (remainWidth >= 0 and remainLength >= 0) and (remainWidth < fitValue or remainLength < fitValue):
                 width = obj.getHeight()
                 height = obj.getWidth()
                 bottomRight = Coordinate(rect.topLeft.x + width, rect.topLeft.y + height)
@@ -119,7 +115,7 @@ class MaxRects(PositionAlgorithm):
                 if self.isSetEnable(rect.topLeft, bottomRight, obj):
                     # 배치가 되는지 확인
                     obj.isTransformed = True
-                    fitValue = min(remainWidth, remainHeight)
+                    fitValue = min(remainWidth, remainLength)
                     fitRect = rect
                     fitCoordinate = rect.topLeft
 

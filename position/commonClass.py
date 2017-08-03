@@ -47,8 +47,10 @@ class Rectangle:
 
     # 파라미터로 들어온 rect 가 현재 사각형에 포함되는지 확인하는 함수
     def isInclude(self, rectangle):
-        if (rectangle.topLeft.x >= self.topLeft.x and rectangle.topLeft.x + rectangle.width <= self.topLeft.x + self.width and
-            rectangle.topLeft.y >= self.topLeft.y and rectangle.topLeft.y + rectangle.height <= self.topLeft.y + self.height):
+        if (rectangle.topLeft.x >= self.topLeft.x
+            and rectangle.topLeft.x + rectangle.width <= self.topLeft.x + self.width
+            and rectangle.topLeft.y >= self.topLeft.y
+            and rectangle.topLeft.y + rectangle.height <= self.topLeft.y + self.height):
             return True
         return False
 
