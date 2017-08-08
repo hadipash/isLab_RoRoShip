@@ -6,7 +6,6 @@ MaximalRectangles 알고리즘을 사용한 배치방법
 The Maximal Rectangles algorithm for an object placement
 """
 
-# from llist import dllist, dllistnode
 from IPositionAlgorithm import *
 from commonClass import *
 
@@ -25,13 +24,14 @@ class MaxRects(PositionAlgorithm):
         self.initializeSpace()
 
     # 알고리즘을 실행하기 전 space 의 구조를 파악하여 적재 가능 사각형을 정리하는 함수
+    # Divide available space into rectangles in accordance with entrances and obstacles
     def initializeSpace(self):
         # 먼저 선박의 크기 만큼 사각형을 만들어 리스트에 넣는다
         # first, represent all floors as single rectangles
         for f in range(0, len(floors)):
             self.rectList.append(Rectangle(Coordinate(0 + self.boundary, 0 + self.boundary),
-                                              Coordinate(floors[f].width - 1 - self.boundary,
-                                                         floors[f].length - 1 - self.boundary)))
+                                           Coordinate(floors[f].width - 1 - self.boundary,
+                                                      floors[f].length - 1 - self.boundary)))
 
         # 이미 처리한 장애물, 입구를 저장하는 리스트
         # list of processed objects
@@ -70,6 +70,7 @@ class MaxRects(PositionAlgorithm):
                             processedObject.append(targetVertex.unit)
 
     # 이미 처리했던 장애물인지 확인하는 함수
+    # Delete this useless function!
     def alreadyPreProcessed(self, targetVertex, processedObject):
         alreadyProcess = False
         for obj in processedObject:
@@ -82,28 +83,29 @@ class MaxRects(PositionAlgorithm):
     # 여기서 Best Area Fit, Best Short Side Fit, Best Long Side Fit 사용에 따라 결과가 달라진다
     # 현재는 Best Long Side Fit
     def searchPosition(self, obj):
+        # big value for comparing fitness of an object in rectangles
         fitValue = 1000000
-        fitRect = None
         fitCoordinate = None
 
         # 후보 사각형 리스트를 모두 뒤지면서 비교
         for rect in self.rectList:
             # 정방향 배치
+            # check whether it is possible to place an object in a rectangle
             remainWidth = rect.width - obj.getWidth()
             remainLength = rect.length - obj.getLength()
             if (remainWidth >= 0 and remainLength >= 0) and (remainWidth < fitValue or remainLength < fitValue):
                 width = obj.getWidth()
-                height = obj.getHeight()
-                bottomRight = Coordinate(rect.topLeft.x + width, rect.topLeft.y + height)
+                length = obj.getLength()
+                bottomRight = Coordinate(rect.topLeft.x + width, rect.topLeft.y + length)
 
                 # 라우팅 확인
                 if self.isSetEnable(rect.topLeft, bottomRight, obj):
                     obj.isTransformed = False
                     fitValue = min(remainWidth, remainLength)
-                    fitRect = rect
                     fitCoordinate = rect.topLeft
 
             # 방향 전환
+            # change direction of the object and try once again
             remainWidth = rect.width - obj.getHeight()
             remainLength = rect.height - obj.getWidth()
             if (remainWidth >= 0 and remainLength >= 0) and (remainWidth < fitValue or remainLength < fitValue):
@@ -116,12 +118,7 @@ class MaxRects(PositionAlgorithm):
                     # 배치가 되는지 확인
                     obj.isTransformed = True
                     fitValue = min(remainWidth, remainLength)
-                    fitRect = rect
                     fitCoordinate = rect.topLeft
-
-        # 맞는 사각형이 없는 상황. 알고리즘 종료
-        if fitRect is None:
-            return None
 
         # 배치될 사각형의 좌상단 좌표를 리턴
         return fitCoordinate
@@ -145,11 +142,12 @@ class MaxRects(PositionAlgorithm):
     # 화물(사각형)을 배치하는 함수
     # 화물(사각형)을 배치하고 난 뒤 남은 영역의 사각형을 만들고, 이 때 포함관계를 가진 사각형들을 제거한다
     def insert(self, obj, targetCoordinate):
-        width = obj.getWidth()
-        height = obj.getHeight()
         if obj.isTransformed:
             width = obj.getHeight()
             height = obj.getWidth()
+        else:
+            width = obj.getWidth()
+            height = obj.getHeight()
 
         # 배치된 화물 사각형
         insertRect = Rectangle(targetCoordinate,

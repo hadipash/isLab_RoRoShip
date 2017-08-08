@@ -44,9 +44,6 @@ class Object:
         self.groupId = groupId
         # 해당 물체의 고유 id
         self.id = id
-        # 물체의 방향전환 결과
-        # Whether an object is rotated or not (default value false)
-        self.isTransformed = False
         # 물체의 타입
         self.type = type
 
@@ -71,47 +68,11 @@ class Coordinate:
     def printCoordinate(self):
         print ("X : " + str(self.x) + ",   Y : " + str(self.y))
 
-    def equal(self, coordinate):
-        if self.x == coordinate.x and self.y == coordinate.y:
-            return True
-        return False
-
     def __hash__(self):
         return hash(self.x) ^ hash(self.y)
 
     def __eq__(self, another):
         return self.x == another.x and self.y == another.y
-
-
-# gird의 cell에 들어 갈 클래스
-# Class for cells
-class Cell:
-    def __init__(self):
-        # 해당 좌표에 어떤 Obejct 가 있는지 저장하는 변수
-        # Saves object located at certain vertex
-        self.unit = None
-
-    # 해당 좌표가 이미 선점 되었는지 확인하는 변수
-    def isOccupied(self):
-        if self.unit is not None:
-            return True
-        else:
-            return False
-
-    # 해당 좌표에 존재하는 Object의 Id 를 리턴
-    # Return object's id located at certain coordinates
-    def getObjectId(self):
-        if self.unit is not None:
-            return self.unit.id
-        else:
-            return 0
-
-    # 같은 Obejct 인지 확인
-    def isSameObject(self, obj):
-        if self.unit.id == obj.id:
-            return True
-        else:
-            return False
 
 
 # 선박 클래스
@@ -120,6 +81,18 @@ class Floor:
         self.width = width
         self.length = length
         self.height = height
+
+
+# 선박의 공간을 관리하는 클래스
+# Class for management free space of a vessel
+class Space:
+    def __init__(self, floor, entrancesList, obstaclesList):
+        self.width = floor.width
+        self.length = floor.length
+        self.height = floor.height
+
+        self.entrances = entrancesList
+        self.obstacles = obstaclesList
 
 
 # 장애물 클래스
