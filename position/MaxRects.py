@@ -29,9 +29,9 @@ class MaxRects(PositionAlgorithm):
         # 먼저 선박의 크기 만큼 사각형을 만들어 리스트에 넣는다
         # first, represent all floors as single rectangles
         for f in range(0, len(floors)):
-            self.rectList.append(Rectangle(Coordinate(0 + self.boundary, 0 + self.boundary),
-                                           Coordinate(floors[f].width - 1 - self.boundary,
-                                                      floors[f].length - 1 - self.boundary)))
+            self.rectList[f].append(Rectangle(Coordinate(self.boundary, self.boundary),
+                                              Coordinate(floors[f].width - self.boundary,
+                                                         floors[f].length - self.boundary)))
 
         # 이미 처리한 장애물, 입구를 저장하는 리스트
         # list of processed objects
