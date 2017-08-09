@@ -18,6 +18,7 @@ class MaxRects(PositionAlgorithm):
         PositionAlgorithm.__init__(self)
 
         # 배치 가능 사각형 리스트
+        # List of empty rectangles where cargoes can be placed
         self.rectList = []
 
         # 맨 초반 장애물들을 탐색하며 선박에 배치 가능한 사각형을 만든다
@@ -26,58 +27,29 @@ class MaxRects(PositionAlgorithm):
     # 알고리즘을 실행하기 전 space 의 구조를 파악하여 적재 가능 사각형을 정리하는 함수
     # Divide available space into rectangles in accordance with entrances and obstacles
     def initializeSpace(self):
-        # 먼저 선박의 크기 만큼 사각형을 만들어 리스트에 넣는다
-        # first, represent all floors as single rectangles
+        # 모든 공간을 뒤지며 장애물을 찾는다
         for f in range(0, len(floors)):
+            # first, represent all floors as single rectangles
             self.rectList[f].append(Rectangle(Coordinate(self.boundary, self.boundary),
                                               Coordinate(floors[f].width - self.boundary,
                                                          floors[f].length - self.boundary)))
 
-        # 이미 처리한 장애물, 입구를 저장하는 리스트
-        # list of processed objects
-        processedObject = []
+            # Then split floor rectangles into smaller rectangles in accordance with entrances and obstacles
+            for elem in floors[f].entrancesList:
+                entrance = Rectangle(elem.coordinate, Coordinate(elem.coordinate.x + elem.width,
+                                                                 elem.coordinate.y + elem.length))
+                # TODO: fix bug here
+                for rect in self.rectList[f]:
+                    if rect.isIncluded(entrance):
+                        self.divide(f, rect, entrance)
 
-        # 모든 공간을 뒤지며 장애물을 찾는다
-        for f in range(0, len(floors)):
-            for j in range(floors[f].length):
-                for i in range(floors[f].width):
-                    # 지정된 좌표를 가져와서
-                    coordinate = Coordinate(i, j)
-                    targetVertex = floors[f].getVertex(coordinate.x, coordinate.y)
-
-                    # 해당 좌표에 다른 물체가 있는지 확인한다
-                    if targetVertex.isOccupied():
-                        # 이미 처리했던 장애물이라면 처리하지 않는다
-                        alreadyProcessed = self.alreadyPreProcessed(targetVertex, processedObject)
-                        if not alreadyProcessed:
-                            # 현재 좌표에 있는 화물
-                            # 그 사각형을 MaxRects 방법으로 나눈다.
-                            targetRect = Rectangle(coordinate,
-                                                   Coordinate(coordinate.x + targetVertex.unit.getWidth() - 1,
-                                                              coordinate.y + targetVertex.unit.getLength() - 1))
-
-                            # 현재 사각형들을 임시로 저장 할 리스트. 바로 탐색하지 않는 이유는 탐색하는 도중 list가 변경되기 때문이다.
-                            searchList = []
-                            for rect in self.rectList:
-                                searchList.append(rect)
-
-                            # 임시로 저장했던 리스트를 바탕으로 기존 사각형들을 탐색하며, 현재 장애물과 겹치는 사각형들을 분할한다.
-                            for rect in searchList:
-                                if rect.isInclude(targetRect):
-                                    self.divide(rect, targetRect)
-
-                            # 처리한 장애물 목록에 현재 장애물을 넣는다
-                            processedObject.append(targetVertex.unit)
-
-    # 이미 처리했던 장애물인지 확인하는 함수
-    # Delete this useless function!
-    def alreadyPreProcessed(self, targetVertex, processedObject):
-        alreadyProcess = False
-        for obj in processedObject:
-            if targetVertex.isSameObject(obj):
-                alreadyProcess = True
-                break
-        return alreadyProcess
+            for elem in floors[f].obstaclesList:
+                obstacle = Rectangle(elem.coordinate, Coordinate(elem.coordinate.x + elem.width,
+                                                                 elem.coordinate.y + elem.length))
+                # TODO: fix bug here
+                for rect in self.rectList[f]:
+                    if rect.isIncluded(obstacle):
+                        self.divide(f, rect, obstacle)
 
     # 화물을 집어넣을 사각형을 검색하는 함수
     # 여기서 Best Area Fit, Best Short Side Fit, Best Long Side Fit 사용에 따라 결과가 달라진다
@@ -164,39 +136,33 @@ class MaxRects(PositionAlgorithm):
                 self.divide(rect, insertRect)
 
     # 사각형 나누는 함수
-    def divide(self, targetRect, insertRect):
-
-        self.delTargetRect(targetRect)
+    def divide(self, f, targetRect, insertRect):
+        self.rectList[f].remove(targetRect)
+        newRects = []
 
         # 사각형을 4개로 만든 뒤
-        topRect = Rectangle(Coordinate(targetRect.topLeft.x, targetRect.topLeft.y),
-                            Coordinate(targetRect.bottomRight.x, insertRect.topLeft.y - 1))
-        bottomRect = Rectangle(Coordinate(targetRect.topLeft.x, insertRect.bottomRight.y + 1),
-                               Coordinate(targetRect.bottomRight.x, targetRect.bottomRight.y))
-        leftRect = Rectangle(Coordinate(targetRect.topLeft.x, targetRect.topLeft.y),
-                             Coordinate(insertRect.topLeft.x - 1, targetRect.bottomRight.y))
-        rightRect = Rectangle(Coordinate(insertRect.bottomRight.x + 1, targetRect.topLeft.y),
-                              Coordinate(targetRect.bottomRight.x, targetRect.bottomRight.y))
+        newRects[0] = Rectangle(Coordinate(targetRect.topLeft.x, targetRect.topLeft.y),
+                                Coordinate(targetRect.bottomRight.x, insertRect.topLeft.y))
+        newRects[1] = Rectangle(Coordinate(targetRect.topLeft.x, insertRect.bottomRight.y),
+                                Coordinate(targetRect.bottomRight.x, targetRect.bottomRight.y))
+        newRects[2] = Rectangle(Coordinate(targetRect.topLeft.x, targetRect.topLeft.y),
+                                Coordinate(insertRect.topLeft.x, targetRect.bottomRight.y))
+        newRects[3] = Rectangle(Coordinate(insertRect.bottomRight.x, targetRect.topLeft.y),
+                                Coordinate(targetRect.bottomRight.x, targetRect.bottomRight.y))
 
         # 각 사각형을 추가한다
-        self.addRectangle(topRect)
-        self.addRectangle(bottomRect)
-        self.addRectangle(leftRect)
-        self.addRectangle(rightRect)
+        self.addRectangle(f, newRects)
 
     # 나누어진 사각형을 사각형 리스트에 추가하는 함수
-    def addRectangle(self, rect):
+    def addRectangle(self, f, newRects):
         # 적절한 사각형이 아니라면 추가하지 않는다
-        if rect.width > 0 and rect.height > 0 and not self.isAvailableRectMerge(rect):
-            self.rectList.append(rect)
-
-    # 넘겨받은 사각형을 rectList 에서 제거
-    def delTargetRect(self, targetRect):
-        self.rectList.remove(targetRect)
+        for rect in newRects:
+            if rect.width > 0 and rect.height > 0 and not self.isAvailableRectMerge(rect):
+                self.rectList[f].append(rect)
 
     # 사각형 merge 가능한지 체크하는 함수
     def isAvailableRectMerge(self, newRect):
         for rect in self.rectList:
-            if rect.isInclude(newRect):
+            if rect.isIncluded(newRect):
                 return True
         return False

@@ -46,7 +46,7 @@ class Rectangle:
         self.height = bottomRight.y - topLeft.y + 1
 
     # 파라미터로 들어온 rect 가 현재 사각형에 포함되는지 확인하는 함수
-    def isInclude(self, rectangle):
+    def isIncluded(self, rectangle):
         if (rectangle.topLeft.x >= self.topLeft.x
             and rectangle.topLeft.x + rectangle.width <= self.topLeft.x + self.width
             and rectangle.topLeft.y >= self.topLeft.y
@@ -76,19 +76,6 @@ class Rectangle:
         if self.topLeft.equal(rectangle.topLeft) and self.bottomRight.equal(rectangle.bottomRight):
             return True
         return False
-
-
-# GridSearcher 에서 사용할 클래스
-class Candidate:
-    def __init__(self, coordinate, isTransformed):
-        self.coordinate = coordinate
-        self.isTransformed = isTransformed
-
-    def __hash__(self):
-        return hash(self.coordinate) ^ hash(self.isTransformed)
-
-    def __eq__(self, another):
-        return self.coordinate == another.coordinate and self.isTransformed == another.isTransformed
 
 
 # heap 에서 사용하는 클래스
