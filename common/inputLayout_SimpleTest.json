@@ -1,0 +1,42 @@
+{
+	"standardSize": 1000,
+
+	"loadingSpaceList":{
+		"cnt":1,
+		"loadingSpace": [
+			{"floor":1, "width":50000, "length":100000, "height":4700}
+		]
+	},
+
+	"enterList":{
+		"cnt":1,
+		"enter":[
+			{"floor":1,
+				"coordinate":{"X":62500, "Y":129000, "Z":0},
+				"volume":{"width":5000, "length":1000},
+				"id":"enter_01"}
+		]
+	},
+
+	"obstacleList":{
+		"cnt":4,
+		"obstacle":[
+			{"floor":1,
+				"coordinate":{"X":7950, "Y":77500, "Z":-2100},
+				"volume":{"width":1000, "length":1000},
+				"id":"pillar_101"},
+			{"floor":1,
+				"coordinate":{"X":16000, "Y":77500, "Z":-2100},
+				"volume":{"width":1000, "length":1000},
+				"id":"pillar_102"},
+			{"floor":1,
+				"coordinate":{"X":7950, "Y":103500, "Z":-2100},
+				"volume":{"width":1000, "length":1000},
+				"id":"pillar_103"},
+			{"floor":1,
+				"coordinate":{"X":16000, "Y":103500, "Z":-2100}
+			, "volume":{"width":1000, "length":1000},
+				"id":"pillar_104"}
+		]
+	}
+}

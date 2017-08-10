@@ -8,7 +8,7 @@ Classes and functions to parse json files
 import json
 from Miscellaneous import *
 
-SHIP_LAYOUT_INFO = "../common/inputLayout.json"
+SHIP_LAYOUT_INFO = "../common/inputLayout_SimpleTest.json"
 TYPE_INFO = "../common/freight_list.json"
 
 
@@ -35,10 +35,17 @@ class Parser:
         # 입구 정보를 리스트로 관리
         # List of entrances
         EnterInfoList = []
+        temp = 0
         for enterInfo in configJSON["enterList"]["enter"]:
-            flNum = enterInfo["floor"]
+            EnterInfoList.append([])
+            flNum = enterInfo["floor"] - 1
+
+            while temp != flNum:
+                EnterInfoList.append([])
+                temp += 1
+
             EnterInfoList[flNum].append(
-                Enter(Coordinate(enterInfo["coordinate"]["X"], enterInfo["coordinate"]["Y"]),
+                Enter(Coordinate(flNum, enterInfo["coordinate"]["X"], enterInfo["coordinate"]["Y"]),
                       enterInfo["volume"]["width"],
                       enterInfo["volume"]["length"],
                       enterInfo["id"]))
@@ -47,9 +54,10 @@ class Parser:
         # List of obstacles on a vessel
         ObstacleInfoList = []
         for obstacleInfo in configJSON["obstacleList"]["obstacle"]:
-            flNum = obstacleInfo["floor"]
+            flNum = obstacleInfo["floor"] - 1
+            ObstacleInfoList.append([])
             ObstacleInfoList[flNum].append(
-                Obstacle(Coordinate(obstacleInfo["coordinate"]["X"], obstacleInfo["coordinate"]["Y"]),
+                Obstacle(Coordinate(flNum, obstacleInfo["coordinate"]["X"], obstacleInfo["coordinate"]["Y"]),
                          obstacleInfo["volume"]["width"],
                          obstacleInfo["volume"]["length"],
                          obstacleInfo["id"]))
@@ -66,7 +74,8 @@ class Parser:
         configJSON = self.readJSON(TYPE_INFO)
 
         for t in configJSON["freight"]["freight_type"]:
-            self.typeList.append(Type(t["Full_width"], t["Full_height"], t["Wheel_base"], t["MAX_steer_angle"]))
+            self.typeList.append(Type(int(t["Full_width"]), int(t["Full_height"]),
+                                      int(t["Wheel_base"]), int(t["MAX_steer_angle"])))
 
     # json 파일을 읽어오는 함수
     def readJSON(self, filename):

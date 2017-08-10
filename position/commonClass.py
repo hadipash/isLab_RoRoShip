@@ -42,34 +42,24 @@ class Rectangle:
     def __init__(self, topLeft, bottomRight):
         self.topLeft = topLeft
         self.bottomRight = bottomRight
-        self.width = bottomRight.x - topLeft.x + 1
-        self.height = bottomRight.y - topLeft.y + 1
+        self.width = bottomRight.x - topLeft.x
+        self.length = bottomRight.y - topLeft.y
 
     # 파라미터로 들어온 rect 가 현재 사각형에 포함되는지 확인하는 함수
     def isIncluded(self, rectangle):
         if (rectangle.topLeft.x >= self.topLeft.x
             and rectangle.topLeft.x + rectangle.width <= self.topLeft.x + self.width
             and rectangle.topLeft.y >= self.topLeft.y
-            and rectangle.topLeft.y + rectangle.height <= self.topLeft.y + self.height):
+            and rectangle.topLeft.y + rectangle.length <= self.topLeft.y + self.length):
             return True
         return False
 
     # 겹치는지 확인하는 함수
-    def isIntersect(self, rectangle):
+    def isIntersected(self, rectangle):
         if self.topLeft.x > rectangle.bottomRight.x: return False
         if self.bottomRight.x < rectangle.topLeft.x: return False
         if self.topLeft.y > rectangle.bottomRight.y: return False
         if self.bottomRight.y < rectangle.topLeft.y: return False
-        return True
-
-    # 겹치는지 좌상단 좌표와 너비, 높이를 받아서 확인하는 함수
-    def isIntersectArea(self, topLeftX, topLeftY, width, height):
-        if self.topLeft.x > topLeftX + width - 1: return False
-        # if(self.topLeft.x > topLeftX + width): return False
-        if self.bottomRight.x < topLeftX: return False
-        if self.topLeft.y > topLeftY + height - 1: return False
-        # if(self.topLeft.y > topLeftY + height): return False
-        if self.bottomRight.y < topLeftY: return False
         return True
 
     def equal(self, rectangle):
