@@ -29,17 +29,20 @@ class Parser:
 
         # Get information about floors
         FloorInfoList = []
+        availSpace = []
         for floor in configJSON["loadingSpaceList"]["loadingSpace"]:
             FloorInfoList.append(Floor(floor["width"], floor["length"], floor["height"]))
+            availSpace.append(floor["width"] * floor["length"])
 
         # 입구 정보를 리스트로 관리
         # List of entrances
-        EnterInfoList = []
+        EnterInfoList = [[]]
         temp = 0
         for enterInfo in configJSON["enterList"]["enter"]:
-            EnterInfoList.append([])
             flNum = enterInfo["floor"] - 1
 
+            # Because on each floor can be zero or more entrances
+            # We append a new list only when changing of the floor number occurs
             while temp != flNum:
                 EnterInfoList.append([])
                 temp += 1
@@ -50,22 +53,34 @@ class Parser:
                       enterInfo["volume"]["length"],
                       enterInfo["id"]))
 
+            availSpace[flNum] -= enterInfo["volume"]["width"] * enterInfo["volume"]["length"]
+
         # 장애물 정보를 리스트로 관리
         # List of obstacles on a vessel
-        ObstacleInfoList = []
+        ObstacleInfoList = [[]]
+        temp = 0
         for obstacleInfo in configJSON["obstacleList"]["obstacle"]:
             flNum = obstacleInfo["floor"] - 1
-            ObstacleInfoList.append([])
+
+            # Because on each floor can be zero or more obstacles
+            # We append a new list only when changing of the floor number occurs
+            while temp != flNum:
+                ObstacleInfoList.append([])
+                temp += 1
+
             ObstacleInfoList[flNum].append(
                 Obstacle(Coordinate(flNum, obstacleInfo["coordinate"]["X"], obstacleInfo["coordinate"]["Y"]),
                          obstacleInfo["volume"]["width"],
                          obstacleInfo["volume"]["length"],
                          obstacleInfo["id"]))
 
+            availSpace[flNum] -= obstacleInfo["volume"]["width"] * obstacleInfo["volume"]["length"]
+
         # Create array of available space and entrances/obstacles in each floor
         for i in range(0, len(FloorInfoList)):
             self.floors.append(Space(
                 FloorInfoList[i],
+                availSpace[i],
                 EnterInfoList[i],
                 ObstacleInfoList[i]
             ))

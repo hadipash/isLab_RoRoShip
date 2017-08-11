@@ -27,8 +27,8 @@ def main():
     positionResult = positionModule.setPosition(ObjectList)
     performance.end()
 
-    print "남은 면적 : " + str(positionResult.remainArea)
-    print "성공 여부 : " + str(positionResult.isAllSetted)
+    print "남은 면적 : " + str(positionResult.remainArea) + " m²"
+    print "성공 여부 : " + str(positionResult.isAllSet)
 
     print performance.sPrint()
 

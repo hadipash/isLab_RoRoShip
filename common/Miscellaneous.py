@@ -46,10 +46,7 @@ class Object:
         self.id = id
         # 물체의 타입
         self.type = type
-        self.coordinates = Coordinate(0, 0, 0)
-
-    def setCoordinates(self, f, x, y):
-        self.coordinates.setCoordinates(f, x, y)
+        self.coordinates = Coordinate(-1, -1, -1)
 
     def getWidth(self):
         return self.type.width
@@ -92,10 +89,11 @@ class Floor:
 # 선박의 공간을 관리하는 클래스
 # Class for management free space of a vessel
 class Space:
-    def __init__(self, floorInfo, entrancesList, obstaclesList):
+    def __init__(self, floorInfo, availSpace, entrancesList, obstaclesList):
         self.width = floorInfo.width
         self.length = floorInfo.length
         self.height = floorInfo.height
+        self.availSpace = availSpace
 
         self.entrances = entrancesList
         self.obstacles = obstaclesList

@@ -30,12 +30,6 @@ def getObjectSampleList():
     return objectList
 
 
-# 임시로 만들어 둔 라우팅 모듈 클래스
-class RoutingModule:
-    def __init__(self):
-        self.test = 1
-
-
 # 사각형 클래스
 class Rectangle:
     # topLeft 와 bottomRight 는 모두 coordinate 정보

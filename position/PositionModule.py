@@ -7,6 +7,7 @@ Interface for position determination module
 """
 
 from MaxRects import *
+import common.InitializationCode as ic
 
 
 # 외부에서 알고리즘 결과를 받을 클래스
@@ -15,7 +16,7 @@ class PositionResult:
         # 모두 배치되었는지를 저장하는 변수
         self.isAllSet = isAllSet
         # 남은 공간을 저장하는 변수
-        self.remainArea = remainArea
+        self.remainArea = remainArea / 1000000  # convert into m2
 
     # 해당 클래스에 담겨있는 정보를 출력하는 함수
     def getInfo(self):
@@ -58,8 +59,8 @@ class PositionModule:
 
         # 남은 공간 계산 및 결과 만들기
         availSpace = 0
-        for floor in floors:
-            availSpace += floor.length * floor.width
+        for floor in ic.floors:
+            availSpace += floor.availSpace
 
         result = PositionResult(isSuccess, availSpace - usedSpace)
         return result

@@ -270,7 +270,7 @@ class WorkerThread(threading.Thread):
             check1 = time.time()
             coordinate = self.pm.setObjectPosition(object)
             # 화물을 배치하는 코드
-            if coordinate != None:
+            if coordinate is not None:
                 # 배치 잘 됨
                 # print str(object.id) + " 번째 화물 배치 좌표 : " + " (" +str(coordinate.x) + ", " + str(coordinate.y) + "),\t" + "화물 방향 전환 : " + str(object.isTransformed) + ",\t 화물 크기 : " + str(object.getWidth()) + "*" + str(object.getHeight())
                 usingVertex += object.getWidth() * object.getHeight()

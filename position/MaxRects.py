@@ -40,16 +40,20 @@ class MaxRects(PositionAlgorithm):
             for elem in ic.floors[f].entrances:
                 entrance = Rectangle(elem.coordinate, Coordinate(f, elem.coordinate.x + elem.width,
                                                                  elem.coordinate.y + elem.length))
-                # TODO: fix bug here
-                for rect in self.rectList[f]:
+                # Find rectangle(s) in which an entrance located
+                # But before doing it, make a copy of the rectangles list,
+                # because the original one will be modified
+                tempList = list(self.rectList[f])
+                for rect in tempList:
                     if rect.isIncluded(entrance):
                         self.divide(f, rect, entrance)
 
             for elem in ic.floors[f].obstacles:
                 obstacle = Rectangle(elem.coordinate, Coordinate(f, elem.coordinate.x + elem.width,
                                                                  elem.coordinate.y + elem.length))
-                # TODO: fix bug here
-                for rect in self.rectList[f]:
+                # Find rectangle(s) in which an obstacle located
+                tempList = list(self.rectList[f])
+                for rect in tempList:
                     if rect.isIncluded(obstacle):
                         self.divide(f, rect, obstacle)
 
@@ -99,8 +103,11 @@ class MaxRects(PositionAlgorithm):
                                Coordinate(f, targetCoordinate.x + obj.getWidth(), targetCoordinate.y + obj.getLength()))
 
         # 현재 사각형 리스트들과 추가된 사각형들을 비교하며 사각형을 나누는 작업을 한다
-        # TODO: fix bug here
-        for rect in self.rectList[f]:
+        # Find rectangle(s) in which a cargo will be placed
+        # But before doing it, make a copy of the rectangles list,
+        # because the original one will be modified
+        tempList = list(self.rectList[f])
+        for rect in tempList:
             if rect.isIntersected(insertRect):
                 self.divide(f, rect, insertRect)
 
