@@ -27,8 +27,11 @@ def main():
     positionResult = positionModule.setPosition(ObjectList)
     performance.end()
 
+    print
     print "남은 면적 : " + str(positionResult.remainArea) + " m²"
-    print "성공 여부 : " + str(positionResult.isAllSet)
+    print "Number of placed cargoes : " + str(positionResult.placedNum)
+    print "Number of failed to place cargoes : " + str(positionResult.notPlacedNum)
+    print
 
     print performance.sPrint()
 

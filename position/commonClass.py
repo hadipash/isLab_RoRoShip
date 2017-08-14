@@ -16,14 +16,9 @@ CARGO_INPUT_LIST = "../common/cargo_input.json"
 # 순서를 받지 못할 때 사용할 임시 순서 리스트를 만들어주는 함수
 # Get list of all objects from a json file
 def getObjectSampleList():
-    f = open(CARGO_INPUT_LIST, 'r')
-    js = json.loads(f.read())
-    f.close()
-
-    dataList = js["data"]
+    dataList = Parser.readJSON(CARGO_INPUT_LIST)["data"]
 
     objectList = []
-
     for data in dataList:
         objectList.append(Object(data["groupId"], data["cargoId"], ic.typeList[int(data["cargoType"]) - 1]))
 

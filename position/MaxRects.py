@@ -32,14 +32,16 @@ class MaxRects(PositionAlgorithm):
         for f in range(0, len(ic.floors)):
             self.rectList.append([])
             # first, represent all floors as single rectangles
-            self.rectList[f].append(Rectangle(Coordinate(f, self.boundary, self.boundary),
-                                              Coordinate(f, ic.floors[f].width - self.boundary,
-                                                         ic.floors[f].length - self.boundary)))
+            self.rectList[f].append(Rectangle(Coordinate(f, self.sideBound, self.fbBound),
+                                              Coordinate(f, ic.floors[f].width - self.sideBound,
+                                                         ic.floors[f].length - self.fbBound)))
 
             # Then split floor rectangles into smaller rectangles in accordance with entrances and obstacles
             for elem in ic.floors[f].entrances:
-                entrance = Rectangle(elem.coordinate, Coordinate(f, elem.coordinate.x + elem.width,
-                                                                 elem.coordinate.y + elem.length))
+                entrance = Rectangle(Coordinate(f, elem.coordinate.x - self.sideBound,
+                                                elem.coordinate.y - self.fbBound),
+                                     Coordinate(f, elem.coordinate.x + elem.width + self.sideBound,
+                                                elem.coordinate.y + elem.length + self.fbBound))
                 # Find rectangle(s) in which an entrance located
                 # But before doing it, make a copy of the rectangles list,
                 # because the original one will be modified
@@ -49,8 +51,10 @@ class MaxRects(PositionAlgorithm):
                         self.divide(f, rect, entrance)
 
             for elem in ic.floors[f].obstacles:
-                obstacle = Rectangle(elem.coordinate, Coordinate(f, elem.coordinate.x + elem.width,
-                                                                 elem.coordinate.y + elem.length))
+                obstacle = Rectangle(Coordinate(f, elem.coordinate.x - self.sideBound,
+                                                elem.coordinate.y - self.fbBound),
+                                     Coordinate(f, elem.coordinate.x + elem.width + self.sideBound,
+                                                elem.coordinate.y + elem.length + self.fbBound))
                 # Find rectangle(s) in which an obstacle located
                 tempList = list(self.rectList[f])
                 for rect in tempList:
@@ -58,18 +62,17 @@ class MaxRects(PositionAlgorithm):
                         self.divide(f, rect, obstacle)
 
     # 화물을 집어넣을 사각형을 검색하는 함수
-    # 여기서 Best Area Fit, Best Short Side Fit, Best Long Side Fit 사용에 따라 결과가 달라진다
-    # 현재는 Best Long Side Fit
     def searchPosition(self, obj):
         # 후보 사각형 리스트를 모두 뒤지면서 비교
         for f in range(0, len(ic.floors)):
             for rect in self.rectList[f]:
                 # 정방향 배치
                 # check whether it is possible to place an object in a rectangle
-                remainWidth = rect.width - obj.getWidth()
-                remainLength = rect.length - obj.getLength()
+                remainWidth = rect.width - (obj.getWidth() + 2 * self.sideBound)
+                remainLength = rect.length - (obj.getLength() + 2 * self.fbBound)
                 if remainWidth >= 0 and remainLength >= 0:
-                    return Coordinate(f, rect.topLeft.x + remainWidth, rect.topLeft.y + remainLength)
+                    return Coordinate(f, rect.topLeft.x + remainWidth + self.sideBound,
+                                      rect.topLeft.y + remainLength + self.fbBound)
 
         # 배치될 사각형의 좌상단 좌표를 리턴
         return None
@@ -94,8 +97,9 @@ class MaxRects(PositionAlgorithm):
     def insert(self, obj, targetCoordinate):
         f = targetCoordinate.floor
         # 배치된 화물 사각형
-        insertRect = Rectangle(targetCoordinate,
-                               Coordinate(f, targetCoordinate.x + obj.getWidth(), targetCoordinate.y + obj.getLength()))
+        insertRect = Rectangle(Coordinate(f, targetCoordinate.x - self.sideBound, targetCoordinate.y - self.fbBound),
+                               Coordinate(f, targetCoordinate.x + obj.getWidth() + self.sideBound,
+                                          targetCoordinate.y + obj.getLength() + self.fbBound))
 
         # 현재 사각형 리스트들과 추가된 사각형들을 비교하며 사각형을 나누는 작업을 한다
         # Find rectangle(s) in which a cargo will be placed
@@ -125,7 +129,8 @@ class MaxRects(PositionAlgorithm):
     def addRectangle(self, f, newRects):
         # 적절한 사각형이 아니라면 추가하지 않는다
         for newRect in newRects:
-            if newRect.width > 0 and newRect.length > 0 and not self.isAvailableRectMerge(f, newRect):
+            if newRect.width >= ic.minWidth and newRect.length >= ic.minLength \
+                    and not self.isAvailableRectMerge(f, newRect):
                 self.sort(f, newRect)
 
     # 사각형 merge 가능한지 체크하는 함수
@@ -142,7 +147,7 @@ class MaxRects(PositionAlgorithm):
                 self.rectList[f].insert(i, newRect)
                 return
             if newRect.bottomRight.y == self.rectList[f][i].bottomRight.y:
-                if newRect.bottomRight.x >= self.rectList[f][i].bottomRight.x:
+                if newRect.width >= self.rectList[f][i].width:
                     self.rectList[f].insert(i, newRect)
                     return
 

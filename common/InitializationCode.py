@@ -11,6 +11,8 @@ from Parser import *
 # Extensively used variables across all the program
 typeList = None     # List of objects types
 floors = None       # available free space on each floor
+minWidth = 0        # minimum width among all cargoes
+minLength = 0       # minimum length among all cargoes
 
 
 def initialize():
@@ -19,3 +21,7 @@ def initialize():
     floors = parser.floors
     global typeList
     typeList = parser.typeList
+    global minWidth
+    minWidth = parser.minWidth
+    global minLength
+    minLength = parser.minLength

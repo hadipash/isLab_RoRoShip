@@ -1,14 +1,13 @@
 {
 	"freight":{
-		"cnt":"7",
+		"cnt":"6",
 		"freight_type":[
-			{"name" : "Compact_Car","Full_height":"3495","Full_width":"1595","Wheel_base":"2370","MAX_steer_angle":"50" },
-			{"name" : "Midsize_Car","Full_height":"4605","Full_width":"1790","Wheel_base":"2685","MAX_steer_angle":"50"},
-			{"name" : "Large_Car","Full_height":"5160","Full_width":"1900","Wheel_base":"3045","MAX_steer_angle":"50"},
-			{"name" : "Train","Full_height":"23000","Full_width":"3000","Wheel_base":"-1","MAX_steer_angle":"50"},
-			{"name" : "Bus","Full_height":"11065","Full_width":"2495","Wheel_base":"5495","MAX_steer_angle":"50"},
-			{"name" : "Excavator","Full_height":"10570","Full_width":"3200","Wheel_base":"-1","MAX_steer_angle":"50"},
-			{"name" : "Wheel_Loaders","Full_height":"9150","Full_width":"3300","Wheel_base":"3700","MAX_steer_angle":"50"}
+			{"name" : "Compact_Car","Full_length":"3495","Full_width":"1595","Wheel_base":"2370","MAX_steer_angle":"50" },
+			{"name" : "Midsize_Car","Full_length":"4605","Full_width":"1790","Wheel_base":"2685","MAX_steer_angle":"50"},
+			{"name" : "Large_Car","Full_length":"5160","Full_width":"1900","Wheel_base":"3045","MAX_steer_angle":"50"},
+			{"name" : "Bus","Full_length":"11065","Full_width":"2495","Wheel_base":"5495","MAX_steer_angle":"50"},
+			{"name" : "Excavator","Full_length":"10570","Full_width":"3200","Wheel_base":"-1","MAX_steer_angle":"50"},
+			{"name" : "Wheel_Loaders","Full_length":"9150","Full_width":"3300","Wheel_base":"3700","MAX_steer_angle":"50"}
 		]
 	}
 }

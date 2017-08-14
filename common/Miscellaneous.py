@@ -63,10 +63,10 @@ class Coordinate:
         self.x = x
         self.y = y
 
-    def setCoordinates(self, floor, x, y):
-        self.floor = floor
-        self.x = x
-        self.y = y
+    def setCoordinates(self, coord):
+        self.floor = coord.floor
+        self.x = coord.x
+        self.y = coord.y
 
     def printCoordinate(self):
         print ("X : " + str(self.x) + ",   Y : " + str(self.y))
@@ -79,7 +79,7 @@ class Coordinate:
 
 
 # 선박 클래스
-class Floor:
+class Space:
     def __init__(self, width, length, height):
         self.width = width
         self.length = length
@@ -87,8 +87,8 @@ class Floor:
 
 
 # 선박의 공간을 관리하는 클래스
-# Class for management free space of a vessel
-class Space:
+# Class for management floors of a vessel
+class Floor:
     def __init__(self, floorInfo, availSpace, entrancesList, obstaclesList):
         self.width = floorInfo.width
         self.length = floorInfo.length

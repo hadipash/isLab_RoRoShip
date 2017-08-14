@@ -19,6 +19,8 @@ class Parser:
         # Variables for parse a ship
         self.floors = []
         self.typeList = []
+        self.minWidth = 1000000
+        self.minLength = 1000000
 
         self.parseShipInformation()
         self.parseTypeInformation()
@@ -31,7 +33,7 @@ class Parser:
         FloorInfoList = []
         availSpace = []
         for floor in configJSON["loadingSpaceList"]["loadingSpace"]:
-            FloorInfoList.append(Floor(floor["width"], floor["length"], floor["height"]))
+            FloorInfoList.append(Space(floor["width"], floor["length"], floor["height"]))
             availSpace.append(floor["width"] * floor["length"])
 
         # 입구 정보를 리스트로 관리
@@ -78,7 +80,7 @@ class Parser:
 
         # Create array of available space and entrances/obstacles in each floor
         for i in range(0, len(FloorInfoList)):
-            self.floors.append(Space(
+            self.floors.append(Floor(
                 FloorInfoList[i],
                 availSpace[i],
                 EnterInfoList[i],
@@ -89,11 +91,19 @@ class Parser:
         configJSON = self.readJSON(TYPE_INFO)
 
         for t in configJSON["freight"]["freight_type"]:
-            self.typeList.append(Type(int(t["Full_width"]), int(t["Full_height"]),
-                                      int(t["Wheel_base"]), int(t["MAX_steer_angle"])))
+            width = int(t["Full_width"])
+            length = int(t["Full_length"])
+            self.typeList.append(Type(width, length, int(t["Wheel_base"]), int(t["MAX_steer_angle"])))
+
+            if width < self.minWidth:
+                self.minWidth = width
+
+            if length < self.minLength:
+                self.minLength = length
 
     # json 파일을 읽어오는 함수
-    def readJSON(self, filename):
+    @staticmethod
+    def readJSON(filename):
         f = open(filename, 'r')
         js = json.loads(f.read())
         f.close()
