@@ -16,10 +16,10 @@ class PositionAlgorithm:
         # 선박 주변에 배치하지 못하도록 하는 경계선의 크기
         # Boundary line to avoid placing cargoes close to a vessel's walls
         self.sideBound = 50  # side distance is 5 cm
-        self.fbBound = 150   # front and back distance is 15 cm
+        self.fbBound = 150  # front and back distance is 15 cm
 
-        ic.minWidth += 2*self.sideBound
-        ic.minLength += 2*self.fbBound
+        ic.minWidth += 2 * self.sideBound
+        ic.minLength += 2 * self.fbBound
 
         # 이벤트 emitter 를 사용하는지 체크
         self.enableEmitter = False
@@ -32,5 +32,5 @@ class PositionAlgorithm:
     def updateLayout(self, topleftCoordinate, obj):
         # 라우팅 모듈쪽에 업데이트 시키는것.
         self.updateCnt += 1
-        print "update Cnt : " + str(self.updateCnt) + ", coordinateX : " + str(
-            topleftCoordinate.x) + ", coordinateY : " + str(topleftCoordinate.y)
+        print 'Freight: {:4}, Floor: {:1}, Coordinate X: {:7}, Coordinate Y: {:7}'\
+            .format(self.updateCnt, topleftCoordinate.floor + 1, topleftCoordinate.x, topleftCoordinate.y)

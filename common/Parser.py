@@ -8,7 +8,7 @@ Classes and functions to parse json files
 import json
 from Miscellaneous import *
 
-SHIP_LAYOUT_INFO = "../common/inputLayout_SimpleTest.json"
+SHIP_LAYOUT_INFO = "../common/inputLayout.json"
 TYPE_INFO = "../common/freight_list.json"
 
 
@@ -45,7 +45,7 @@ class Parser:
 
             # Because on each floor can be zero or more entrances
             # We append a new list only when changing of the floor number occurs
-            while temp != flNum:
+            while temp < flNum:
                 EnterInfoList.append([])
                 temp += 1
 
@@ -57,6 +57,10 @@ class Parser:
 
             availSpace[flNum] -= enterInfo["volume"]["width"] * enterInfo["volume"]["length"]
 
+        # generate dummy elements if last floors do not have entrances
+        while len(EnterInfoList) < len(FloorInfoList):
+            EnterInfoList.append([])
+
         # 장애물 정보를 리스트로 관리
         # List of obstacles on a vessel
         ObstacleInfoList = [[]]
@@ -66,7 +70,7 @@ class Parser:
 
             # Because on each floor can be zero or more obstacles
             # We append a new list only when changing of the floor number occurs
-            while temp != flNum:
+            while temp < flNum:
                 ObstacleInfoList.append([])
                 temp += 1
 
@@ -77,6 +81,30 @@ class Parser:
                          obstacleInfo["id"]))
 
             availSpace[flNum] -= obstacleInfo["volume"]["width"] * obstacleInfo["volume"]["length"]
+
+        # generate dummy elements if last floors do not have obstacles
+        while len(ObstacleInfoList) < len(FloorInfoList):
+            ObstacleInfoList.append([])
+
+        # List of spaces where cargo placing is prohibited
+        NotLoadableSpaceList = [[]]
+        temp = 0
+        for space in configJSON["notLoadableSpaceList"]["notLoadableSpace"]:
+            flNum = space["floor"] - 1
+
+            while temp < flNum:
+                NotLoadableSpaceList.append([])
+                temp += 1
+
+            NotLoadableSpaceList[flNum].append(
+                NotLoadableSpace(Coordinate(flNum, space["coordinate"]["X"], space["coordinate"]["Y"]),
+                                 space["width"], space["length"]))
+
+            availSpace[flNum] -= space["width"] * space["length"]
+
+        # generate dummy elements
+        while len(NotLoadableSpaceList) < len(FloorInfoList):
+            NotLoadableSpaceList.append([])
 
         # Create array of available space and entrances/obstacles in each floor
         for i in range(0, len(FloorInfoList)):

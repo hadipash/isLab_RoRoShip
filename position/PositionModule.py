@@ -51,8 +51,6 @@ class PositionModule:
             else:
                 notPlacedNumber += 1
 
-
-
         # 남은 공간 계산 및 결과 만들기
         availSpace = 0
         for floor in ic.floors:

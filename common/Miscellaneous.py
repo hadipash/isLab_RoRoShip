@@ -39,13 +39,13 @@ class Type:
 # 물체를 표현하는 클래스
 # Class for objects to be placed
 class Object:
-    def __init__(self, groupId, id, type):
+    def __init__(self, groupId, ID, _type):
         # 해당 물체의 종류를 나타내는 id
         self.groupId = groupId
         # 해당 물체의 고유 id
-        self.id = id
+        self.id = ID
         # 물체의 타입
-        self.type = type
+        self.type = _type
         self.coordinates = Coordinate(-1, -1, -1)
 
     def getWidth(self):
@@ -86,6 +86,15 @@ class Space:
         self.height = height
 
 
+class LiftingDeck:
+    def __init__(self, coordinate, width, length, ID, liftHeight):
+        self.coordinate = coordinate
+        self.width = width
+        self.length = length
+        self.liftHeight = liftHeight
+        self.id = ID
+
+
 # 선박의 공간을 관리하는 클래스
 # Class for management floors of a vessel
 class Floor:
@@ -101,16 +110,40 @@ class Floor:
 
 # 장애물 클래스
 class Obstacle:
-    def __init__(self, coordinate, width, length, id):
+    def __init__(self, coordinate, width, length, ID):
         self.coordinate = coordinate
         self.width = width
         self.length = length
+        self.id = ID
+
         self.isEnter = False
-        self.id = id
+        self.isRamp = False
+        self.isSlope = False
+        self.isNotLoadable = False
 
 
 # 입구 클래스
 class Enter(Obstacle):
-    def __init__(self, coordinate, width, length, id):
-        Obstacle.__init__(self, coordinate, width, length, id)
+    def __init__(self, coordinate, width, length, ID):
+        Obstacle.__init__(self, coordinate, width, length, ID)
         self.isEnter = True
+
+
+class Ramp(Obstacle):
+    def __init__(self, coordinate, width, length, ID, connection):
+        Obstacle.__init__(self, coordinate, width, length, ID)
+        self.isRamp = True
+        # which floors are connected by the ramp
+        self.connection = connection
+
+
+class Slope(Obstacle):
+    def __init__(self, coordinate, width, length, ID):
+        Obstacle.__init__(self, coordinate, width, length, ID)
+        self.isSlope = True
+
+
+class NotLoadableSpace(Obstacle):
+    def __init__(self, coordinate, width, length):
+        Obstacle.__init__(self, coordinate, width, length, 0)
+        self.isNotLoadable = True
