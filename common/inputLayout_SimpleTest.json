@@ -9,7 +9,7 @@
 	},
 
 	"notLoadableSpaceList" : {
-		"cnt":3,
+		"cnt":1,
 		"notLoadableSpace":[
 			{"floor":1,
 				"coordinate":{"X":0, "Y":0, "Z":-2100},
