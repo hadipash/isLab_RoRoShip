@@ -8,6 +8,16 @@
 		]
 	},
 
+	"notLoadableSpaceList" : {
+		"cnt":1,
+		"notLoadableSpace":[
+			{"floor":1,
+				"coordinate":{"X":0, "Y":0, "Z":-2100},
+				"width":0,
+				"length":0}
+		]
+	},
+
 	"enterList":{
 		"cnt":1,
 		"enter":[

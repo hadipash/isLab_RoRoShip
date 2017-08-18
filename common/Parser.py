@@ -8,7 +8,7 @@ Classes and functions to parse json files
 import json
 from Miscellaneous import *
 
-SHIP_LAYOUT_INFO = "../common/inputLayout.json"
+SHIP_LAYOUT_INFO = "../common/inputLayout_SimpleTest.json"
 TYPE_INFO = "../common/freight_list.json"
 
 
