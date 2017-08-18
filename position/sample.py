@@ -6,6 +6,7 @@ Sample program
 """
 
 from PositionModule import *
+from Viewer.testRoRo2DViewer import *
 
 
 def main():
@@ -34,6 +35,8 @@ def main():
     print
 
     print performance.sPrint()
+
+    drawPlots(ObjectList)
 
 
 if __name__ == '__main__':
