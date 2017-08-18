@@ -29,20 +29,20 @@ class MaxRects(PositionAlgorithm):
     # Divide available space into rectangles in accordance with entrances and obstacles
     def initializeSpace(self):
         # 모든 공간을 뒤지며 장애물을 찾는다
-        for f in range(0, len(ic.floors)):
+        for f in range(len(ic.floors)):
             self.rectList.append([])
             # first, represent all floors as single rectangles
             self.rectList[f].append(Rectangle(Coordinate(f, self.sideBound, self.fbBound),
                                               Coordinate(f, ic.floors[f].width - self.sideBound,
                                                          ic.floors[f].length - self.fbBound)))
 
-            # Then split floor rectangles into smaller rectangles in accordance with entrances and obstacles
+            # Then split floor rectangles into smaller rectangles in accordance with entrances, obstacles, etc.
             for elem in ic.floors[f].entrances:
                 entrance = Rectangle(Coordinate(f, elem.coordinate.x - self.sideBound,
                                                 elem.coordinate.y - self.fbBound),
                                      Coordinate(f, elem.coordinate.x + elem.width + self.sideBound,
                                                 elem.coordinate.y + elem.length + self.fbBound))
-                # Find rectangle(s) in which an entrance located
+                # Find rectangle(s) in which an entrance is located
                 # But before doing it, make a copy of the rectangles list,
                 # because the original one will be modified
                 tempList = list(self.rectList[f])
@@ -50,21 +50,60 @@ class MaxRects(PositionAlgorithm):
                     if rect.isIntersected(entrance):
                         self.divide(f, rect, entrance)
 
+            # obstacles
             for elem in ic.floors[f].obstacles:
                 obstacle = Rectangle(Coordinate(f, elem.coordinate.x - self.sideBound,
                                                 elem.coordinate.y - self.fbBound),
                                      Coordinate(f, elem.coordinate.x + elem.width + self.sideBound,
                                                 elem.coordinate.y + elem.length + self.fbBound))
-                # Find rectangle(s) in which an obstacle located
+                # Find rectangle(s) in which an obstacle is located
                 tempList = list(self.rectList[f])
                 for rect in tempList:
                     if rect.isIntersected(obstacle):
                         self.divide(f, rect, obstacle)
 
+            # not loadable space
+            for elem in ic.floors[f].notLoadable:
+                notLoad = Rectangle(Coordinate(f, elem.coordinate.x - self.sideBound,
+                                               elem.coordinate.y - self.fbBound),
+                                    Coordinate(f, elem.coordinate.x + elem.width + self.sideBound,
+                                               elem.coordinate.y + elem.length + self.fbBound))
+
+                tempList = list(self.rectList[f])
+                for rect in tempList:
+                    if rect.isIntersected(notLoad):
+                        self.divide(f, rect, notLoad)
+
+            # ramps between floors
+            for elem in ic.floors[f].ramps:
+                ramp = Rectangle(Coordinate(f, elem.coordinate.x - self.sideBound,
+                                            elem.coordinate.y - self.fbBound),
+                                 Coordinate(f, elem.coordinate.x + elem.width + self.sideBound,
+                                            elem.coordinate.y + elem.length + self.fbBound))
+
+                tempList = list(self.rectList[f])
+                for rect in tempList:
+                    if rect.isIntersected(ramp):
+                        self.divide(f, rect, ramp)
+
+            # slopes
+            for elem in ic.floors[f].slopes:
+                slope = Rectangle(Coordinate(f, elem.coordinate.x - self.sideBound,
+                                             elem.coordinate.y - self.fbBound),
+                                  Coordinate(f, elem.coordinate.x + elem.width + self.sideBound,
+                                             elem.coordinate.y + elem.length + self.fbBound))
+
+                tempList = list(self.rectList[f])
+                for rect in tempList:
+                    if rect.isIntersected(slope):
+                        self.divide(f, rect, slope)
+
+            # TODO: add lifting decks
+
     # 화물을 집어넣을 사각형을 검색하는 함수
     def searchPosition(self, obj):
         # 후보 사각형 리스트를 모두 뒤지면서 비교
-        for f in range(0, len(ic.floors)):
+        for f in range(len(ic.floors)):
             for rect in self.rectList[f]:
                 # 정방향 배치
                 # check whether it is possible to place an object in a rectangle
@@ -142,7 +181,7 @@ class MaxRects(PositionAlgorithm):
 
     # Sort rectangles in the list (start from the most far)
     def sort(self, f, newRect):
-        for i in range(0, len(self.rectList[f])):
+        for i in range(len(self.rectList[f])):
             if newRect.bottomRight.y > self.rectList[f][i].bottomRight.y:
                 self.rectList[f].insert(i, newRect)
                 return

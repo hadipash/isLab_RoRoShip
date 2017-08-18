@@ -98,7 +98,8 @@ class LiftingDeck:
 # 선박의 공간을 관리하는 클래스
 # Class for management floors of a vessel
 class Floor:
-    def __init__(self, floorInfo, availSpace, entrancesList, obstaclesList):
+    def __init__(self, floorInfo, availSpace, entrancesList,
+                 obstaclesList, notLoadableList, rampList, slopeList, deckList):
         self.width = floorInfo.width
         self.length = floorInfo.length
         self.height = floorInfo.height
@@ -106,6 +107,10 @@ class Floor:
 
         self.entrances = entrancesList
         self.obstacles = obstaclesList
+        self.notLoadable = notLoadableList
+        self.ramps = rampList
+        self.slopes = slopeList
+        self.decks = deckList
 
 
 # 장애물 클래스
