@@ -39,6 +39,9 @@ def drawPlots(cars):
                                       width=pillarWidth, fc='black', ec='black')
             plt.gca().add_patch(rectangle)
 
+    # TODO: add also ic.floors[i].notLoadable, ic.floors[i].ramps, ic.floors[i].slopes
+    # ic.floors[i].decks ignore for this moment
+
     # insert car
     for i in range(len(ic.floors)):
         for car in cars:
