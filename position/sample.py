@@ -36,8 +36,7 @@ def main():
 
     print performance.sPrint()
 
-    # drawPlots(ObjectList)
-
+    drawPlots(ObjectList)
 
 if __name__ == '__main__':
     main()

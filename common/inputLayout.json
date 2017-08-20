@@ -34,7 +34,7 @@
 		"cnt":1,
 		"enter":[
 			{"floor":2,
-				"coordinate":{"X":62500, "Y":129000, "Z":0},
+				"coordinate":{"X":6250, "Y":129000, "Z":0},
 				"volume":{"width":5000, "length":1000},
 				"id":"enter_01"}
 		]

@@ -11,10 +11,10 @@ from routing.min_radius import *
 # 화물의 종류를 나타내는 클래스
 # Class for defining types of objects to be placed on a vessel
 class Type:
-    def __init__(self, width, length, wheelbase, steeringAngle):
+    def __init__(self, type, width, length, wheelbase, steeringAngle):
+        self.type = type
         self.width = width
         self.length = length
-
         self.L = wheelbase
         self.a = steeringAngle
 
@@ -54,6 +54,8 @@ class Object:
     def getLength(self):
         return self.type.length
 
+    def getType(self):
+        return self.type.type
 
 # 좌표를 지칭하는데 사용하는 클래스
 # Class for a coordinate system
