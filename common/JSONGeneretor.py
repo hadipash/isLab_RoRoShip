@@ -22,13 +22,6 @@ def main():
     tempData = []
     for i in range(30):
         item = {"cargoId": vehicleID,
-                "cargoType": 4,
-                "groupId": 1}
-        tempData.append(item)
-        vehicleID += 1
-
-    for i in range(30):
-        item = {"cargoId": vehicleID,
                 "cargoType": 5,
                 "groupId": 1}
         tempData.append(item)
@@ -37,6 +30,13 @@ def main():
     for i in range(30):
         item = {"cargoId": vehicleID,
                 "cargoType": 6,
+                "groupId": 1}
+        tempData.append(item)
+        vehicleID += 1
+
+    for i in range(30):
+        item = {"cargoId": vehicleID,
+                "cargoType": 4,
                 "groupId": 1}
         tempData.append(item)
         vehicleID += 1
