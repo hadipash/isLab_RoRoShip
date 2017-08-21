@@ -191,8 +191,7 @@ class Parser:
         for t in configJSON["freight"]["freight_type"]:
             width = int(t["Full_width"])
             length = int(t["Full_length"])
-            type = str(t["name"])
-            self.typeList.append(Type(type, width, length, int(t["Wheel_base"]), int(t["MAX_steer_angle"])))
+            self.typeList.append(Type(width, length, int(t["Wheel_base"]), int(t["MAX_steer_angle"])))
 
             if width < self.minWidth:
                 self.minWidth = width
