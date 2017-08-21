@@ -2,9 +2,9 @@ import matplotlib.pyplot as plt
 import common.InitializationCode as ic
 
 # orientation of plots
-vertical = True
+vertical = False
 # array of colors
-colors = ['red', 'green', 'blue', 'yellow', 'skyblue', 'magenta', 'cyan']
+colors = ['red', 'green', 'blue', 'yellow', 'magenta', 'cyan', 'orange', 'purple', 'skyblue']
 
 
 # layout initialization
@@ -44,30 +44,30 @@ def plotInitial():
         for nLoad in ic.floors[i].notLoadable:
             if vertical:
                 rectangle = plt.Rectangle((nLoad.coordinate.x, nLoad.coordinate.y), height=nLoad.length,
-                                          width=nLoad.width, fc='orange', ec='black')
+                                          width=nLoad.width, fc='whitesmoke', ec='black')
             else:
                 rectangle = plt.Rectangle((nLoad.coordinate.y, nLoad.coordinate.x), height=nLoad.width,
-                                          width=nLoad.length, fc='orange', ec='black')
+                                          width=nLoad.length, fc='whitesmoke', ec='black')
             plt.gca().add_patch(rectangle)
 
         # insert ramps
         for ramp in ic.floors[i].ramps:
             if vertical:
                 rectangle = plt.Rectangle((ramp.coordinate.x, ramp.coordinate.y), height=ramp.length,
-                                          width=ramp.width, fc='purple', ec='black')
+                                          width=ramp.width, fc='midnightblue', ec='black')
             else:
                 rectangle = plt.Rectangle((ramp.coordinate.y, ramp.coordinate.x), height=ramp.width,
-                                          width=ramp.length, fc='purple', ec='black')
+                                          width=ramp.length, fc='midnightblue', ec='black')
             plt.gca().add_patch(rectangle)
 
         # insert slopes
         for slope in ic.floors[i].slopes:
             if vertical:
                 rectangle = plt.Rectangle((slope.coordinate.x, slope.coordinate.y), height=slope.length,
-                                          width=slope.width, fc='gray', ec='black')
+                                          width=slope.width, fc='lightgray', ec='black')
             else:
                 rectangle = plt.Rectangle((slope.coordinate.y, slope.coordinate.x), height=slope.width,
-                                          width=slope.length, fc='gray', ec='black')
+                                          width=slope.length, fc='lightgray', ec='black')
             plt.gca().add_patch(rectangle)
 
         plt.axis('scaled')
@@ -78,18 +78,19 @@ def drawPlots(cars):
 
     # insert car
     for car in cars:
-        carColor = ''
-        for i in range(len(ic.typeList)):
-            if car.type == ic.typeList[i]:
-                carColor = colors[i]
+        if car.coordinates.floor != -1:
+            carColor = ''
+            for i in range(len(ic.typeList)):
+                if car.type == ic.typeList[i]:
+                    carColor = colors[i]
 
-        plt.figure(car.coordinates.floor + 1)
-        if vertical:
-            rectangle = plt.Rectangle((car.coordinates.x, car.coordinates.y), height=car.getLength(),
-                                      width=car.getWidth(), fc=carColor, ec='black')
-        else:
-            rectangle = plt.Rectangle((car.coordinates.y, car.coordinates.x), height=car.getWidth(),
-                                      width=car.getLength(), fc=carColor, ec='black')
-        plt.gca().add_patch(rectangle)
+            plt.figure(car.coordinates.floor + 1)
+            if vertical:
+                rectangle = plt.Rectangle((car.coordinates.x, car.coordinates.y), height=car.getLength(),
+                                          width=car.getWidth(), fc=carColor, ec='black')
+            else:
+                rectangle = plt.Rectangle((car.coordinates.y, car.coordinates.x), height=car.getWidth(),
+                                          width=car.getLength(), fc=carColor, ec='black')
+            plt.gca().add_patch(rectangle)
 
     plt.show()

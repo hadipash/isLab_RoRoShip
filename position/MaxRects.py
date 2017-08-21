@@ -110,8 +110,7 @@ class MaxRects(PositionAlgorithm):
                 remainWidth = rect.width - (obj.getWidth() + 2 * self.sideBound)
                 remainLength = rect.length - (obj.getLength() + 2 * self.fbBound)
                 if remainWidth >= 0 and remainLength >= 0:
-                    return Coordinate(f, rect.topLeft.x + remainWidth + self.sideBound,
-                                      rect.topLeft.y + remainLength + self.fbBound)
+                    return Coordinate(f, rect.topLeft.x + self.sideBound, rect.topLeft.y + self.fbBound)
 
         # 배치될 사각형의 좌상단 좌표를 리턴
         return None
@@ -182,10 +181,10 @@ class MaxRects(PositionAlgorithm):
     # Sort rectangles in the list (start from the most far)
     def sort(self, f, newRect):
         for i in range(len(self.rectList[f])):
-            if newRect.bottomRight.y > self.rectList[f][i].bottomRight.y:
+            if newRect.topLeft.y < self.rectList[f][i].topLeft.y:
                 self.rectList[f].insert(i, newRect)
                 return
-            if newRect.bottomRight.y == self.rectList[f][i].bottomRight.y:
+            if newRect.topLeft.y == self.rectList[f][i].topLeft.y:
                 if newRect.width >= self.rectList[f][i].width:
                     self.rectList[f].insert(i, newRect)
                     return

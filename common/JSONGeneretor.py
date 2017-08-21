@@ -10,7 +10,7 @@ from Parser import *
 TYPE_INFO = "../common/freight_list.json"
 CARGO_LIST = "../common/cargo_input.json"
 
-NUM_OF_VEHICLES = 390
+NUM_OF_VEHICLES = 690
 
 
 def main():
@@ -22,7 +22,7 @@ def main():
     tempData = []
     for i in range(30):
         item = {"cargoId": vehicleID,
-                "cargoType": 6,
+                "cargoType": 4,
                 "groupId": 1}
         tempData.append(item)
         vehicleID += 1
@@ -36,26 +36,26 @@ def main():
 
     for i in range(30):
         item = {"cargoId": vehicleID,
-                "cargoType": 4,
+                "cargoType": 6,
                 "groupId": 1}
         tempData.append(item)
         vehicleID += 1
 
-    for i in range(60):
+    for i in range(130):
         item = {"cargoId": vehicleID,
                 "cargoType": 3,
                 "groupId": 1}
         tempData.append(item)
         vehicleID += 1
 
-    for i in range(100):
+    for i in range(200):
         item = {"cargoId": vehicleID,
                 "cargoType": 2,
                 "groupId": 1}
         tempData.append(item)
         vehicleID += 1
 
-    for i in range(140):
+    for i in range(270):
         item = {"cargoId": vehicleID,
                 "cargoType": 1,
                 "groupId": 1}
