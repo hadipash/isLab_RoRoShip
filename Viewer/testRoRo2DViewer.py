@@ -1,116 +1,95 @@
 import matplotlib.pyplot as plt
 import common.InitializationCode as ic
 
-def drawPlots(cars):
-    # make empty board
+# orientation of plots
+vertical = True
+# array of colors
+colors = ['red', 'green', 'blue', 'yellow', 'skyblue', 'magenta', 'cyan']
 
+
+# layout initialization
+def plotInitial():
     for i in range(len(ic.floors)):
         plt.figure(i + 1)
-        rectangle = plt.Rectangle((0, -ic.floors[i].length), height=ic.floors[i].length, width=ic.floors[i].width, fc='white', ec='black')
+        # make empty board
+        if vertical:
+            rectangle = plt.Rectangle((0, 0), height=ic.floors[i].length, width=ic.floors[i].width,
+                                      fc='white', ec='black')
+        else:
+            rectangle = plt.Rectangle((0, 0), height=ic.floors[i].width, width=ic.floors[i].length,
+                                      fc='white', ec='black')
         plt.gca().add_patch(rectangle)
-        #plt.axis('scaled')
 
-    # insert entrance
-    for i in range(len(ic.floors)):
-        plt.figure(i + 1)
+        # insert entrance
         for ent in ic.floors[i].entrances:
-            entranceX = ent.coordinate.x
-            entranceY = ent.coordinate.y
-            entranceHeight = ent.length
-            entranceWidth = ent.width
-
-            rectangle = plt.Rectangle((entranceX, -(entranceY + entranceHeight)), height=entranceHeight,
-                                      width=entranceWidth, fc='gray', ec='black')
+            if vertical:
+                rectangle = plt.Rectangle((ent.coordinate.x, ent.coordinate.y), height=ent.length,
+                                          width=ent.width, fc='gray', ec='black')
+            else:
+                rectangle = plt.Rectangle((ent.coordinate.y, ent.coordinate.x), height=ent.width,
+                                          width=ent.length, fc='gray', ec='black')
             plt.gca().add_patch(rectangle)
-        plt.axis('scaled')
 
-    # insert pillar
-    for i in range(len(ic.floors)):
-        plt.figure(i + 1)
+        # insert pillar
         for obs in ic.floors[i].obstacles:
-            pillarX = obs.coordinate.x
-            pillarY = obs.coordinate.y
-            pillarHeight = obs.length
-            pillarWidth = obs.width
-
-            rectangle = plt.Rectangle((pillarX, -(pillarY + pillarHeight)), height=pillarHeight,
-                                      width=pillarWidth, fc='black', ec='black')
+            if vertical:
+                rectangle = plt.Rectangle((obs.coordinate.x, obs.coordinate.y), height=obs.length,
+                                          width=obs.width, fc='black', ec='black')
+            else:
+                rectangle = plt.Rectangle((obs.coordinate.y, obs.coordinate.x), height=obs.width,
+                                          width=obs.length, fc='black', ec='black')
             plt.gca().add_patch(rectangle)
-        plt.axis('scaled')
-    # TODO: add also ic.floors[i].notLoadable, ic.floors[i].ramps, ic.floors[i].slopes
-    # ic.floors[i].decks ignore for this moment
 
-    #insert notLoadble
-    for i in range(len(ic.floors)):
-        plt.figure(i + 1)
+        # insert notLoadable
         for nLoad in ic.floors[i].notLoadable:
-            nLoadX = nLoad.coordinate.x
-            nLoadY = nLoad.coordinate.y
-            nLoadHeight = nLoad.length
-            nLoadWidth = nLoad.width
-
-            rectangle = plt.Rectangle((nLoadX, -(nLoadY + nLoadHeight)), height=nLoadHeight,
-                                      width=nLoadWidth, fc='orange', ec='black')
+            if vertical:
+                rectangle = plt.Rectangle((nLoad.coordinate.x, nLoad.coordinate.y), height=nLoad.length,
+                                          width=nLoad.width, fc='orange', ec='black')
+            else:
+                rectangle = plt.Rectangle((nLoad.coordinate.y, nLoad.coordinate.x), height=nLoad.width,
+                                          width=nLoad.length, fc='orange', ec='black')
             plt.gca().add_patch(rectangle)
-        plt.axis('scaled')
 
-    # insert ramps
-    for i in range(len(ic.floors)):
-        plt.figure(i + 1)
+        # insert ramps
         for ramp in ic.floors[i].ramps:
-            rampX = ramp.coordinate.x
-            rampY = ramp.coordinate.y
-            rampHeight = ramp.length
-            rampWidth = ramp.width
-
-            rectangle = plt.Rectangle((rampX, -(rampY + rampHeight)), height=rampHeight,
-                                          width=rampWidth, fc='purple', ec='black')
+            if vertical:
+                rectangle = plt.Rectangle((ramp.coordinate.x, ramp.coordinate.y), height=ramp.length,
+                                          width=ramp.width, fc='purple', ec='black')
+            else:
+                rectangle = plt.Rectangle((ramp.coordinate.y, ramp.coordinate.x), height=ramp.width,
+                                          width=ramp.length, fc='purple', ec='black')
             plt.gca().add_patch(rectangle)
-        plt.axis('scaled')
 
-    # insert slopes
-    for i in range(len(ic.floors)):
-        plt.figure(i + 1)
+        # insert slopes
         for slope in ic.floors[i].slopes:
-            slopeX = slope.coordinate.x
-            slopeY = slope.coordinate.y
-            slopeHeight = slope.length
-            slopeWidth = slope.width
-
-            rectangle = plt.Rectangle((slopeX, -(slopeY + slopeHeight)), height=slopeHeight,
-                                          width=slopeWidth, fc='gray', ec='black')
+            if vertical:
+                rectangle = plt.Rectangle((slope.coordinate.x, slope.coordinate.y), height=slope.length,
+                                          width=slope.width, fc='gray', ec='black')
+            else:
+                rectangle = plt.Rectangle((slope.coordinate.y, slope.coordinate.x), height=slope.width,
+                                          width=slope.length, fc='gray', ec='black')
             plt.gca().add_patch(rectangle)
+
         plt.axis('scaled')
+
+
+def drawPlots(cars):
+    plotInitial()
 
     # insert car
-    for i in range(len(ic.floors)):
-        plt.figure(i + 1)
-        for car in cars:
-            carFloor = car.coordinates.floor
-            carX = car.coordinates.x
-            carY = car.coordinates.y
-            carHeight = car.getLength()
-            carWidth = car.getWidth()
-            carType = car.getType()
-            carColor = ''
+    for car in cars:
+        carColor = ''
+        for i in range(len(ic.typeList)):
+            if car.type == ic.typeList[i]:
+                carColor = colors[i]
 
-            if carType == "Compact_Car":
-                carColor = 'red'
-            elif carType == "Midsize_Car":
-                carColor = 'green'
-            elif carType == "Large_Car":
-                carColor = 'blue'
-            elif carType == "Bus":
-                carColor = 'yellow'
-            elif carType == "Excavator":
-                carColor = 'blue'
-            elif carType == "Wheel_Loaders":
-                carColor = 'skyblue'
+        plt.figure(car.coordinates.floor + 1)
+        if vertical:
+            rectangle = plt.Rectangle((car.coordinates.x, car.coordinates.y), height=car.getLength(),
+                                      width=car.getWidth(), fc=carColor, ec='black')
+        else:
+            rectangle = plt.Rectangle((car.coordinates.y, car.coordinates.x), height=car.getWidth(),
+                                      width=car.getLength(), fc=carColor, ec='black')
+        plt.gca().add_patch(rectangle)
 
-            if carFloor == i:
-                rectangle = plt.Rectangle((carX, -(carY + carHeight)), height=carHeight,
-                                      width=carWidth, fc=carColor, ec='black')
-                plt.gca().add_patch(rectangle)
-
-        plt.axis('scaled')
     plt.show()
