@@ -166,7 +166,7 @@ class Parser:
                                 deck["volume"]["width"], deck["volume"]["length"], deck["id"], deck["lifting_height"]))
 
             # Lifting deck increases available space
-            availSpace[flNum] += deck["volume"]["width"] * deck["volume"]["length"]
+            # availSpace[flNum] += deck["volume"]["width"] * deck["volume"]["length"]
 
         # generate dummy elements if last floors do not have obstacles
         while len(DeckInfoList) < numOfFl:

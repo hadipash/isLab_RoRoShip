@@ -110,10 +110,31 @@ class MaxRects(PositionAlgorithm):
                 remainWidth = rect.width - (obj.getWidth() + 2 * self.sideBound)
                 remainLength = rect.length - (obj.getLength() + 2 * self.fbBound)
                 if remainWidth >= 0 and remainLength >= 0:
-                    return Coordinate(f, rect.topLeft.x + self.sideBound, rect.topLeft.y + self.fbBound)
+                    # place additional objects at the same time
+                    numOfObj = 0
+                    while remainWidth - (obj.getWidth() + 2 * self.sideBound) >= 0:
+                        numOfObj += 1
+                        remainWidth -= (obj.getWidth() + 2 * self.sideBound)
+
+                    if rect.topLeft.x > ic.floors[f].width - rect.bottomRight.x:
+                        return Coordinate(f, rect.bottomRight.x - self.sideBound - obj.getWidth(),
+                                          rect.topLeft.y + self.fbBound), numOfObj, "Left"
+                    else:
+                        return Coordinate(f, rect.topLeft.x + self.sideBound, rect.topLeft.y + self.fbBound),\
+                               numOfObj, "Right"
 
         # 배치될 사각형의 좌상단 좌표를 리턴
-        return None
+        return None, 0, ""
+
+    def placeSeveral(self, obj, side):
+        if side == "Left":
+            return Coordinate(obj.coordinates.floor,
+                              obj.coordinates.x - 2 * self.sideBound - obj.getWidth(),
+                              obj.coordinates.y)
+        else:
+            return Coordinate(obj.coordinates.floor,
+                              obj.coordinates.x + obj.getWidth() + 2 * self.sideBound,
+                              obj.coordinates.y)
 
     # 레이아웃을 업데이트 하는 함수
     # 화물을 배치하여 사각형들을 조절한다

@@ -35,21 +35,42 @@ class PositionModule:
         notPlacedNumber = 0
         usedSpace = 0
 
+        # variables for simultaneous placing of several objects
+        numOfObj = 0
+        tempObj = None
+        side = ""
+
         # list 에 있는 모든 object 를 배치
         for obj in ObjectList:
-            # 배치할 위치 탐색. 탐색에 성공하면 배치할 영역의 좌상단 좌표를 리턴 받는다
-            tlCoordinate = self.algorithmModule.searchPosition(obj)
+            if obj.id == 34:
+                pass
 
-            if tlCoordinate is not None:
+            if numOfObj > 0 and obj.type == tempObj.type:
+                tlCoordinate = self.algorithmModule.placeSeveral(tempObj, side)
+
                 placedNumber += 1
-                # update coordinates of the cargo
                 obj.coordinates.setCoordinates(tlCoordinate)
-                # 배치할 위치가 있다면 사용한 영역 계산
                 usedSpace += obj.getWidth() * obj.getLength()
-                # 레이아웃 업데이트
                 self.algorithmModule.updateLayout(tlCoordinate, obj)
+
+                numOfObj -= 1
+                tempObj = obj
+
             else:
-                notPlacedNumber += 1
+                # 배치할 위치 탐색. 탐색에 성공하면 배치할 영역의 좌상단 좌표를 리턴 받는다
+                tlCoordinate, numOfObj, side = self.algorithmModule.searchPosition(obj)
+                tempObj = obj
+
+                if tlCoordinate is not None:
+                    placedNumber += 1
+                    # update coordinates of the cargo
+                    obj.coordinates.setCoordinates(tlCoordinate)
+                    # 배치할 위치가 있다면 사용한 영역 계산
+                    usedSpace += obj.getWidth() * obj.getLength()
+                    # 레이아웃 업데이트
+                    self.algorithmModule.updateLayout(tlCoordinate, obj)
+                else:
+                    notPlacedNumber += 1
 
         # 남은 공간 계산 및 결과 만들기
         availSpace = 0

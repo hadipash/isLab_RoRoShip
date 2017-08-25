@@ -6,9 +6,9 @@
 	"loadingSpaceList": {
 		"cnt":3,
 		"loadingSpace": [
-			{"floor":1, "width":24500, "length":130000, "height":4700},
+			{"floor":1, "width":19500, "length":130000, "height":2100},
 			{"floor":2, "width":22000, "length":130000, "height":2300},
-			{"floor":3, "width":19500, "length":130000, "height":2100}
+			{"floor":3, "width":24500, "length":130000, "height":4700}
 		]
 	},
 
@@ -191,13 +191,13 @@
 		"cnt": 2,
 		"ramp":[
 			{"floor":1,
-				"coordinate":{"X":10000, "Y":12500, "Z":-2100},
-				"volume":{"width":400, "length":400},
+				"coordinate":{"X":0, "Y":110000, "Z":-2100},
+				"volume":{"width":4000, "length":8000},
 				"id":"ramp_01",
 				"connection":{"lower_floor":1, "upper_floor":2}},
 			{"floor":2,
-				"coordinate":{"X":3900, "Y":12500, "Z":0},
-				"volume":{"width":400, "length":400},
+				"coordinate":{"X":18000, "Y":110000, "Z":0},
+				"volume":{"width":4000, "length":8000},
 				"id":"ramp_02",
 				"connection":{"lower_floor":2, "upper_floor":3}}
 		]

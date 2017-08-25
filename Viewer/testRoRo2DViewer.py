@@ -54,10 +54,10 @@ def plotInitial():
         for ramp in ic.floors[i].ramps:
             if vertical:
                 rectangle = plt.Rectangle((ramp.coordinate.x, ramp.coordinate.y), height=ramp.length,
-                                          width=ramp.width, fc='midnightblue', ec='black')
+                                          width=ramp.width, fc='dimgray', ec='black')
             else:
                 rectangle = plt.Rectangle((ramp.coordinate.y, ramp.coordinate.x), height=ramp.width,
-                                          width=ramp.length, fc='midnightblue', ec='black')
+                                          width=ramp.length, fc='dimgray', ec='black')
             plt.gca().add_patch(rectangle)
 
         # insert slopes
@@ -86,11 +86,19 @@ def drawPlots(cars):
 
             plt.figure(car.coordinates.floor + 1)
             if vertical:
-                rectangle = plt.Rectangle((car.coordinates.x, car.coordinates.y), height=car.getLength(),
-                                          width=car.getWidth(), fc=carColor, ec='black')
+                x = car.coordinates.x
+                y = car.coordinates.y
+                width = car.getWidth()
+                height = car.getLength()
             else:
-                rectangle = plt.Rectangle((car.coordinates.y, car.coordinates.x), height=car.getWidth(),
-                                          width=car.getLength(), fc=carColor, ec='black')
-            plt.gca().add_patch(rectangle)
+                x = car.coordinates.y
+                y = car.coordinates.x
+                width = car.getLength()
+                height = car.getWidth()
+
+            plt.gca().add_patch(plt.Rectangle((x, y), height=height, width=width, fc=carColor, ec='black'))
+            # write numbers on rectangles
+            # plt.annotate(car.id, (x + width / 2.0, y + height / 2.0),
+            #             color='w', weight='bold', fontsize=6, ha='center', va='center')
 
     plt.show()
