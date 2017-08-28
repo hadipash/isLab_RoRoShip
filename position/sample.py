@@ -29,9 +29,10 @@ def main():
     performance.end()
 
     print
-    print "남은 면적 : " + str(positionResult.remainArea) + " m²"
-    print "Number of placed cargoes : " + str(positionResult.placedNum)
-    print "Number of failed to place cargoes : " + str(positionResult.notPlacedNum)
+    print "Total area: " + str(positionResult.totalArea) + " m²"
+    print "Remain area: " + str(positionResult.remainArea) + " m²"
+    print "Number of placed cargoes: " + str(positionResult.placedNum)
+    print "Number of failed to place cargoes: " + str(positionResult.notPlacedNum)
     print
 
     print performance.sPrint()

@@ -12,9 +12,10 @@ import common.InitializationCode as ic
 
 # 외부에서 알고리즘 결과를 받을 클래스
 class PositionResult:
-    def __init__(self, placedNum, notPlacedNum, remainArea):
+    def __init__(self, placedNum, notPlacedNum, totalArea, remainArea):
         # 남은 공간을 저장하는 변수
-        self.remainArea = remainArea / 1000000  # convert into m²
+        self.totalArea = totalArea / 1000000  # convert into m²
+        self.remainArea = remainArea / 1000000
         self.placedNum = placedNum
         self.notPlacedNum = notPlacedNum
 
@@ -42,9 +43,7 @@ class PositionModule:
 
         # list 에 있는 모든 object 를 배치
         for obj in ObjectList:
-            if obj.id == 34:
-                pass
-
+            # place several objects simultaneously
             if numOfObj > 0 and obj.type == tempObj.type:
                 tlCoordinate = self.algorithmModule.placeSeveral(tempObj, side)
 
@@ -56,6 +55,7 @@ class PositionModule:
                 numOfObj -= 1
                 tempObj = obj
 
+            # place one by one
             else:
                 # 배치할 위치 탐색. 탐색에 성공하면 배치할 영역의 좌상단 좌표를 리턴 받는다
                 tlCoordinate, numOfObj, side = self.algorithmModule.searchPosition(obj)
@@ -77,7 +77,7 @@ class PositionModule:
         for floor in ic.floors:
             availSpace += floor.availSpace
 
-        result = PositionResult(placedNumber, notPlacedNumber, availSpace - usedSpace)
+        result = PositionResult(placedNumber, notPlacedNumber, availSpace, availSpace - usedSpace)
         return result
 
     # Gui 프로그램에서 해당 함수를 통해 이벤트를 전달할 수 있는 객체를 준다
