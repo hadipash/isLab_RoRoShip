@@ -27,32 +27,32 @@ def getObjectSampleList():
 
 # 사각형 클래스
 class Rectangle:
-    # topLeft 와 bottomRight 는 모두 coordinate 정보
-    def __init__(self, topLeft, bottomRight):
-        self.topLeft = topLeft
-        self.bottomRight = bottomRight
-        self.width = bottomRight.x - topLeft.x
-        self.length = bottomRight.y - topLeft.y
+    # bottomLeft 와 topRight 는 모두 coordinate 정보
+    def __init__(self, bottomLeft, topRight):
+        self.bottomLeft = bottomLeft
+        self.topRight = topRight
+        self.width = topRight.x - bottomLeft.x
+        self.length = topRight.y - bottomLeft.y
 
     # 파라미터로 들어온 rect 가 현재 사각형에 포함되는지 확인하는 함수
     def isIncluded(self, rectangle):
-        if (rectangle.topLeft.x >= self.topLeft.x
-            and rectangle.topLeft.x + rectangle.width <= self.topLeft.x + self.width
-            and rectangle.topLeft.y >= self.topLeft.y
-            and rectangle.topLeft.y + rectangle.length <= self.topLeft.y + self.length):
+        if (rectangle.bottomLeft.x >= self.bottomLeft.x
+            and rectangle.bottomLeft.x + rectangle.width <= self.bottomLeft.x + self.width
+            and rectangle.bottomLeft.y >= self.bottomLeft.y
+            and rectangle.bottomLeft.y + rectangle.length <= self.bottomLeft.y + self.length):
             return True
         return False
 
     # 겹치는지 확인하는 함수
     def isIntersected(self, rectangle):
-        if self.topLeft.x > rectangle.bottomRight.x: return False
-        if self.bottomRight.x < rectangle.topLeft.x: return False
-        if self.topLeft.y > rectangle.bottomRight.y: return False
-        if self.bottomRight.y < rectangle.topLeft.y: return False
+        if self.bottomLeft.x > rectangle.topRight.x: return False
+        if self.topRight.x < rectangle.bottomLeft.x: return False
+        if self.bottomLeft.y > rectangle.topRight.y: return False
+        if self.topRight.y < rectangle.bottomLeft.y: return False
         return True
 
     def equal(self, rectangle):
-        if self.topLeft.equal(rectangle.topLeft) and self.bottomRight.equal(rectangle.bottomRight):
+        if self.bottomLeft.equal(rectangle.bottomLeft) and self.topRight.equal(rectangle.topRight):
             return True
         return False
 

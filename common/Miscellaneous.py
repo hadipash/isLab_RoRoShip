@@ -46,6 +46,7 @@ class Object:
         self.id = ID
         # 물체의 타입
         self.type = _type
+        self.area = self.type.width * self.type.length / 1000000    # in square meters
         self.coordinates = Coordinate(-1, -1, -1)
 
     def getWidth(self):
@@ -53,6 +54,10 @@ class Object:
 
     def getLength(self):
         return self.type.length
+
+    # return object's area in square meters
+    def getArea(self):
+        return self.area
 
 
 # 좌표를 지칭하는데 사용하는 클래스

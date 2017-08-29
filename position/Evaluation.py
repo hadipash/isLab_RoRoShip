@@ -5,25 +5,41 @@
 Module for evaluating each object's position
 """
 
+import common.InitializationCode as ic
+
 
 # evaluation function for scoring each possible placement
-def evaluate(self):
+def evaluate(rect, f, obj, dbo):
     # initialize array of weights
-    w = [1, 1, 1, 1]
-    return w[0] * dte() + w[1] * nob() + w[2] * dtt() + w[3] * uld()
+    w = [0.1, 200, 30, 1, 1]
+    return (w[0] * dte(rect, f) + w[1] * fon(obj, f) + w[2] * nob(rect, obj, dbo) +
+            w[3] * dtt() + w[4] * uld())
 
 
 # distance to an entrance
-# suppose that bigger objects must be farther from the entrance
-# than smaller one for smooth routing
-def dte():
-    return 0
+# preference given to places farther from the entrance
+def dte(rect, f):
+    # if current floor has an entrance then measure distance from the entrance
+    if len(ic.floors[f].entrances) != 0:
+        return ic.floors[f].entrances[0].coordinate.y - rect.bottomLeft.y
+    # if the floor doesn't have an entrance then measure distance from a ramp
+    else:
+        return ic.floors[f].ramps[0].coordinate.y - rect.bottomLeft.y
+
+
+# floor number
+# lower floors preferred for bigger objects
+def fon(obj, f):
+    return (len(ic.floors) - f) * obj.getArea()
 
 
 # number of objects which can be placed in one row
 # preference given to an area where several objects can be placed
-def nob():
-    return 0
+def nob(rect, obj, dbo):
+    numOfObj = rect.width // (obj.getWidth() + 2 * dbo)
+    if rect.width % (obj.getWidth() + 2 * dbo) >= ic.minWidth:
+        numOfObj += 0.5
+    return numOfObj
 
 
 # distance to the same type of objects

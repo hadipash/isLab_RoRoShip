@@ -55,7 +55,7 @@ class PositionModule:
                 numOfObj -= 1
                 tempObj = obj
 
-            # place one by one
+            # place objects one by one
             else:
                 # 배치할 위치 탐색. 탐색에 성공하면 배치할 영역의 좌상단 좌표를 리턴 받는다
                 tlCoordinate, numOfObj, side = self.algorithmModule.searchPosition(obj)

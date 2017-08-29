@@ -9,6 +9,7 @@ The Maximal Rectangles algorithm for an object placement
 from IPositionAlgorithm import *
 from commonClass import *
 import common.InitializationCode as ic
+from Evaluation import evaluate
 
 
 # algorithm. 삽입 가능 공간을 관리 하는 객체
@@ -98,10 +99,15 @@ class MaxRects(PositionAlgorithm):
                     if rect.isIntersected(slope):
                         self.divide(f, rect, slope)
 
-            # TODO: add lifting decks
+                        # TODO: add lifting decks
 
     # 화물을 집어넣을 사각형을 검색하는 함수
     def searchPosition(self, obj):
+        maxVal = -1000000
+        coord = None
+        numOfObj = 0
+        side = ""
+
         # 후보 사각형 리스트를 모두 뒤지면서 비교
         for f in range(len(ic.floors)):
             for rect in self.rectList[f]:
@@ -110,21 +116,24 @@ class MaxRects(PositionAlgorithm):
                 remainWidth = rect.width - (obj.getWidth() + 2 * self.sideBound)
                 remainLength = rect.length - (obj.getLength() + 2 * self.fbBound)
                 if remainWidth >= 0 and remainLength >= 0:
-                    # place additional objects at the same time
-                    numOfObj = 0
-                    while remainWidth - (obj.getWidth() + 2 * self.sideBound) >= 0:
-                        numOfObj += 1
-                        remainWidth -= (obj.getWidth() + 2 * self.sideBound)
+                    score = evaluate(rect, f, obj, self.sideBound)
+                    if score > maxVal:
+                        maxVal = score
 
-                    if rect.topLeft.x > ic.floors[f].width - rect.bottomRight.x:
-                        return Coordinate(f, rect.bottomRight.x - self.sideBound - obj.getWidth(),
-                                          rect.topLeft.y + self.fbBound), numOfObj, "Left"
-                    else:
-                        return Coordinate(f, rect.topLeft.x + self.sideBound, rect.topLeft.y + self.fbBound),\
-                               numOfObj, "Right"
+                        # place additional objects at the same time
+                        numOfObj = remainWidth - (obj.getWidth() + 2 * self.sideBound)
+
+                        if rect.bottomLeft.x > ic.floors[f].width - rect.topRight.x:
+                            coord = Coordinate(f, rect.topRight.x - self.sideBound - obj.getWidth(),
+                                               rect.bottomLeft.y + self.fbBound)
+                            side = "Left"
+                        else:
+                            coord = Coordinate(f, rect.bottomLeft.x + self.sideBound,
+                                               rect.bottomLeft.y + self.fbBound)
+                            side = "Right"
 
         # 배치될 사각형의 좌상단 좌표를 리턴
-        return None, 0, ""
+        return coord, numOfObj, side
 
     def placeSeveral(self, obj, side):
         if side == "Left":
@@ -138,18 +147,18 @@ class MaxRects(PositionAlgorithm):
 
     # 레이아웃을 업데이트 하는 함수
     # 화물을 배치하여 사각형들을 조절한다
-    def updateLayout(self, topLeftCoordinate, obj):
+    def updateLayout(self, bottomLeftCoordinate, obj):
         # 사각형을 배치하는 함수 사용
         # search 함수 실행 후 화물 배치에 적절하다고 판단된 사각형(cacheRect) 에 화물 배치
-        self.insert(obj, topLeftCoordinate)
+        self.insert(obj, bottomLeftCoordinate)
 
         # 라우팅 모듈쪽 업데이트하기 위한 함수
-        PositionAlgorithm.updateLayout(self, topLeftCoordinate, obj)
+        PositionAlgorithm.updateLayout(self, bottomLeftCoordinate, obj)
 
         # Gui 에 표현하기 위한 코드
         if self.enableEmitter:
             # 이벤트 발생
-            self.emitter.emit(topLeftCoordinate, obj, True)
+            self.emitter.emit(bottomLeftCoordinate, obj, True)
 
     # 화물(사각형)을 배치하는 함수
     # 화물(사각형)을 배치하고 난 뒤 남은 영역의 사각형을 만들고, 이 때 포함관계를 가진 사각형들을 제거한다
@@ -173,14 +182,14 @@ class MaxRects(PositionAlgorithm):
     def divide(self, f, targetRect, insertRect):
         self.rectList[f].remove(targetRect)
         # 사각형을 4개로 만든 뒤
-        newRects = [Rectangle(Coordinate(f, targetRect.topLeft.x, targetRect.topLeft.y),
-                              Coordinate(f, targetRect.bottomRight.x, insertRect.topLeft.y)),
-                    Rectangle(Coordinate(f, targetRect.topLeft.x, insertRect.bottomRight.y),
-                              Coordinate(f, targetRect.bottomRight.x, targetRect.bottomRight.y)),
-                    Rectangle(Coordinate(f, targetRect.topLeft.x, targetRect.topLeft.y),
-                              Coordinate(f, insertRect.topLeft.x, targetRect.bottomRight.y)),
-                    Rectangle(Coordinate(f, insertRect.bottomRight.x, targetRect.topLeft.y),
-                              Coordinate(f, targetRect.bottomRight.x, targetRect.bottomRight.y))]
+        newRects = [Rectangle(Coordinate(f, targetRect.bottomLeft.x, targetRect.bottomLeft.y),
+                              Coordinate(f, targetRect.topRight.x, insertRect.bottomLeft.y)),
+                    Rectangle(Coordinate(f, targetRect.bottomLeft.x, insertRect.topRight.y),
+                              Coordinate(f, targetRect.topRight.x, targetRect.topRight.y)),
+                    Rectangle(Coordinate(f, targetRect.bottomLeft.x, targetRect.bottomLeft.y),
+                              Coordinate(f, insertRect.bottomLeft.x, targetRect.topRight.y)),
+                    Rectangle(Coordinate(f, insertRect.topRight.x, targetRect.bottomLeft.y),
+                              Coordinate(f, targetRect.topRight.x, targetRect.topRight.y))]
         # 각 사각형을 추가한다
         self.addRectangle(f, newRects)
 
@@ -202,10 +211,10 @@ class MaxRects(PositionAlgorithm):
     # Sort rectangles in the list (start from the most far)
     def sort(self, f, newRect):
         for i in range(len(self.rectList[f])):
-            if newRect.topLeft.y < self.rectList[f][i].topLeft.y:
+            if newRect.bottomLeft.y < self.rectList[f][i].bottomLeft.y:
                 self.rectList[f].insert(i, newRect)
                 return
-            if newRect.topLeft.y == self.rectList[f][i].topLeft.y:
+            if newRect.bottomLeft.y == self.rectList[f][i].bottomLeft.y:
                 if newRect.width >= self.rectList[f][i].width:
                     self.rectList[f].insert(i, newRect)
                     return
