@@ -121,7 +121,7 @@ class MaxRects(PositionAlgorithm):
                         maxVal = score
 
                         # place additional objects at the same time
-                        numOfObj = remainWidth - (obj.getWidth() + 2 * self.sideBound)
+                        numOfObj = remainWidth // (obj.getWidth() + 2 * self.sideBound)
 
                         if rect.bottomLeft.x > ic.floors[f].width - rect.topRight.x:
                             coord = Coordinate(f, rect.topRight.x - self.sideBound - obj.getWidth(),
@@ -199,7 +199,7 @@ class MaxRects(PositionAlgorithm):
         for newRect in newRects:
             if newRect.width >= ic.minWidth and newRect.length >= ic.minLength \
                     and not self.isAvailableRectMerge(f, newRect):
-                self.sort(f, newRect)
+                self.rectList[f].append(newRect)
 
     # 사각형 merge 가능한지 체크하는 함수
     def isAvailableRectMerge(self, f, newRect):
@@ -207,17 +207,3 @@ class MaxRects(PositionAlgorithm):
             if rect.isIncluded(newRect):
                 return True
         return False
-
-    # Sort rectangles in the list (start from the most far)
-    def sort(self, f, newRect):
-        for i in range(len(self.rectList[f])):
-            if newRect.bottomLeft.y < self.rectList[f][i].bottomLeft.y:
-                self.rectList[f].insert(i, newRect)
-                return
-            if newRect.bottomLeft.y == self.rectList[f][i].bottomLeft.y:
-                if newRect.width >= self.rectList[f][i].width:
-                    self.rectList[f].insert(i, newRect)
-                    return
-
-        # if the new rectangle must be placed at the end of the list
-        self.rectList[f].append(newRect)
