@@ -27,10 +27,7 @@ class Type:
         self.radius = pythagoras(self.min_R, self.L)
         self.radius = int(math.ceil(self.radius))
 
-        # # 축거
-        # self.wheelbase = wheelbase
-        # # 조향각
-        # self.steeringAngle = steeringAngle
+        self.usedArea = []
 
     def __eq__(self, other):
         return self.width == other.width and self.length == other.length and self.L == other.L and self.a == other.a

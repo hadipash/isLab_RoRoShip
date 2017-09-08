@@ -106,7 +106,8 @@ class MaxRects(PositionAlgorithm):
         maxVal = -1000000
         coord = None
         numOfObj = 0
-        side = ""
+        placeRect = None
+        floor = 0
 
         # 후보 사각형 리스트를 모두 뒤지면서 비교
         for f in range(len(ic.floors)):
@@ -116,34 +117,44 @@ class MaxRects(PositionAlgorithm):
                 remainWidth = rect.width - (obj.getWidth() + 2 * self.sideBound)
                 remainLength = rect.length - (obj.getLength() + 2 * self.fbBound)
                 if remainWidth >= 0 and remainLength >= 0:
-                    score = evaluate(rect, f, obj, self.sideBound)
+                    score = evaluate(rect, f, obj, self.sideBound, self.fbBound, self.rectList[f])
                     if score > maxVal:
                         maxVal = score
+                        placeRect = rect
+                        floor = f
 
-                        # place additional objects at the same time
-                        numOfObj = remainWidth // (obj.getWidth() + 2 * self.sideBound)
-
-                        if rect.bottomLeft.x > ic.floors[f].width - rect.topRight.x:
-                            coord = Coordinate(f, rect.topRight.x - self.sideBound - obj.getWidth(),
-                                               rect.bottomLeft.y + self.fbBound)
-                            side = "Left"
-                        else:
-                            coord = Coordinate(f, rect.bottomLeft.x + self.sideBound,
-                                               rect.bottomLeft.y + self.fbBound)
-                            side = "Right"
+        if placeRect is not None:
+            side = self.sideToPlace(floor, placeRect)
+            numOfObj = placeRect.width // (obj.getWidth() + 2 * self.sideBound) - 1
+            if side == "Left":
+                coord = Coordinate(floor, placeRect.bottomLeft.x + self.sideBound,
+                                   placeRect.bottomLeft.y + self.fbBound)
+            elif side == "Right":
+                coord = Coordinate(floor, placeRect.bottomLeft.x + self.sideBound +
+                                   (placeRect.width % (obj.getWidth() + 2 * self.sideBound)),
+                                   placeRect.bottomLeft.y + self.fbBound)
+            elif side == "Middle":
+                coord = Coordinate(floor, placeRect.bottomLeft.x + self.sideBound +
+                                   (placeRect.width % (obj.getWidth() + 2 * self.sideBound)) / 2,
+                                   placeRect.bottomLeft.y + self.fbBound)
 
         # 배치될 사각형의 좌상단 좌표를 리턴
-        return coord, numOfObj, side
+        return coord, numOfObj
 
-    def placeSeveral(self, obj, side):
-        if side == "Left":
-            return Coordinate(obj.coordinates.floor,
-                              obj.coordinates.x - 2 * self.sideBound - obj.getWidth(),
-                              obj.coordinates.y)
-        else:
-            return Coordinate(obj.coordinates.floor,
-                              obj.coordinates.x + obj.getWidth() + 2 * self.sideBound,
-                              obj.coordinates.y)
+    def sideToPlace(self, f, rect):
+        # if no available space between left wall and rectangle
+        if rect.bottomLeft.x == self.sideBound:
+            return "Left"
+        # if no available space between right wall and rectangle
+        if rect.topRight.x == ic.floors[f].width - self.sideBound:
+            return "Right"
+
+        return "Middle"
+
+    def placeNext(self, obj):
+        return Coordinate(obj.coordinates.floor,
+                          obj.coordinates.x + obj.getWidth() + 2 * self.sideBound,
+                          obj.coordinates.y)
 
     # 레이아웃을 업데이트 하는 함수
     # 화물을 배치하여 사각형들을 조절한다
