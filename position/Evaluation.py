@@ -11,22 +11,23 @@ from commonClass import *
 # evaluation function for scoring each possible placement
 def evaluate(rect, f, obj, sideBound, fbBound, rectList):
     # initialize array of weights
-    w = [0.1, 200, 30, 0.1, 1, 1]
-    return (w[0] * dte(rect, f) + w[1] * fln(obj, f) + w[2] * spa(f, rect, obj, sideBound, fbBound, rectList) +
-            w[3] * nob(rect, obj, sideBound) + w[4] * dtt() + w[5] * uld())
+    w = [0.1, 200, 30, 50, 1000, 1]
+    return (w[0] * dte(rect, f, obj) + w[2] * spa(f, rect, obj, sideBound, fbBound, rectList) +
+            w[3] * nob(rect, obj, sideBound) + w[4] * dtt(rect, f, obj) + w[5] * uld())
 
 
 # distance to an entrance
 # preference given to places farther from the entrance
-def dte(rect, f):
+def dte(rect, f, obj):
     # if current floor has an entrance then measure distance from the entrance
     if len(ic.floors[f].entrances) != 0:
-        return ic.floors[f].entrances[0].coordinate.y - rect.bottomLeft.y
+        return ic.floors[f].entrances[0].coordinate.y - (rect.bottomLeft.y + obj.getLength())
     # if the floor doesn't have an entrance then measure distance from a ramp
     else:
-        return ic.floors[f].ramps[0].coordinate.y - rect.bottomLeft.y
+        return ic.floors[f].ramps[0].coordinate.y - (rect.bottomLeft.y + obj.getLength())
 
 
+# IS NOT USED!!! (may be not needed)
 # floor number
 # lower floors are preferred for bigger objects
 def fln(obj, f):
@@ -64,15 +65,26 @@ def spa(f, rect, obj, sideBound, fbBound, rectList):
 # preference given to an area where several objects can be placed
 def nob(rect, obj, sideBound):
     numOfObj = rect.width // (obj.getWidth() + 2 * sideBound)
-    if rect.width % (obj.getWidth() + 2 * sideBound) >= ic.minWidth:
-        numOfObj += 0.5
-    return numOfObj
+    if numOfObj > 1:
+        if rect.width % (obj.getWidth() + 2 * sideBound) >= ic.minWidth:
+            return 1.2
+        else:
+            return 1
+    return -1
 
 
 # distance to the same type of objects
 # suppose that better to keep the same type of objects in a limited area
-def dtt():
-    return 0
+def dtt(rect, f, obj):
+    y = obj.type.getArea(f)
+    if len(y) == 0:
+        return 1
+    elif rect.bottomLeft.y >= y[0] and rect.bottomLeft.y + obj.getLength() <= y[1]:
+        return 1
+    elif rect.bottomLeft.y < y[0]:
+        return 1/(y[0] - rect.bottomLeft.y)
+    elif rect.bottomLeft.y + obj.getLength() > y[1]:
+        return 1/(rect.bottomLeft.y + obj.getLength() - y[1])
 
 
 # use of lifting decks

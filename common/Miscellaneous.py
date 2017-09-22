@@ -11,7 +11,7 @@ from routing.min_radius import *
 # 화물의 종류를 나타내는 클래스
 # Class for defining types of objects to be placed on a vessel
 class Type:
-    def __init__(self, width, length, wheelbase, steeringAngle):
+    def __init__(self, width, length, wheelbase, steeringAngle, usedArea):
         self.width = width
         self.length = length
 
@@ -27,7 +27,21 @@ class Type:
         self.radius = pythagoras(self.min_R, self.L)
         self.radius = int(math.ceil(self.radius))
 
-        self.usedArea = []
+        self.usedArea = usedArea
+
+    def updateArea(self, y1, y2, f):
+        if len(self.usedArea[f]) == 0:
+            self.usedArea[f] = []
+            self.usedArea[f].append(y1)
+            self.usedArea[f].append(y2)
+        else:
+            if y1 < self.usedArea[f][0]:
+                self.usedArea[f][0] = y1
+            if y2 > self.usedArea[f][1]:
+                self.usedArea[f][1] = y2
+
+    def getArea(self, f):
+        return self.usedArea[f]
 
     def __eq__(self, other):
         return self.width == other.width and self.length == other.length and self.L == other.L and self.a == other.a

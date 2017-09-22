@@ -48,6 +48,7 @@ class PositionModule:
 
                 placedNumber += 1
                 obj.coordinates.setCoordinates(tlCoordinate)
+                obj.type.updateArea(tlCoordinate.y, tlCoordinate.y + obj.getLength(), tlCoordinate.floor)
                 usedSpace += obj.getWidth() * obj.getLength()
                 self.algorithmModule.updateLayout(tlCoordinate, obj)
 

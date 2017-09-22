@@ -165,8 +165,8 @@ class Parser:
                     LiftingDeck(Coordinate(flNum, deck["coordinate"]["X"], deck["coordinate"]["Y"]),
                                 deck["volume"]["width"], deck["volume"]["length"], deck["id"], deck["lifting_height"]))
 
-            # Lifting deck increases available space
-            # availSpace[flNum] += deck["volume"]["width"] * deck["volume"]["length"]
+                # Lifting deck increases available space
+                # availSpace[flNum] += deck["volume"]["width"] * deck["volume"]["length"]
 
         # generate dummy elements if last floors do not have obstacles
         while len(DeckInfoList) < numOfFl:
@@ -191,7 +191,8 @@ class Parser:
         for t in configJSON["freight"]["freight_type"]:
             width = int(t["Full_width"])
             length = int(t["Full_length"])
-            self.typeList.append(Type(width, length, int(t["Wheel_base"]), int(t["MAX_steer_angle"])))
+            self.typeList.append(Type(width, length, int(t["Wheel_base"]), int(t["MAX_steer_angle"]),
+                                      list([[]]) * len(self.floors)))
 
             if width < self.minWidth:
                 self.minWidth = width
