@@ -1,0 +1,1527 @@
+{
+  "number_of_type": 18,
+  "data": [
+    {
+      "cargo_type": "new_aveo",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo303"
+    },
+    {
+      "cargo_type": "SM6",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo304"
+    },
+    {
+      "cargo_type": "carnival",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo308"
+    },
+    {
+      "cargo_type": "carnival",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo309"
+    },
+    {
+      "cargo_type": "avante",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo310"
+    },
+    {
+      "cargo_type": "ray",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo311"
+    },
+    {
+      "cargo_type": "ray",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo312"
+    },
+    {
+      "cargo_type": "ray",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo315"
+    },
+    {
+      "cargo_type": "SM6",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo316"
+    },
+    {
+      "cargo_type": "carnival",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo317"
+    },
+    {
+      "cargo_type": "new_aveo",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo320"
+    },
+    {
+      "cargo_type": "new_pride",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo323"
+    },
+    {
+      "cargo_type": "carnival",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo325"
+    },
+    {
+      "cargo_type": "new_pride",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo326"
+    },
+    {
+      "cargo_type": "new_aveo",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo327"
+    },
+    {
+      "cargo_type": "new_aveo",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo329"
+    },
+    {
+      "cargo_type": "avante",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo330"
+    },
+    {
+      "cargo_type": "spark",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo331"
+    },
+    {
+      "cargo_type": "SM6",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo332"
+    },
+    {
+      "cargo_type": "new_pride",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo337"
+    },
+    {
+      "cargo_type": "new_aveo",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo341"
+    },
+    {
+      "cargo_type": "ray",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo343"
+    },
+    {
+      "cargo_type": "ray",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo345"
+    },
+    {
+      "cargo_type": "ray",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo351"
+    },
+    {
+      "cargo_type": "avante",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo358"
+    },
+    {
+      "cargo_type": "carnival",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo359"
+    },
+    {
+      "cargo_type": "carnival",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo362"
+    },
+    {
+      "cargo_type": "ray",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo363"
+    },
+    {
+      "cargo_type": "SM6",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo364"
+    },
+    {
+      "cargo_type": "SM6",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo367"
+    },
+    {
+      "cargo_type": "avante",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo369"
+    },
+    {
+      "cargo_type": "carnival",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo371"
+    },
+    {
+      "cargo_type": "carnival",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo376"
+    },
+    {
+      "cargo_type": "avante",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo378"
+    },
+    {
+      "cargo_type": "SM6",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo380"
+    },
+    {
+      "cargo_type": "ray",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo383"
+    },
+    {
+      "cargo_type": "new_pride",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo387"
+    },
+    {
+      "cargo_type": "new_pride",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo388"
+    },
+    {
+      "cargo_type": "avante",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo389"
+    },
+    {
+      "cargo_type": "new_aveo",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo390"
+    },
+    {
+      "cargo_type": "carnival",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo393"
+    },
+    {
+      "cargo_type": "new_aveo",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo397"
+    },
+    {
+      "cargo_type": "new_aveo",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo400"
+    },
+    {
+      "cargo_type": "new_aveo",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo404"
+    },
+    {
+      "cargo_type": "spark",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo408"
+    },
+    {
+      "cargo_type": "new_aveo",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo409"
+    },
+    {
+      "cargo_type": "new_pride",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo410"
+    },
+    {
+      "cargo_type": "carnival",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo412"
+    },
+    {
+      "cargo_type": "new_pride",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo413"
+    },
+    {
+      "cargo_type": "carnival",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo415"
+    },
+    {
+      "cargo_type": "spark",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo416"
+    },
+    {
+      "cargo_type": "carnival",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo417"
+    },
+    {
+      "cargo_type": "new_pride",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo423"
+    },
+    {
+      "cargo_type": "avante",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo426"
+    },
+    {
+      "cargo_type": "ray",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo431"
+    },
+    {
+      "cargo_type": "new_pride",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo433"
+    },
+    {
+      "cargo_type": "new_pride",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo436"
+    },
+    {
+      "cargo_type": "carnival",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo439"
+    },
+    {
+      "cargo_type": "new_aveo",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo442"
+    },
+    {
+      "cargo_type": "new_aveo",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo444"
+    },
+    {
+      "cargo_type": "carnival",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo445"
+    },
+    {
+      "cargo_type": "SM6",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo446"
+    },
+    {
+      "cargo_type": "new_aveo",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo459"
+    },
+    {
+      "cargo_type": "carnival",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo460"
+    },
+    {
+      "cargo_type": "carnival",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo461"
+    },
+    {
+      "cargo_type": "carnival",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo463"
+    },
+    {
+      "cargo_type": "SM6",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo469"
+    },
+    {
+      "cargo_type": "carnival",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo471"
+    },
+    {
+      "cargo_type": "new_pride",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo475"
+    },
+    {
+      "cargo_type": "carnival",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo476"
+    },
+    {
+      "cargo_type": "new_pride",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo478"
+    },
+    {
+      "cargo_type": "new_pride",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo480"
+    },
+    {
+      "cargo_type": "spark",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo481"
+    },
+    {
+      "cargo_type": "ray",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo485"
+    },
+    {
+      "cargo_type": "carnival",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo488"
+    },
+    {
+      "cargo_type": "new_pride",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo490"
+    },
+    {
+      "cargo_type": "spark",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo491"
+    },
+    {
+      "cargo_type": "new_pride",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo492"
+    },
+    {
+      "cargo_type": "new_aveo",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo493"
+    },
+    {
+      "cargo_type": "avante",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo494"
+    },
+    {
+      "cargo_type": "carnival",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo495"
+    },
+    {
+      "cargo_type": "new_aveo",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo496"
+    },
+    {
+      "cargo_type": "carnival",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo498"
+    },
+    {
+      "cargo_type": "carnival",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo499"
+    },
+    {
+      "cargo_type": "spark",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo500"
+    },
+    {
+      "cargo_type": "ray",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo501"
+    },
+    {
+      "cargo_type": "SM6",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo505"
+    },
+    {
+      "cargo_type": "new_aveo",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo513"
+    },
+    {
+      "cargo_type": "carnival",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo516"
+    },
+    {
+      "cargo_type": "new_aveo",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo518"
+    },
+    {
+      "cargo_type": "ray",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo521"
+    },
+    {
+      "cargo_type": "new_aveo",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo526"
+    },
+    {
+      "cargo_type": "spark",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo529"
+    },
+    {
+      "cargo_type": "new_aveo",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo530"
+    },
+    {
+      "cargo_type": "carnival",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo531"
+    },
+    {
+      "cargo_type": "avante",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo539"
+    },
+    {
+      "cargo_type": "carnival",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo541"
+    },
+    {
+      "cargo_type": "SM6",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo542"
+    },
+    {
+      "cargo_type": "ray",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo545"
+    },
+    {
+      "cargo_type": "spark",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo546"
+    },
+    {
+      "cargo_type": "SM6",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo549"
+    },
+    {
+      "cargo_type": "avante",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo551"
+    },
+    {
+      "cargo_type": "carnival",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo554"
+    },
+    {
+      "cargo_type": "carnival",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo555"
+    },
+    {
+      "cargo_type": "new_aveo",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo558"
+    },
+    {
+      "cargo_type": "new_pride",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo559"
+    },
+    {
+      "cargo_type": "spark",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo563"
+    },
+    {
+      "cargo_type": "SM6",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo564"
+    },
+    {
+      "cargo_type": "avante",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo565"
+    },
+    {
+      "cargo_type": "SM6",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo566"
+    },
+    {
+      "cargo_type": "new_pride",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo567"
+    },
+    {
+      "cargo_type": "SM6",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo568"
+    },
+    {
+      "cargo_type": "new_pride",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo574"
+    },
+    {
+      "cargo_type": "carnival",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo577"
+    },
+    {
+      "cargo_type": "ray",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo580"
+    },
+    {
+      "cargo_type": "carnival",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo581"
+    },
+    {
+      "cargo_type": "ray",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo582"
+    },
+    {
+      "cargo_type": "ray",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo583"
+    },
+    {
+      "cargo_type": "new_pride",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo585"
+    },
+    {
+      "cargo_type": "avante",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo586"
+    },
+    {
+      "cargo_type": "new_pride",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo588"
+    },
+    {
+      "cargo_type": "carnival",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo589"
+    },
+    {
+      "cargo_type": "SM6",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo591"
+    },
+    {
+      "cargo_type": "carnival",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo594"
+    },
+    {
+      "cargo_type": "carnival",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo601"
+    },
+    {
+      "cargo_type": "carnival",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo604"
+    },
+    {
+      "cargo_type": "new_pride",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo607"
+    },
+    {
+      "cargo_type": "SM6",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo608"
+    },
+    {
+      "cargo_type": "carnival",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo609"
+    },
+    {
+      "cargo_type": "spark",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo610"
+    },
+    {
+      "cargo_type": "carnival",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo613"
+    },
+    {
+      "cargo_type": "SM6",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo615"
+    },
+    {
+      "cargo_type": "new_aveo",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo616"
+    },
+    {
+      "cargo_type": "new_aveo",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo617"
+    },
+    {
+      "cargo_type": "ray",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo618"
+    },
+    {
+      "cargo_type": "new_pride",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo622"
+    },
+    {
+      "cargo_type": "carnival",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo623"
+    },
+    {
+      "cargo_type": "carnival",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo626"
+    },
+    {
+      "cargo_type": "carnival",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo631"
+    },
+    {
+      "cargo_type": "new_pride",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo632"
+    },
+    {
+      "cargo_type": "carnival",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo633"
+    },
+    {
+      "cargo_type": "SM6",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo634"
+    },
+    {
+      "cargo_type": "carnival",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo635"
+    },
+    {
+      "cargo_type": "new_aveo",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo642"
+    },
+    {
+      "cargo_type": "avante",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo643"
+    },
+    {
+      "cargo_type": "carnival",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo646"
+    },
+    {
+      "cargo_type": "carnival",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo649"
+    },
+    {
+      "cargo_type": "new_aveo",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo650"
+    },
+    {
+      "cargo_type": "carnival",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo651"
+    },
+    {
+      "cargo_type": "SM6",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo652"
+    },
+    {
+      "cargo_type": "carnival",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo653"
+    },
+    {
+      "cargo_type": "carnival",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo656"
+    },
+    {
+      "cargo_type": "spark",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo657"
+    },
+    {
+      "cargo_type": "ray",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo660"
+    },
+    {
+      "cargo_type": "carnival",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo664"
+    },
+    {
+      "cargo_type": "new_pride",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo665"
+    },
+    {
+      "cargo_type": "carnival",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo667"
+    },
+    {
+      "cargo_type": "spark",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo674"
+    },
+    {
+      "cargo_type": "new_aveo",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo677"
+    },
+    {
+      "cargo_type": "new_aveo",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo686"
+    },
+    {
+      "cargo_type": "ray",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo687"
+    },
+    {
+      "cargo_type": "ray",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo688"
+    },
+    {
+      "cargo_type": "new_pride",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo692"
+    },
+    {
+      "cargo_type": "avante",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo693"
+    },
+    {
+      "cargo_type": "carnival",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo694"
+    },
+    {
+      "cargo_type": "SM6",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo695"
+    },
+    {
+      "cargo_type": "new_pride",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo698"
+    },
+    {
+      "cargo_type": "carnival",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo700"
+    },
+    {
+      "cargo_type": "new_aveo",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo702"
+    },
+    {
+      "cargo_type": "new_aveo",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo707"
+    },
+    {
+      "cargo_type": "new_pride",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo708"
+    },
+    {
+      "cargo_type": "SM6",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo713"
+    },
+    {
+      "cargo_type": "carnival",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo715"
+    },
+    {
+      "cargo_type": "carnival",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo716"
+    },
+    {
+      "cargo_type": "ray",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo717"
+    },
+    {
+      "cargo_type": "new_pride",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo719"
+    },
+    {
+      "cargo_type": "new_aveo",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo722"
+    },
+    {
+      "cargo_type": "carnival",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo725"
+    },
+    {
+      "cargo_type": "SM6",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo726"
+    },
+    {
+      "cargo_type": "ray",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo727"
+    },
+    {
+      "cargo_type": "new_aveo",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo732"
+    },
+    {
+      "cargo_type": "avante",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo738"
+    },
+    {
+      "cargo_type": "spark",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo743"
+    },
+    {
+      "cargo_type": "spark",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo745"
+    },
+    {
+      "cargo_type": "ray",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo746"
+    },
+    {
+      "cargo_type": "carnival",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo749"
+    },
+    {
+      "cargo_type": "new_pride",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo750"
+    },
+    {
+      "cargo_type": "new_pride",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo753"
+    },
+    {
+      "cargo_type": "new_aveo",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo754"
+    },
+    {
+      "cargo_type": "ray",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo755"
+    },
+    {
+      "cargo_type": "new_aveo",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo756"
+    },
+    {
+      "cargo_type": "new_aveo",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo757"
+    },
+    {
+      "cargo_type": "new_pride",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo759"
+    },
+    {
+      "cargo_type": "new_pride",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo760"
+    },
+    {
+      "cargo_type": "carnival",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo762"
+    },
+    {
+      "cargo_type": "new_pride",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo766"
+    },
+    {
+      "cargo_type": "spark",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo767"
+    },
+    {
+      "cargo_type": "SM6",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo768"
+    },
+    {
+      "cargo_type": "new_aveo",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo769"
+    },
+    {
+      "cargo_type": "new_pride",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo770"
+    },
+    {
+      "cargo_type": "avante",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo772"
+    },
+    {
+      "cargo_type": "ray",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo774"
+    },
+    {
+      "cargo_type": "new_aveo",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo779"
+    },
+    {
+      "cargo_type": "new_aveo",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo787"
+    },
+    {
+      "cargo_type": "SM6",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo788"
+    },
+    {
+      "cargo_type": "SM6",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo789"
+    },
+    {
+      "cargo_type": "new_aveo",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo790"
+    },
+    {
+      "cargo_type": "avante",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo791"
+    },
+    {
+      "cargo_type": "new_pride",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo792"
+    },
+    {
+      "cargo_type": "carnival",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo793"
+    },
+    {
+      "cargo_type": "ray",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo797"
+    },
+    {
+      "cargo_type": "avante",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo798"
+    },
+    {
+      "cargo_type": "carnival",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo799"
+    },
+    {
+      "cargo_type": "new_pride",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo802"
+    },
+    {
+      "cargo_type": "ray",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo804"
+    },
+    {
+      "cargo_type": "new_aveo",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo805"
+    },
+    {
+      "cargo_type": "SM6",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo807"
+    },
+    {
+      "cargo_type": "carnival",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo809"
+    },
+    {
+      "cargo_type": "SM6",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo810"
+    },
+    {
+      "cargo_type": "new_pride",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo814"
+    },
+    {
+      "cargo_type": "avante",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo816"
+    },
+    {
+      "cargo_type": "avante",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo818"
+    },
+    {
+      "cargo_type": "spark",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo819"
+    },
+    {
+      "cargo_type": "spark",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo820"
+    },
+    {
+      "cargo_type": "new_aveo",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo822"
+    },
+    {
+      "cargo_type": "avante",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo823"
+    },
+    {
+      "cargo_type": "new_pride",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo824"
+    },
+    {
+      "cargo_type": "carnival",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo825"
+    },
+    {
+      "cargo_type": "new_aveo",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo827"
+    },
+    {
+      "cargo_type": "new_aveo",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo836"
+    },
+    {
+      "cargo_type": "ray",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo838"
+    },
+    {
+      "cargo_type": "SM6",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo840"
+    },
+    {
+      "cargo_type": "new_pride",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo842"
+    },
+    {
+      "cargo_type": "new_pride",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo843"
+    },
+    {
+      "cargo_type": "new_aveo",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo844"
+    },
+    {
+      "cargo_type": "spark",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo845"
+    },
+    {
+      "cargo_type": "avante",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo847"
+    },
+    {
+      "cargo_type": "spark",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo849"
+    },
+    {
+      "cargo_type": "avante",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo850"
+    },
+    {
+      "cargo_type": "avante",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo853"
+    },
+    {
+      "cargo_type": "carnival",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo855"
+    },
+    {
+      "cargo_type": "carnival",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo857"
+    },
+    {
+      "cargo_type": "avante",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo858"
+    },
+    {
+      "cargo_type": "spark",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo859"
+    },
+    {
+      "cargo_type": "ray",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo861"
+    },
+    {
+      "cargo_type": "avante",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo865"
+    },
+    {
+      "cargo_type": "new_aveo",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo866"
+    },
+    {
+      "cargo_type": "spark",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo867"
+    },
+    {
+      "cargo_type": "new_aveo",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo869"
+    },
+    {
+      "cargo_type": "carnival",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo871"
+    },
+    {
+      "cargo_type": "new_aveo",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo873"
+    },
+    {
+      "cargo_type": "new_pride",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo875"
+    },
+    {
+      "cargo_type": "SM6",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo877"
+    },
+    {
+      "cargo_type": "spark",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo880"
+    },
+    {
+      "cargo_type": "new_pride",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo881"
+    },
+    {
+      "cargo_type": "carnival",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo886"
+    },
+    {
+      "cargo_type": "carnival",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo888"
+    },
+    {
+      "cargo_type": "spark",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo889"
+    },
+    {
+      "cargo_type": "spark",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo891"
+    },
+    {
+      "cargo_type": "new_aveo",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo893"
+    },
+    {
+      "cargo_type": "spark",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo894"
+    },
+    {
+      "cargo_type": "new_aveo",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo897"
+    },
+    {
+      "cargo_type": "new_aveo",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo898"
+    },
+    {
+      "cargo_type": "ray",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo899"
+    },
+    {
+      "cargo_type": "ray",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo900"
+    },
+    {
+      "cargo_type": "SM6",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo902"
+    },
+    {
+      "cargo_type": "carnival",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo903"
+    },
+    {
+      "cargo_type": "SM6",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo906"
+    },
+    {
+      "cargo_type": "carnival",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo907"
+    },
+    {
+      "cargo_type": "carnival",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo909"
+    },
+    {
+      "cargo_type": "carnival",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo911"
+    },
+    {
+      "cargo_type": "carnival",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo912"
+    },
+    {
+      "cargo_type": "new_pride",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo915"
+    },
+    {
+      "cargo_type": "carnival",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo922"
+    },
+    {
+      "cargo_type": "new_aveo",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo923"
+    },
+    {
+      "cargo_type": "new_pride",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo928"
+    },
+    {
+      "cargo_type": "new_aveo",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo931"
+    },
+    {
+      "cargo_type": "carnival",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo932"
+    },
+    {
+      "cargo_type": "spark",
+      "cargo_group": "ulsan",
+      "cargo_id": "cargo933"
+    },
+    {
+      "cargo_type": "spark",
+      "cargo_group": "mokpo",
+      "cargo_id": "cargo1"
+    },
+    {
+      "cargo_type": "ray",
+      "cargo_group": "mokpo",
+      "cargo_id": "cargo3"
+    },
+    {
+      "cargo_type": "carnival",
+      "cargo_group": "mokpo",
+      "cargo_id": "cargo9"
+    },
+    {
+      "cargo_type": "new_pride",
+      "cargo_group": "mokpo",
+      "cargo_id": "cargo10"
+    },
+    {
+      "cargo_type": "spark",
+      "cargo_group": "mokpo",
+      "cargo_id": "cargo11"
+    },
+    {
+      "cargo_type": "carnival",
+      "cargo_group": "mokpo",
+      "cargo_id": "cargo13"
+    },
+    {
+      "cargo_type": "new_aveo",
+      "cargo_group": "mokpo",
+      "cargo_id": "cargo14"
+    },
+    {
+      "cargo_type": "carnival",
+      "cargo_group": "mokpo",
+      "cargo_id": "cargo18"
+    },
+    {
+      "cargo_type": "carnival",
+      "cargo_group": "mokpo",
+      "cargo_id": "cargo19"
+    },
+    {
+      "cargo_type": "carnival",
+      "cargo_group": "mokpo",
+      "cargo_id": "cargo24"
+    },
+    {
+      "cargo_type": "new_pride",
+      "cargo_group": "mokpo",
+      "cargo_id": "cargo26"
+    },
+    {
+      "cargo_type": "carnival",
+      "cargo_group": "mokpo",
+      "cargo_id": "cargo31"
+    },
+    {
+      "cargo_type": "new_pride",
+      "cargo_group": "mokpo",
+      "cargo_id": "cargo32"
+    },
+    {
+      "cargo_type": "new_pride",
+      "cargo_group": "mokpo",
+      "cargo_id": "cargo34"
+    },
+    {
+      "cargo_type": "SM6",
+      "cargo_group": "mokpo",
+      "cargo_id": "cargo36"
+    },
+    {
+      "cargo_type": "spark",
+      "cargo_group": "mokpo",
+      "cargo_id": "cargo37"
+    },
+    {
+      "cargo_type": "carnival",
+      "cargo_group": "mokpo",
+      "cargo_id": "cargo39"
+    },
+    {
+      "cargo_type": "new_pride",
+      "cargo_group": "mokpo",
+      "cargo_id": "cargo44"
+    },
+    {
+      "cargo_type": "new_aveo",
+      "cargo_group": "mokpo",
+      "cargo_id": "cargo46"
+    },
+    {
+      "cargo_type": "new_aveo",
+      "cargo_group": "mokpo",
+      "cargo_id": "cargo47"
+    },
+    {
+      "cargo_type": "new_pride",
+      "cargo_group": "mokpo",
+      "cargo_id": "cargo48"
+    },
+    {
+      "cargo_type": "carnival",
+      "cargo_group": "mokpo",
+      "cargo_id": "cargo50"
+    },
+    {
+      "cargo_type": "carnival",
+      "cargo_group": "mokpo",
+      "cargo_id": "cargo52"
+    },
+    {
+      "cargo_type": "SM6",
+      "cargo_group": "mokpo",
+      "cargo_id": "cargo53"
+    },
+    {
+      "cargo_type": "new_pride",
+      "cargo_group": "mokpo",
+      "cargo_id": "cargo55"
+    }
+  ],
+  "number_of_group": 3,
+  "number_of_cargo": 304
+}

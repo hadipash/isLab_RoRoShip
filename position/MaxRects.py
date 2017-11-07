@@ -9,7 +9,6 @@ The Maximal Rectangles algorithm for an object placement
 from IPositionAlgorithm import *
 from commonClass import *
 import common.InitializationCode as ic
-from Evaluation import evaluate
 
 
 # algorithm. 삽입 가능 공간을 관리 하는 객체
@@ -102,54 +101,25 @@ class MaxRects(PositionAlgorithm):
             # TODO: add lifting decks
 
     # 화물을 집어넣을 사각형을 검색하는 함수
-    def searchPosition(self, obj):
-        maxVal = -1000000
+    def searchPosition(self, obj, floor):
         coord = None
         numOfObj = 0
         placeRect = None
-        floor = 0
 
         # 후보 사각형 리스트를 모두 뒤지면서 비교
-        for f in range(len(ic.floors)):
-            for rect in self.rectList[f]:
-                # 정방향 배치
-                # check whether it is possible to place an object in a rectangle
-                remainWidth = rect.width - (obj.getWidth() + 2 * sideBound)
-                remainLength = rect.length - (obj.getLength() + 2 * fbBound)
-                if remainWidth >= 0 and remainLength >= 0:
-                    score = evaluate(rect, f, obj, self.rectList[f])
-                    if score > maxVal:
-                        maxVal = score
-                        placeRect = rect
-                        floor = f
+        for rect in self.rectList[floor]:
+            # check whether it is possible to place an object in a rectangle
+            remainWidth = rect.width - (obj.getWidth() + 2 * sideBound)
+            remainLength = rect.length - (obj.getLength() + 2 * fbBound)
+            if remainWidth >= 0 and remainLength >= 0:
+                placeRect = rect
 
         if placeRect is not None:
-            side = self.sideToPlace(floor, placeRect)
             numOfObj = placeRect.width // (obj.getWidth() + 2 * sideBound) - 1
-            if side == "Left":
-                coord = Coordinate(floor, placeRect.bottomLeft.x + sideBound,
-                                   placeRect.bottomLeft.y + fbBound)
-            elif side == "Right":
-                coord = Coordinate(floor, placeRect.bottomLeft.x + sideBound +
-                                   (placeRect.width % (obj.getWidth() + 2 * sideBound)),
-                                   placeRect.bottomLeft.y + fbBound)
-            elif side == "Middle":
-                coord = Coordinate(floor, placeRect.bottomLeft.x + sideBound +
-                                   (placeRect.width % (obj.getWidth() + 2 * sideBound)) / 2,
-                                   placeRect.bottomLeft.y + fbBound)
+            coord = Coordinate(floor, placeRect.bottomLeft.x + sideBound, placeRect.bottomLeft.y + fbBound)
 
         # 배치될 사각형의 좌상단 좌표를 리턴
         return coord, numOfObj
-
-    def sideToPlace(self, f, rect):
-        # if no available space between left wall and rectangle
-        if rect.bottomLeft.x == sideBound:
-            return "Left"
-        # if no available space between right wall and rectangle
-        if rect.topRight.x == ic.floors[f].width - sideBound:
-            return "Right"
-
-        return "Middle"
 
     def placeNext(self, obj):
         return Coordinate(obj.coordinates.floor,
@@ -210,7 +180,7 @@ class MaxRects(PositionAlgorithm):
         for newRect in newRects:
             if newRect.width >= ic.minWidth and newRect.length >= ic.minLength \
                     and not self.isAvailableRectMerge(f, newRect):
-                self.rectList[f].append(newRect)
+                self.sort(f, newRect)
 
     # 사각형 merge 가능한지 체크하는 함수
     def isAvailableRectMerge(self, f, newRect):
@@ -218,3 +188,17 @@ class MaxRects(PositionAlgorithm):
             if rect.isIncluded(newRect):
                 return True
         return False
+
+    # Sort rectangles in the list (starting from the most far)
+    def sort(self, f, newRect):
+        for i in range(0, len(self.rectList[f])):
+            if newRect.bottomLeft.y < self.rectList[f][i].bottomLeft.y:
+                self.rectList[f].insert(i, newRect)
+                return
+            if newRect.bottomLeft.y == self.rectList[f][i].bottomLeft.y:
+                if newRect.width >= self.rectList[f][i].width:
+                    self.rectList[f].insert(i, newRect)
+                    return
+
+        # if the new rectangle must be placed at the end of the list
+        self.rectList[f].append(newRect)

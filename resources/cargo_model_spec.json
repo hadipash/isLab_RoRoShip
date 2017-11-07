@@ -1,0 +1,184 @@
+{
+  "model_list":[
+    {
+        "name": "morning",
+        "type": "compact_car",
+        "width": 1595,
+        "length": 3595,
+        "height": 1485,
+        "wheel_base": 2400,
+        "MAX_steer_angle": 50,
+        "color": "AQUAMARINE"
+    },
+    {
+        "name": "spark",
+        "type": "compact_car",
+        "width": 1595,
+        "length": 3595,
+        "height": 1475,
+        "wheel_base": 2385,
+        "MAX_steer_angle": 50,
+        "color": "CORAL"
+    },
+    {
+        "name": "ray",
+        "type": "compact_car",
+        "width": 1595,
+        "length": 3595,
+        "height": 1700,
+        "wheel_base": 2520,
+        "MAX_steer_angle": 50,
+        "color": "GOLD"
+    },
+    {
+        "name": "accent",
+        "type": "small_car",
+        "width": 1705,
+        "length": 4370,
+        "height": 1455,
+        "wheel_base": 2570,
+        "MAX_steer_angle": 50,
+        "color": "KHAKI"
+    },
+    {
+        "name": "new_pride",
+        "type": "small_car",
+        "width": 1720,
+        "length": 4370,
+        "height": 1455,
+        "wheel_base": 2570,
+        "MAX_steer_angle": 50,
+        "color": "MAGENTA"
+    },
+    {
+        "name": "new_aveo",
+        "type": "small_car",
+        "width": 1735,
+        "length": 4060,
+        "height": 1515,
+        "wheel_base": 2525,
+        "MAX_steer_angle": 50,
+        "color": "lightskyblue"
+    },
+    {
+        "name": "LF_sonata",
+        "type": "midsize_car",
+        "width": 1865,
+        "length": 4855,
+        "height": 1475,
+        "wheel_base": 2805,
+        "MAX_steer_angle": 50,
+        "color": "PURPLE"
+    },
+    {
+        "name": "avante",
+        "type": "midsize_car",
+        "width": 1800,
+        "length": 4570,
+        "height": 1440,
+        "wheel_base": 2700,
+        "MAX_steer_angle": 50,
+        "color": "LAWNGREEN"
+    },
+    {
+        "name": "SM6",
+        "type": "midsize_car",
+        "width": 1870,
+        "length": 4850,
+        "height": 1460,
+        "wheel_base": 2810,
+        "MAX_steer_angle": 50,
+        "color": "TURQUOISE"
+    },
+    {
+        "name": "grandeur_IG",
+        "type": "large_car",
+        "width": 1865,
+        "length": 4930,
+        "height": 1470,
+        "wheel_base": 2845,
+        "MAX_steer_angle": 50,
+        "color": "YELLOW"
+    },
+    {
+        "name": "K7",
+        "type": "large_car",
+        "width": 1870,
+        "length": 4970,
+        "height": 1470,
+        "wheel_base": 2855,
+        "MAX_steer_angle": 50,
+        "color": "TAN"
+    },
+    {
+        "name": "genesis_G80",
+        "type": "large_car",
+        "width": 1890,
+        "length": 4990,
+        "height": 1480,
+        "wheel_base": 3010,
+        "MAX_steer_angle": 50,
+        "color": "SIENNA"
+    },
+    {
+        "name": "starex",
+        "type": "van",
+        "width": 1920,
+        "length": 5150,
+        "height": 1970,
+        "wheel_base": 3200,
+        "MAX_steer_angle": 50,
+        "color": "PLUM"
+    },
+    {
+        "name": "carnival",
+        "type": "van",
+        "width": 1985,
+        "length": 5115,
+        "height": 1740,
+        "wheel_base": 3060,
+        "MAX_steer_angle": 50,
+        "color": "yellowgreen"
+    },
+    {
+        "name": "porter2",
+        "type": "freight_car",
+        "width": 1740,
+        "length": 5155,
+        "height": 1970,
+        "wheel_base": 2640,
+        "MAX_steer_angle": 50,
+        "color": "lightcoral"
+    },
+    {
+        "name": "xcient",
+        "type": "freight_car",
+        "width": 2490,
+        "length": 12775,
+        "height": 3260,
+        "wheel_base": 7600,
+        "MAX_steer_angle": 50,
+        "color": "NAVY"
+    },
+    {
+        "name": "excavator",
+        "type": "special_car",
+        "width": 3200,
+        "length": 10570,
+        "height": 0,
+        "wheel_base": -1,
+        "MAX_steer_angle": 50,
+        "color": "deeppink"
+    },
+    {
+        "name": "wheel_loader",
+        "type": "special_car",
+        "width": 3300,
+        "length": 9150,
+        "height": 0,
+        "wheel_base": 3700,
+        "MAX_steer_angle": 50,
+        "color": "cyan"
+    }
+  ]
+}

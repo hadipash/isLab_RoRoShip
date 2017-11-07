@@ -8,8 +8,8 @@ Classes and functions to parse json files
 import json
 from Miscellaneous import *
 
-SHIP_LAYOUT_INFO = "../common/inputLayout.json"
-TYPE_INFO = "../common/freight_list.json"
+SHIP_LAYOUT_INFO = "../resources/inputLayout.json"
+TYPE_INFO = "../resources/cargo_model_spec.json"
 
 
 # 선박의 정보를 파싱하는 클래스
@@ -18,7 +18,7 @@ class Parser:
     def __init__(self):
         # Variables for parse a ship
         self.floors = []
-        self.typeList = []
+        self.typeList = {}
         self.minWidth = 1000000
         self.minLength = 1000000
 
@@ -200,11 +200,13 @@ class Parser:
     def parseTypeInformation(self):
         configJSON = self.readJSON(TYPE_INFO)
 
-        for t in configJSON["freight"]["freight_type"]:
-            width = int(t["Full_width"])
-            length = int(t["Full_length"])
-            self.typeList.append(Type(width, length, int(t["Wheel_base"]), int(t["MAX_steer_angle"]),
-                                      list([[]]) * len(self.floors)))
+        for t in configJSON["model_list"]:
+            name = t["name"]
+            width = int(t["width"])
+            length = int(t["length"])
+
+            self.typeList[name] = Type(name, t["type"], width, length, int(t["height"]),
+                                       int(t["wheel_base"]), int(t["MAX_steer_angle"]))
 
             if width < self.minWidth:
                 self.minWidth = width

@@ -15,9 +15,13 @@ fbBound = 150       # front and back distance is 15 cm
 # 화물의 종류를 나타내는 클래스
 # Class for defining types of objects to be placed on a vessel
 class Type:
-    def __init__(self, width, length, wheelbase, steeringAngle, usedArea):
+    def __init__(self, name, car_type, width, length, height, wheelbase, steeringAngle):
+        self.name = name
+        self.car_type = car_type
+
         self.width = width
         self.length = length
+        self.height = height
 
         self.L = wheelbase
         self.a = steeringAngle
@@ -30,24 +34,6 @@ class Type:
         self.min_R = int(math.ceil(self.min_R))
         self.radius = pythagoras(self.min_R, self.L)
         self.radius = int(math.ceil(self.radius))
-
-        self.usedArea = usedArea
-
-    # Area occupied by the same type of objects.
-    # Necessary for for placing object as much as possible close to each other.
-    def updateArea(self, y1, y2, f):
-        if len(self.usedArea[f]) == 0:
-            self.usedArea[f] = []
-            self.usedArea[f].append(y1)
-            self.usedArea[f].append(y2)
-        else:
-            if y1 < self.usedArea[f][0]:
-                self.usedArea[f][0] = y1
-            if y2 > self.usedArea[f][1]:
-                self.usedArea[f][1] = y2
-
-    def occupiedArea(self, f):
-        return self.usedArea[f]
 
     def __eq__(self, other):
         return self.width == other.width and self.length == other.length and self.L == other.L and self.a == other.a

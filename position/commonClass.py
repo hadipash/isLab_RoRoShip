@@ -10,17 +10,19 @@ from common.InitializationCode import *
 import common.InitializationCode as ic
 import time
 
-CARGO_INPUT_LIST = "../common/cargo_input.json"
+CARGO_INPUT_LIST = "../resources/input_cargo_list%d.json"
 
 
 # 순서를 받지 못할 때 사용할 임시 순서 리스트를 만들어주는 함수
 # Get list of all objects from a json file
 def getObjectSampleList():
-    dataList = Parser.readJSON(CARGO_INPUT_LIST)["data"]
-
     objectList = []
-    for data in dataList:
-        objectList.append(Object(data["groupId"], data["cargoId"], ic.typeList[int(data["cargoType"]) - 1]))
+    for f in range(len(ic.floors)):
+        dataList = Parser.readJSON(CARGO_INPUT_LIST % (f + 1))["data"]
+
+        objectList.append([])
+        for data in dataList:
+            objectList[f].append(Object(data["cargo_group"], data["cargo_id"], ic.typeList(data["cargo_type"])))
 
     return objectList
 

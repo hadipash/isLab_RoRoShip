@@ -43,6 +43,7 @@ class PositionModule:
 
         # list 에 있는 모든 object 를 배치
         for obj in ObjectList:
+            floor = 0
             # place several objects simultaneously
             if numOfObj > 0 and obj.type == tempObj.type:
                 tlCoordinate = self.algorithmModule.placeNext(tempObj)
@@ -59,7 +60,7 @@ class PositionModule:
             # place objects one by one
             else:
                 # 배치할 위치 탐색. 탐색에 성공하면 배치할 영역의 좌상단 좌표를 리턴 받는다
-                tlCoordinate, numOfObj = self.algorithmModule.searchPosition(obj)
+                tlCoordinate, numOfObj = self.algorithmModule.searchPosition(obj, floor)
                 tempObj = obj
 
                 if tlCoordinate is not None:
