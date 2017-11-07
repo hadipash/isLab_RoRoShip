@@ -4,7 +4,7 @@ import common.InitializationCode as ic
 # orientation of plots
 vertical = False
 # array of colors
-colors = ['red', 'green', 'blue', 'yellow', 'magenta', 'cyan', 'orange', 'purple', 'skyblue']
+colors = ['red', 'green', 'blue', 'orange', 'magenta', 'cyan', 'yellow', 'purple', 'skyblue']
 
 
 # layout initialization
@@ -99,6 +99,6 @@ def drawPlots(cars):
             plt.gca().add_patch(plt.Rectangle((x, y), height=height, width=width, fc=carColor, ec='black'))
             # write numbers on rectangles
             # plt.annotate(car.id, (x + width / 2.0, y + height / 2.0),
-            #              color='w', weight='bold', fontsize=6, ha='center', va='center')
+            #             color='w', weight='bold', fontsize=6, ha='center', va='center')
 
     plt.show()

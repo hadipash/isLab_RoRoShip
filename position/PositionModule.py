@@ -16,6 +16,7 @@ class PositionResult:
         # 남은 공간을 저장하는 변수
         self.totalArea = totalArea / 1000000  # convert into m²
         self.remainArea = remainArea / 1000000
+        self.percent = self.remainArea / (self.totalArea / 100.0)
         self.placedNum = placedNum
         self.notPlacedNum = notPlacedNum
 
@@ -49,7 +50,7 @@ class PositionModule:
                 placedNumber += 1
                 obj.coordinates.setCoordinates(tlCoordinate)
                 obj.type.updateArea(tlCoordinate.y, tlCoordinate.y + obj.getLength(), tlCoordinate.floor)
-                usedSpace += obj.getWidth() * obj.getLength()
+                usedSpace += (obj.getWidth() + 2 * sideBound) * (obj.getLength() + 2 * fbBound)
                 self.algorithmModule.updateLayout(tlCoordinate, obj)
 
                 numOfObj -= 1
@@ -66,7 +67,7 @@ class PositionModule:
                     # update coordinates of the cargo
                     obj.coordinates.setCoordinates(tlCoordinate)
                     # 배치할 위치가 있다면 사용한 영역 계산
-                    usedSpace += obj.getWidth() * obj.getLength()
+                    usedSpace += (obj.getWidth() + 2 * sideBound) * (obj.getLength() + 2 * fbBound)
                     # 레이아웃 업데이트
                     self.algorithmModule.updateLayout(tlCoordinate, obj)
                 else:

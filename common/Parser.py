@@ -34,7 +34,7 @@ class Parser:
         availSpace = []
         for floor in configJSON["loadingSpaceList"]["loadingSpace"]:
             FloorInfoList.append(Space(floor["width"], floor["length"], floor["height"]))
-            availSpace.append(floor["width"] * floor["length"])
+            availSpace.append((floor["width"] - 2 * sideBound) * (floor["length"] - 2 * fbBound))
 
         # number of floors
         numOfFl = len(FloorInfoList)
@@ -56,7 +56,9 @@ class Parser:
                 Enter(Coordinate(flNum, enterInfo["coordinate"]["X"], enterInfo["coordinate"]["Y"]),
                       enterInfo["volume"]["width"], enterInfo["volume"]["length"], enterInfo["id"]))
 
-            availSpace[flNum] -= enterInfo["volume"]["width"] * enterInfo["volume"]["length"]
+            availSpace[flNum] -= self.calculateSpace(enterInfo["coordinate"]["X"], enterInfo["coordinate"]["Y"],
+                                                     enterInfo["volume"]["width"], enterInfo["volume"]["length"],
+                                                     FloorInfoList[flNum].width, FloorInfoList[flNum].length)
 
         # generate dummy elements if last floors do not have entrances
         while len(EnterInfoList) < numOfFl:
@@ -79,7 +81,9 @@ class Parser:
                 Obstacle(Coordinate(flNum, obstacleInfo["coordinate"]["X"], obstacleInfo["coordinate"]["Y"]),
                          obstacleInfo["volume"]["width"], obstacleInfo["volume"]["length"], obstacleInfo["id"]))
 
-            availSpace[flNum] -= obstacleInfo["volume"]["width"] * obstacleInfo["volume"]["length"]
+            availSpace[flNum] -= self.calculateSpace(obstacleInfo["coordinate"]["X"], obstacleInfo["coordinate"]["Y"],
+                                                     obstacleInfo["volume"]["width"], obstacleInfo["volume"]["length"],
+                                                     FloorInfoList[flNum].width, FloorInfoList[flNum].length)
 
         # generate dummy elements if last floors do not have obstacles
         while len(ObstacleInfoList) < numOfFl:
@@ -99,7 +103,9 @@ class Parser:
                 NotLoadableSpace(Coordinate(flNum, space["coordinate"]["X"], space["coordinate"]["Y"]),
                                  space["width"], space["length"]))
 
-            availSpace[flNum] -= space["width"] * space["length"]
+            availSpace[flNum] -= self.calculateSpace(space["coordinate"]["X"], space["coordinate"]["Y"],
+                                                     space["width"], space["length"],
+                                                     FloorInfoList[flNum].width, FloorInfoList[flNum].length)
 
         # generate dummy elements
         while len(NotLoadableSpaceList) < numOfFl:
@@ -124,8 +130,12 @@ class Parser:
                     Ramp(Coordinate(flNum2, ramp["coordinate"]["X"], ramp["coordinate"]["Y"]),
                          ramp["volume"]["width"], ramp["volume"]["length"], ramp["id"], [flNum1, flNum2]))
 
-            availSpace[flNum1] -= ramp["volume"]["width"] * ramp["volume"]["length"]
-            availSpace[flNum2] -= ramp["volume"]["width"] * ramp["volume"]["length"]
+            availSpace[flNum1] -= self.calculateSpace(ramp["coordinate"]["X"], ramp["coordinate"]["Y"],
+                                                      ramp["volume"]["width"], ramp["volume"]["length"],
+                                                      FloorInfoList[flNum1].width, FloorInfoList[flNum1].length)
+            availSpace[flNum2] -= self.calculateSpace(ramp["coordinate"]["X"], ramp["coordinate"]["Y"],
+                                                      ramp["volume"]["width"], ramp["volume"]["length"],
+                                                      FloorInfoList[flNum2].width, FloorInfoList[flNum2].length)
 
         # generate dummy elements
         while len(RampInfoList) < numOfFl:
@@ -145,7 +155,9 @@ class Parser:
                 Slope(Coordinate(flNum, slope["coordinate"]["X"], slope["coordinate"]["Y"]),
                       slope["volume"]["width"], slope["volume"]["length"], slope["id"]))
 
-            availSpace[flNum] -= slope["volume"]["width"] * slope["volume"]["length"]
+            availSpace[flNum] -= self.calculateSpace(slope["coordinate"]["X"], slope["coordinate"]["Y"],
+                                                     slope["volume"]["width"], slope["volume"]["length"],
+                                                     FloorInfoList[flNum].width, FloorInfoList[flNum].length)
 
         # generate dummy elements if last floors do not have obstacles
         while len(SlopeInfoList) < numOfFl:
@@ -166,7 +178,7 @@ class Parser:
                                 deck["volume"]["width"], deck["volume"]["length"], deck["id"], deck["lifting_height"]))
 
                 # Lifting deck increases available space
-                # availSpace[flNum] += deck["volume"]["width"] * deck["volume"]["length"]
+                # availSpace[flNum] += deck["volume"]["width"] * deck["volume"]["length"] - wrong
 
         # generate dummy elements if last floors do not have obstacles
         while len(DeckInfoList) < numOfFl:
@@ -199,6 +211,17 @@ class Parser:
 
             if length < self.minLength:
                 self.minLength = length
+
+    def calculateSpace(self, objX, objY, objWidth, objLength, floorWidth, floorLength):
+        x1 = objX - sideBound
+        y1 = objY - fbBound
+        x2 = objX + objWidth + sideBound
+        y2 = objY + objLength + fbBound
+
+        width = (floorWidth if x2 > floorWidth else x2) - (0 if x1 < 0 else x1)
+        length = (floorLength if y2 > floorLength else y2) - (0 if y1 < 0 else y1)
+
+        return width * length
 
     # json 파일을 읽어오는 함수
     @staticmethod

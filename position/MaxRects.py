@@ -33,16 +33,16 @@ class MaxRects(PositionAlgorithm):
         for f in range(len(ic.floors)):
             self.rectList.append([])
             # first, represent all floors as single rectangles
-            self.rectList[f].append(Rectangle(Coordinate(f, self.sideBound, self.fbBound),
-                                              Coordinate(f, ic.floors[f].width - self.sideBound,
-                                                         ic.floors[f].length - self.fbBound)))
+            self.rectList[f].append(Rectangle(Coordinate(f, sideBound, fbBound),
+                                              Coordinate(f, ic.floors[f].width - sideBound,
+                                                         ic.floors[f].length - fbBound)))
 
             # Then split floor rectangles into smaller rectangles in accordance with entrances, obstacles, etc.
             for elem in ic.floors[f].entrances:
-                entrance = Rectangle(Coordinate(f, elem.coordinate.x - self.sideBound,
-                                                elem.coordinate.y - self.fbBound),
-                                     Coordinate(f, elem.coordinate.x + elem.width + self.sideBound,
-                                                elem.coordinate.y + elem.length + self.fbBound))
+                entrance = Rectangle(Coordinate(f, elem.coordinate.x - sideBound,
+                                                elem.coordinate.y - fbBound),
+                                     Coordinate(f, elem.coordinate.x + elem.width + sideBound,
+                                                elem.coordinate.y + elem.length + fbBound))
                 # Find rectangle(s) in which an entrance is located
                 # But before doing it, make a copy of the rectangles list,
                 # because the original one will be modified
@@ -53,10 +53,10 @@ class MaxRects(PositionAlgorithm):
 
             # obstacles
             for elem in ic.floors[f].obstacles:
-                obstacle = Rectangle(Coordinate(f, elem.coordinate.x - self.sideBound,
-                                                elem.coordinate.y - self.fbBound),
-                                     Coordinate(f, elem.coordinate.x + elem.width + self.sideBound,
-                                                elem.coordinate.y + elem.length + self.fbBound))
+                obstacle = Rectangle(Coordinate(f, elem.coordinate.x - sideBound,
+                                                elem.coordinate.y - fbBound),
+                                     Coordinate(f, elem.coordinate.x + elem.width + sideBound,
+                                                elem.coordinate.y + elem.length + fbBound))
                 # Find rectangle(s) in which an obstacle is located
                 tempList = list(self.rectList[f])
                 for rect in tempList:
@@ -65,10 +65,10 @@ class MaxRects(PositionAlgorithm):
 
             # not loadable space
             for elem in ic.floors[f].notLoadable:
-                notLoad = Rectangle(Coordinate(f, elem.coordinate.x - self.sideBound,
-                                               elem.coordinate.y - self.fbBound),
-                                    Coordinate(f, elem.coordinate.x + elem.width + self.sideBound,
-                                               elem.coordinate.y + elem.length + self.fbBound))
+                notLoad = Rectangle(Coordinate(f, elem.coordinate.x - sideBound,
+                                               elem.coordinate.y - fbBound),
+                                    Coordinate(f, elem.coordinate.x + elem.width + sideBound,
+                                               elem.coordinate.y + elem.length + fbBound))
 
                 tempList = list(self.rectList[f])
                 for rect in tempList:
@@ -77,10 +77,10 @@ class MaxRects(PositionAlgorithm):
 
             # ramps between floors
             for elem in ic.floors[f].ramps:
-                ramp = Rectangle(Coordinate(f, elem.coordinate.x - self.sideBound,
-                                            elem.coordinate.y - self.fbBound),
-                                 Coordinate(f, elem.coordinate.x + elem.width + self.sideBound,
-                                            elem.coordinate.y + elem.length + self.fbBound))
+                ramp = Rectangle(Coordinate(f, elem.coordinate.x - sideBound,
+                                            elem.coordinate.y - fbBound),
+                                 Coordinate(f, elem.coordinate.x + elem.width + sideBound,
+                                            elem.coordinate.y + elem.length + fbBound))
 
                 tempList = list(self.rectList[f])
                 for rect in tempList:
@@ -89,17 +89,17 @@ class MaxRects(PositionAlgorithm):
 
             # slopes
             for elem in ic.floors[f].slopes:
-                slope = Rectangle(Coordinate(f, elem.coordinate.x - self.sideBound,
-                                             elem.coordinate.y - self.fbBound),
-                                  Coordinate(f, elem.coordinate.x + elem.width + self.sideBound,
-                                             elem.coordinate.y + elem.length + self.fbBound))
+                slope = Rectangle(Coordinate(f, elem.coordinate.x - sideBound,
+                                             elem.coordinate.y - fbBound),
+                                  Coordinate(f, elem.coordinate.x + elem.width + sideBound,
+                                             elem.coordinate.y + elem.length + fbBound))
 
                 tempList = list(self.rectList[f])
                 for rect in tempList:
                     if rect.isIntersected(slope):
                         self.divide(f, rect, slope)
 
-                        # TODO: add lifting decks
+            # TODO: add lifting decks
 
     # 화물을 집어넣을 사각형을 검색하는 함수
     def searchPosition(self, obj):
@@ -114,10 +114,10 @@ class MaxRects(PositionAlgorithm):
             for rect in self.rectList[f]:
                 # 정방향 배치
                 # check whether it is possible to place an object in a rectangle
-                remainWidth = rect.width - (obj.getWidth() + 2 * self.sideBound)
-                remainLength = rect.length - (obj.getLength() + 2 * self.fbBound)
+                remainWidth = rect.width - (obj.getWidth() + 2 * sideBound)
+                remainLength = rect.length - (obj.getLength() + 2 * fbBound)
                 if remainWidth >= 0 and remainLength >= 0:
-                    score = evaluate(rect, f, obj, self.sideBound, self.fbBound, self.rectList[f])
+                    score = evaluate(rect, f, obj, self.rectList[f])
                     if score > maxVal:
                         maxVal = score
                         placeRect = rect
@@ -125,35 +125,35 @@ class MaxRects(PositionAlgorithm):
 
         if placeRect is not None:
             side = self.sideToPlace(floor, placeRect)
-            numOfObj = placeRect.width // (obj.getWidth() + 2 * self.sideBound) - 1
+            numOfObj = placeRect.width // (obj.getWidth() + 2 * sideBound) - 1
             if side == "Left":
-                coord = Coordinate(floor, placeRect.bottomLeft.x + self.sideBound,
-                                   placeRect.bottomLeft.y + self.fbBound)
+                coord = Coordinate(floor, placeRect.bottomLeft.x + sideBound,
+                                   placeRect.bottomLeft.y + fbBound)
             elif side == "Right":
-                coord = Coordinate(floor, placeRect.bottomLeft.x + self.sideBound +
-                                   (placeRect.width % (obj.getWidth() + 2 * self.sideBound)),
-                                   placeRect.bottomLeft.y + self.fbBound)
+                coord = Coordinate(floor, placeRect.bottomLeft.x + sideBound +
+                                   (placeRect.width % (obj.getWidth() + 2 * sideBound)),
+                                   placeRect.bottomLeft.y + fbBound)
             elif side == "Middle":
-                coord = Coordinate(floor, placeRect.bottomLeft.x + self.sideBound +
-                                   (placeRect.width % (obj.getWidth() + 2 * self.sideBound)) / 2,
-                                   placeRect.bottomLeft.y + self.fbBound)
+                coord = Coordinate(floor, placeRect.bottomLeft.x + sideBound +
+                                   (placeRect.width % (obj.getWidth() + 2 * sideBound)) / 2,
+                                   placeRect.bottomLeft.y + fbBound)
 
         # 배치될 사각형의 좌상단 좌표를 리턴
         return coord, numOfObj
 
     def sideToPlace(self, f, rect):
         # if no available space between left wall and rectangle
-        if rect.bottomLeft.x == self.sideBound:
+        if rect.bottomLeft.x == sideBound:
             return "Left"
         # if no available space between right wall and rectangle
-        if rect.topRight.x == ic.floors[f].width - self.sideBound:
+        if rect.topRight.x == ic.floors[f].width - sideBound:
             return "Right"
 
         return "Middle"
 
     def placeNext(self, obj):
         return Coordinate(obj.coordinates.floor,
-                          obj.coordinates.x + obj.getWidth() + 2 * self.sideBound,
+                          obj.coordinates.x + obj.getWidth() + 2 * sideBound,
                           obj.coordinates.y)
 
     # 레이아웃을 업데이트 하는 함수
@@ -176,9 +176,9 @@ class MaxRects(PositionAlgorithm):
     def insert(self, obj, targetCoordinate):
         f = targetCoordinate.floor
         # 배치된 화물 사각형
-        insertRect = Rectangle(Coordinate(f, targetCoordinate.x - self.sideBound, targetCoordinate.y - self.fbBound),
-                               Coordinate(f, targetCoordinate.x + obj.getWidth() + self.sideBound,
-                                          targetCoordinate.y + obj.getLength() + self.fbBound))
+        insertRect = Rectangle(Coordinate(f, targetCoordinate.x - sideBound, targetCoordinate.y - fbBound),
+                               Coordinate(f, targetCoordinate.x + obj.getWidth() + sideBound,
+                                          targetCoordinate.y + obj.getLength() + fbBound))
 
         # 현재 사각형 리스트들과 추가된 사각형들을 비교하며 사각형을 나누는 작업을 한다
         # Find rectangle(s) in which a cargo will be placed

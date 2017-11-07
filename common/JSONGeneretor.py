@@ -15,7 +15,7 @@ NUM_OF_VEHICLES = 690
 
 def main():
     # read number of types
-    typeNum = int(Parser.readJSON(TYPE_INFO)["freight"]["cnt"])
+    typeNum = int(Parser.readJSON()["freight"]["cnt"])
 
     vehicleID = 0
 

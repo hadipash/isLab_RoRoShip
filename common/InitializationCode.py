@@ -22,6 +22,6 @@ def initialize():
     global typeList
     typeList = parser.typeList
     global minWidth
-    minWidth = parser.minWidth
+    minWidth = parser.minWidth + 2 * sideBound
     global minLength
-    minLength = parser.minLength
+    minLength = parser.minLength + 2 * fbBound

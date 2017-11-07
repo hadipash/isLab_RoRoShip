@@ -7,6 +7,10 @@ File for miscellaneous classes and functions
 
 from routing.min_radius import *
 
+# Boundaries to avoid placing cargoes too close to a vessel's walls and to each other
+sideBound = 50      # side distance is 5 cm
+fbBound = 150       # front and back distance is 15 cm
+
 
 # 화물의 종류를 나타내는 클래스
 # Class for defining types of objects to be placed on a vessel
@@ -29,6 +33,8 @@ class Type:
 
         self.usedArea = usedArea
 
+    # Area occupied by the same type of objects.
+    # Necessary for for placing object as much as possible close to each other.
     def updateArea(self, y1, y2, f):
         if len(self.usedArea[f]) == 0:
             self.usedArea[f] = []
@@ -40,7 +46,7 @@ class Type:
             if y2 > self.usedArea[f][1]:
                 self.usedArea[f][1] = y2
 
-    def getArea(self, f):
+    def occupiedArea(self, f):
         return self.usedArea[f]
 
     def __eq__(self, other):
@@ -57,7 +63,6 @@ class Object:
         self.id = ID
         # 물체의 타입
         self.type = _type
-        self.area = self.type.width * self.type.length / 1000000    # in square meters
         self.coordinates = Coordinate(-1, -1, -1)
 
     def getWidth(self):
@@ -65,10 +70,6 @@ class Object:
 
     def getLength(self):
         return self.type.length
-
-    # return object's area in square meters
-    def getArea(self):
-        return self.area
 
 
 # 좌표를 지칭하는데 사용하는 클래스

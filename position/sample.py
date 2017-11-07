@@ -30,7 +30,7 @@ def main():
 
     print
     print "Total area: " + str(positionResult.totalArea) + " m²"
-    print "Remain area: " + str(positionResult.remainArea) + " m²"
+    print "Remain area: " + str(positionResult.remainArea) + " m² (%.2f%%)" % positionResult.percent
     print "Number of placed cargoes: " + str(positionResult.placedNum)
     print "Number of failed to place cargoes: " + str(positionResult.notPlacedNum)
     print
