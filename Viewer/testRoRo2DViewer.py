@@ -76,17 +76,21 @@ def plotInitial():
 def drawPlots(cars):
     plotInitial()
 
-    # insert car
-    for c in cars:
-        plt.figure(c + 1)
-        for car in c:
+    # insert object
+    for i in range(len(cars)):
+        plt.figure(i + 1)
+        for car in cars[i]:
             if car.coordinates.floor != -1:
+                # set color
                 carColor = ''
-                for i in range(len(ic.typeList)):
-                    if car.type == ic.typeList[i]:
-                        carColor = colors[i % len(colors)]
+                c = 0
+                for t in ic.typeList:
+                    if car.type == ic.typeList[t]:
+                        carColor = colors[c % len(colors)]
                         break
+                    c += 1
 
+                # set object's coordinates
                 if vertical:
                     x = car.coordinates.x
                     y = car.coordinates.y

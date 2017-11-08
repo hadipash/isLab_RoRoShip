@@ -105,8 +105,6 @@ class MaxRects(PositionAlgorithm):
 
     # 화물을 집어넣을 사각형을 검색하는 함수
     def searchPosition(self, obj, floor):
-        coord = None
-        numOfObj = 0
         placeRect = None
 
         # 후보 사각형 리스트를 모두 뒤지면서 비교
@@ -116,13 +114,12 @@ class MaxRects(PositionAlgorithm):
             remainLength = rect.length - (obj.getLength() + 2 * fbBound)
             if remainWidth >= 0 and remainLength >= 0:
                 placeRect = rect
+                break
 
         if placeRect is not None:
-            numOfObj = placeRect.width // (obj.getWidth() + 2 * sideBound) - 1
-            coord = Coordinate(floor, placeRect.bottomLeft.x + sideBound, placeRect.bottomLeft.y + fbBound)
-
-        # 배치될 사각형의 좌상단 좌표를 리턴
-        return coord, numOfObj
+            return Coordinate(floor, placeRect.bottomLeft.x + sideBound, placeRect.bottomLeft.y + fbBound)
+        else:
+            return Coordinate(-1, -1, -1)
 
     def placeNext(self, obj):
         return Coordinate(obj.coordinates.floor,

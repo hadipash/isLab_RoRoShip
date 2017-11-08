@@ -57,6 +57,9 @@ class Object:
     def getLength(self):
         return self.type.length
 
+    def __eq__(self, other):
+        return self.groupId == other.groupId and self.length == other.length and self.L == other.L and self.a == other.a
+
 
 # 좌표를 지칭하는데 사용하는 클래스
 # Class for a coordinate system
