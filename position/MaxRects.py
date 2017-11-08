@@ -100,6 +100,9 @@ class MaxRects(PositionAlgorithm):
 
             # TODO: add lifting decks
 
+    def getNextRect(self, floor):
+        return self.rectList[floor][0]
+
     # 화물을 집어넣을 사각형을 검색하는 함수
     def searchPosition(self, obj, floor):
         coord = None
@@ -128,27 +131,22 @@ class MaxRects(PositionAlgorithm):
 
     # 레이아웃을 업데이트 하는 함수
     # 화물을 배치하여 사각형들을 조절한다
-    def updateLayout(self, bottomLeftCoordinate, obj):
+    def updateLayout(self, obj):
         # 사각형을 배치하는 함수 사용
         # search 함수 실행 후 화물 배치에 적절하다고 판단된 사각형(cacheRect) 에 화물 배치
-        self.insert(obj, bottomLeftCoordinate)
+        self.insert(obj)
 
         # 라우팅 모듈쪽 업데이트하기 위한 함수
-        PositionAlgorithm.updateLayout(self, bottomLeftCoordinate, obj)
-
-        # Gui 에 표현하기 위한 코드
-        if self.enableEmitter:
-            # 이벤트 발생
-            self.emitter.emit(bottomLeftCoordinate, obj, True)
+        PositionAlgorithm.updateLayout(self, obj)
 
     # 화물(사각형)을 배치하는 함수
     # 화물(사각형)을 배치하고 난 뒤 남은 영역의 사각형을 만들고, 이 때 포함관계를 가진 사각형들을 제거한다
-    def insert(self, obj, targetCoordinate):
-        f = targetCoordinate.floor
+    def insert(self, obj):
+        f = obj.coordinates.floor
         # 배치된 화물 사각형
-        insertRect = Rectangle(Coordinate(f, targetCoordinate.x - sideBound, targetCoordinate.y - fbBound),
-                               Coordinate(f, targetCoordinate.x + obj.getWidth() + sideBound,
-                                          targetCoordinate.y + obj.getLength() + fbBound))
+        insertRect = Rectangle(Coordinate(f, obj.coordinates.x - sideBound, obj.coordinates.y - fbBound),
+                               Coordinate(f, obj.coordinates.x + obj.getWidth() + sideBound,
+                                          obj.coordinates.y + obj.getLength() + fbBound))
 
         # 현재 사각형 리스트들과 추가된 사각형들을 비교하며 사각형을 나누는 작업을 한다
         # Find rectangle(s) in which a cargo will be placed

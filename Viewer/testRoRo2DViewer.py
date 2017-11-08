@@ -77,28 +77,30 @@ def drawPlots(cars):
     plotInitial()
 
     # insert car
-    for car in cars:
-        if car.coordinates.floor != -1:
-            carColor = ''
-            for i in range(len(ic.typeList)):
-                if car.type == ic.typeList[i]:
-                    carColor = colors[i]
+    for c in cars:
+        plt.figure(c + 1)
+        for car in c:
+            if car.coordinates.floor != -1:
+                carColor = ''
+                for i in range(len(ic.typeList)):
+                    if car.type == ic.typeList[i]:
+                        carColor = colors[i % len(colors)]
+                        break
 
-            plt.figure(car.coordinates.floor + 1)
-            if vertical:
-                x = car.coordinates.x
-                y = car.coordinates.y
-                width = car.getWidth()
-                height = car.getLength()
-            else:
-                x = car.coordinates.y
-                y = car.coordinates.x
-                width = car.getLength()
-                height = car.getWidth()
+                if vertical:
+                    x = car.coordinates.x
+                    y = car.coordinates.y
+                    width = car.getWidth()
+                    height = car.getLength()
+                else:
+                    x = car.coordinates.y
+                    y = car.coordinates.x
+                    width = car.getLength()
+                    height = car.getWidth()
 
-            plt.gca().add_patch(plt.Rectangle((x, y), height=height, width=width, fc=carColor, ec='black'))
-            # write numbers on rectangles
-            # plt.annotate(car.id, (x + width / 2.0, y + height / 2.0),
-            #             color='w', weight='bold', fontsize=6, ha='center', va='center')
+                plt.gca().add_patch(plt.Rectangle((x, y), height=height, width=width, fc=carColor, ec='black'))
+                # write numbers on rectangles
+                # plt.annotate(car.id, (x + width / 2.0, y + height / 2.0),
+                #             color='w', weight='bold', fontsize=6, ha='center', va='center')
 
     plt.show()

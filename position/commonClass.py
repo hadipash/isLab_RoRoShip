@@ -22,7 +22,7 @@ def getObjectSampleList():
 
         objectList.append([])
         for data in dataList:
-            objectList[f].append(Object(data["cargo_group"], data["cargo_id"], ic.typeList(data["cargo_type"])))
+            objectList[f].append(Object(data["cargo_group"], data["cargo_id"], ic.typeList[data["cargo_type"]]))
 
     return objectList
 

@@ -19,8 +19,8 @@ class PositionAlgorithm:
         self.updateCnt = 0
 
     # 레이아웃을 업데이트 해야 하는 경우 실행하는 함수
-    def updateLayout(self, topleftCoordinate, obj):
+    def updateLayout(self, obj):
         # 라우팅 모듈쪽에 업데이트 시키는것.
         self.updateCnt += 1
         print 'Freight: {:4}, Floor: {:1}, Coordinate X: {:7}, Coordinate Y: {:7}'\
-            .format(self.updateCnt, topleftCoordinate.floor + 1, topleftCoordinate.x, topleftCoordinate.y)
+            .format(self.updateCnt, obj.coordinates.floor + 1, obj.coordinates.x, obj.coordinates.y)
