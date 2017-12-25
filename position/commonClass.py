@@ -10,83 +10,53 @@ from common.InitializationCode import *
 import common.InitializationCode as ic
 import time
 
+CARGO_INPUT_LIST = "../resources/input_cargo_list%d.json"
+
 
 # 순서를 받지 못할 때 사용할 임시 순서 리스트를 만들어주는 함수
 # Get list of all objects from a json file
 def getObjectSampleList():
-    f = open("../common/cargo_input.json", 'r')
-    js = json.loads(f.read())
-    f.close()
-
-    dataList = js["data"]
-
     objectList = []
+    for f in range(len(ic.floors)):
+        dataList = Parser.readJSON(CARGO_INPUT_LIST % (f + 1))["data"]
 
-    for data in dataList:
-        objectList.append(Object(data["groupId"], data["cargoId"], ic.typeList[int(data["cargoType"]) - 1]))
+        objectList.append([])
+        for data in dataList:
+            objectList[f].append(Object(data["cargo_group"], data["cargo_id"], ic.typeList[data["cargo_type"]]))
 
     return objectList
 
 
-# 임시로 만들어 둔 라우팅 모듈 클래스
-class RoutingModule:
-    def __init__(self):
-        self.test = 1
-
-
 # 사각형 클래스
 class Rectangle:
-    # topLeft 와 bottomRight 는 모두 coordinate 정보
-    def __init__(self, topLeft, bottomRight):
-        self.topLeft = topLeft
-        self.bottomRight = bottomRight
-        self.width = bottomRight.x - topLeft.x + 1
-        self.height = bottomRight.y - topLeft.y + 1
-        # self.width = bottomRight.x - topLeft.x
-        # self.height = bottomRight.y - topLeft.y
+    # bottomLeft 와 topRight 는 모두 coordinate 정보
+    def __init__(self, bottomLeft, topRight):
+        self.bottomLeft = bottomLeft
+        self.topRight = topRight
+        self.width = topRight.x - bottomLeft.x
+        self.length = topRight.y - bottomLeft.y
 
     # 파라미터로 들어온 rect 가 현재 사각형에 포함되는지 확인하는 함수
-    def isInclude(self, rectangle):
-        if (rectangle.topLeft.x >= self.topLeft.x and rectangle.topLeft.x + rectangle.width <= self.topLeft.x + self.width and
-            rectangle.topLeft.y >= self.topLeft.y and rectangle.topLeft.y + rectangle.height <= self.topLeft.y + self.height):
+    def isIncluded(self, rectangle):
+        if (rectangle.bottomLeft.x >= self.bottomLeft.x
+            and rectangle.bottomLeft.x + rectangle.width <= self.bottomLeft.x + self.width
+            and rectangle.bottomLeft.y >= self.bottomLeft.y
+            and rectangle.bottomLeft.y + rectangle.length <= self.bottomLeft.y + self.length):
             return True
         return False
 
     # 겹치는지 확인하는 함수
-    def isIntersect(self, rectangle):
-        if self.topLeft.x > rectangle.bottomRight.x: return False
-        if self.bottomRight.x < rectangle.topLeft.x: return False
-        if self.topLeft.y > rectangle.bottomRight.y: return False
-        if self.bottomRight.y < rectangle.topLeft.y: return False
-        return True
-
-    # 겹치는지 좌상단 좌표와 너비, 높이를 받아서 확인하는 함수
-    def isIntersectArea(self, topLeftX, topLeftY, width, height):
-        if self.topLeft.x > topLeftX + width - 1: return False
-        # if(self.topLeft.x > topLeftX + width): return False
-        if self.bottomRight.x < topLeftX: return False
-        if self.topLeft.y > topLeftY + height - 1: return False
-        # if(self.topLeft.y > topLeftY + height): return False
-        if self.bottomRight.y < topLeftY: return False
+    def isIntersected(self, rectangle):
+        if self.bottomLeft.x > rectangle.topRight.x: return False
+        if self.topRight.x < rectangle.bottomLeft.x: return False
+        if self.bottomLeft.y > rectangle.topRight.y: return False
+        if self.topRight.y < rectangle.bottomLeft.y: return False
         return True
 
     def equal(self, rectangle):
-        if self.topLeft.equal(rectangle.topLeft) and self.bottomRight.equal(rectangle.bottomRight):
+        if self.bottomLeft.equal(rectangle.bottomLeft) and self.topRight.equal(rectangle.topRight):
             return True
         return False
-
-
-# GridSearcher 에서 사용할 클래스
-class Candidate:
-    def __init__(self, coordinate, isTransformed):
-        self.coordinate = coordinate
-        self.isTransformed = isTransformed
-
-    def __hash__(self):
-        return hash(self.coordinate) ^ hash(self.isTransformed)
-
-    def __eq__(self, another):
-        return self.coordinate == another.coordinate and self.isTransformed == another.isTransformed
 
 
 # heap 에서 사용하는 클래스

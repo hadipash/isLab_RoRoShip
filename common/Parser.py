@@ -8,112 +8,227 @@ Classes and functions to parse json files
 import json
 from Miscellaneous import *
 
-SHIP_LAYOUT_INFO = "../common/inputLayout.json"
+SHIP_LAYOUT_INFO = "../resources/inputLayout.json"
+TYPE_INFO = "../resources/cargo_model_spec.json"
 
 
 # 선박의 정보를 파싱하는 클래스
-# Class for retrieving information about a vessel from a json file
+# Class for retrieving information about a vessel and cargoes types from json files
 class Parser:
     def __init__(self):
+        # Variables for parse a ship
+        self.floors = []
+        self.typeList = {}
+        self.minWidth = 1000000
+        self.minLength = 1000000
+
+        self.parseShipInformation()
+        self.parseTypeInformation()
+
+    def parseShipInformation(self):
         # json 파일을 읽고 정보를 저장
         configJSON = self.readJSON(SHIP_LAYOUT_INFO)
-        self.standardSize = configJSON["standardSize"]
-        self.ShipInfo = Ship(int(configJSON["shipSize"]["width"]), int(configJSON["shipSize"]["height"]))
+
+        # Get information about floors
+        FloorInfoList = []
+        availSpace = []
+        for floor in configJSON["loadingSpaceList"]["loadingSpace"]:
+            FloorInfoList.append(Space(floor["width"], floor["length"], floor["height"]))
+            availSpace.append((floor["width"] - 2 * sideBound) * (floor["length"] - 2 * fbBound))
+
+        # number of floors
+        numOfFl = len(FloorInfoList)
 
         # 입구 정보를 리스트로 관리
         # List of entrances
-        self.EnterInfoList = []
-        for enterInfo in configJSON["enterInfo"]["positions"]:
-            self.EnterInfoList.append(Enter(Coordinate(enterInfo["coordinate"]["X"], enterInfo["coordinate"]["Y"]),
-                                            enterInfo["volume"]["width"],
-                                            enterInfo["volume"]["height"],
-                                            enterInfo["id"]))
+        EnterInfoList = [[]]
+        temp = 0
+        for enterInfo in configJSON["enterList"]["enter"]:
+            flNum = enterInfo["floor"] - 1
+
+            # Because on each floor can be zero or more entrances
+            # We append a new list only when changing of the floor number occurs
+            while temp < flNum:
+                EnterInfoList.append([])
+                temp += 1
+
+            EnterInfoList[flNum].append(
+                Enter(Coordinate(flNum, enterInfo["coordinate"]["X"], enterInfo["coordinate"]["Y"]),
+                      enterInfo["volume"]["width"], enterInfo["volume"]["length"], enterInfo["id"]))
+
+            availSpace[flNum] -= self.calculateSpace(enterInfo["coordinate"]["X"], enterInfo["coordinate"]["Y"],
+                                                     enterInfo["volume"]["width"], enterInfo["volume"]["length"],
+                                                     FloorInfoList[flNum].width, FloorInfoList[flNum].length)
+
+        # generate dummy elements if last floors do not have entrances
+        while len(EnterInfoList) < numOfFl:
+            EnterInfoList.append([])
 
         # 장애물 정보를 리스트로 관리
         # List of obstacles on a vessel
-        self.ObstacleInfoList = []
-        for obstacleInfo in configJSON["obstacleInfo"]["positions"]:
-            self.ObstacleInfoList.append(
-                Obstacle(Coordinate(obstacleInfo["coordinate"]["X"], obstacleInfo["coordinate"]["Y"]),
-                         obstacleInfo["volume"]["width"],
-                         obstacleInfo["volume"]["height"],
-                         obstacleInfo["id"]))
+        ObstacleInfoList = [[]]
+        temp = 0
+        for obstacleInfo in configJSON["obstacleList"]["obstacle"]:
+            flNum = obstacleInfo["floor"] - 1
+
+            # Because on each floor can be zero or more obstacles
+            # We append a new list only when changing of the floor number occurs
+            while temp < flNum:
+                ObstacleInfoList.append([])
+                temp += 1
+
+            ObstacleInfoList[flNum].append(
+                Obstacle(Coordinate(flNum, obstacleInfo["coordinate"]["X"], obstacleInfo["coordinate"]["Y"]),
+                         obstacleInfo["volume"]["width"], obstacleInfo["volume"]["length"], obstacleInfo["id"]))
+
+            availSpace[flNum] -= self.calculateSpace(obstacleInfo["coordinate"]["X"], obstacleInfo["coordinate"]["Y"],
+                                                     obstacleInfo["volume"]["width"], obstacleInfo["volume"]["length"],
+                                                     FloorInfoList[flNum].width, FloorInfoList[flNum].length)
+
+        # generate dummy elements if last floors do not have obstacles
+        while len(ObstacleInfoList) < numOfFl:
+            ObstacleInfoList.append([])
+
+        # List of spaces where cargo placing is prohibited
+        NotLoadableSpaceList = [[]]
+        temp = 0
+        for space in configJSON["notLoadableSpaceList"]["notLoadableSpace"]:
+            flNum = space["floor"] - 1
+
+            while temp < flNum:
+                NotLoadableSpaceList.append([])
+                temp += 1
+
+            NotLoadableSpaceList[flNum].append(
+                NotLoadableSpace(Coordinate(flNum, space["coordinate"]["X"], space["coordinate"]["Y"]),
+                                 space["width"], space["length"]))
+
+            availSpace[flNum] -= self.calculateSpace(space["coordinate"]["X"], space["coordinate"]["Y"],
+                                                     space["width"], space["length"],
+                                                     FloorInfoList[flNum].width, FloorInfoList[flNum].length)
+
+        # generate dummy elements
+        while len(NotLoadableSpaceList) < numOfFl:
+            NotLoadableSpaceList.append([])
+
+        # List of ramps
+        RampInfoList = [[]]
+        temp = 0
+        for ramp in configJSON["rampList"]["ramp"]:
+            flNum1 = ramp["connection"]["lower_floor"] - 1
+            flNum2 = ramp["connection"]["upper_floor"] - 1
+
+            while temp < flNum2:
+                RampInfoList.append([])
+                temp += 1
+
+                RampInfoList[flNum1].append(
+                    Ramp(Coordinate(flNum1, ramp["coordinate"]["X"], ramp["coordinate"]["Y"]),
+                         ramp["volume"]["width"], ramp["volume"]["length"], ramp["id"], [flNum1, flNum2]))
+
+                RampInfoList[flNum2].append(
+                    Ramp(Coordinate(flNum2, ramp["coordinate"]["X"], ramp["coordinate"]["Y"]),
+                         ramp["volume"]["width"], ramp["volume"]["length"], ramp["id"], [flNum1, flNum2]))
+
+            availSpace[flNum1] -= self.calculateSpace(ramp["coordinate"]["X"], ramp["coordinate"]["Y"],
+                                                      ramp["volume"]["width"], ramp["volume"]["length"],
+                                                      FloorInfoList[flNum1].width, FloorInfoList[flNum1].length)
+            availSpace[flNum2] -= self.calculateSpace(ramp["coordinate"]["X"], ramp["coordinate"]["Y"],
+                                                      ramp["volume"]["width"], ramp["volume"]["length"],
+                                                      FloorInfoList[flNum2].width, FloorInfoList[flNum2].length)
+
+        # generate dummy elements
+        while len(RampInfoList) < numOfFl:
+            RampInfoList.append([])
+
+        # List of slopes
+        SlopeInfoList = [[]]
+        temp = 0
+        for slope in configJSON["slopeList"]["slope"]:
+            flNum = slope["floor"] - 1
+
+            while temp < flNum:
+                SlopeInfoList.append([])
+                temp += 1
+
+            SlopeInfoList[flNum].append(
+                Slope(Coordinate(flNum, slope["coordinate"]["X"], slope["coordinate"]["Y"]),
+                      slope["volume"]["width"], slope["volume"]["length"], slope["id"]))
+
+            availSpace[flNum] -= self.calculateSpace(slope["coordinate"]["X"], slope["coordinate"]["Y"],
+                                                     slope["volume"]["width"], slope["volume"]["length"],
+                                                     FloorInfoList[flNum].width, FloorInfoList[flNum].length)
+
+        # generate dummy elements if last floors do not have obstacles
+        while len(SlopeInfoList) < numOfFl:
+            SlopeInfoList.append([])
+
+        # List of lifting decks
+        DeckInfoList = [[]]
+        temp = 0
+        for deck in configJSON["floatingDeckList"]["floatingDeck"]:
+            flNum = deck["floor"] - 1
+
+            while temp < flNum:
+                DeckInfoList.append([])
+                temp += 1
+
+                DeckInfoList[flNum].append(
+                    LiftingDeck(Coordinate(flNum, deck["coordinate"]["X"], deck["coordinate"]["Y"]),
+                                deck["volume"]["width"], deck["volume"]["length"], deck["id"], deck["lifting_height"]))
+
+                # Lifting deck increases available space
+                # availSpace[flNum] += deck["volume"]["width"] * deck["volume"]["length"] - wrong
+
+        # generate dummy elements if last floors do not have obstacles
+        while len(DeckInfoList) < numOfFl:
+            DeckInfoList.append([])
+
+        # Create array of available space and entrances/obstacles in each floor
+        for i in range(numOfFl):
+            self.floors.append(Floor(
+                FloorInfoList[i],
+                availSpace[i],
+                EnterInfoList[i],
+                ObstacleInfoList[i],
+                NotLoadableSpaceList[i],
+                RampInfoList[i],
+                SlopeInfoList[i],
+                DeckInfoList[i]
+            ))
+
+    def parseTypeInformation(self):
+        configJSON = self.readJSON(TYPE_INFO)
+
+        for t in configJSON["model_list"]:
+            name = t["name"]
+            width = int(t["width"])
+            length = int(t["length"])
+
+            self.typeList[name] = Type(name, t["type"], width, length, int(t["height"]),
+                                       int(t["wheel_base"]), int(t["MAX_steer_angle"]))
+
+            if width < self.minWidth:
+                self.minWidth = width
+
+            if length < self.minLength:
+                self.minLength = length
+
+    def calculateSpace(self, objX, objY, objWidth, objLength, floorWidth, floorLength):
+        x1 = objX - sideBound
+        y1 = objY - fbBound
+        x2 = objX + objWidth + sideBound
+        y2 = objY + objLength + fbBound
+
+        width = (floorWidth if x2 > floorWidth else x2) - (0 if x1 < 0 else x1)
+        length = (floorLength if y2 > floorLength else y2) - (0 if y1 < 0 else y1)
+
+        return width * length
 
     # json 파일을 읽어오는 함수
-    def readJSON(self, filename):
+    @staticmethod
+    def readJSON(filename):
         f = open(filename, 'r')
         js = json.loads(f.read())
         f.close()
         return js
-
-    # 배의 정보를 cell로 변환해서 json 데이터로 리턴
-    def parseShipInfo(self):
-        shipJSONData = {"width": self.distanceToCellFloor(self.ShipInfo.width)["cellCnt"],
-                        "height": self.distanceToCellFloor(self.ShipInfo.height)["cellCnt"]}
-        return shipJSONData
-
-    # 입구들의 좌표와 크기를 cell로 변환해서 json 리스트로 리턴
-    def parseEnterInfo(self):
-        enterList = []
-        for enterData in self.EnterInfoList:
-            enterJSONData = self.parseObstacle(enterData)
-            enterList.append(enterJSONData)
-
-        return enterList
-
-    # 장애물들의 좌표와 크기를 cell로 변환해서 json 리스트로 리턴
-    def parseObstacleInfo(self):
-        obstacleList = []
-        for obstacleData in self.ObstacleInfoList:
-            obstacleJSONData = self.parseObstacle(obstacleData)
-
-            # obstacleList.append(json.dump(obstacleJSONData))
-            obstacleList.append(obstacleJSONData)
-
-        return obstacleList
-
-    # 장애물들의 좌표와 크기를 cell로 변환
-    def parseObstacle(self, obstacleData):
-        obstacleJSONData = {}
-        obstacleJSONData["coordinate"] = {}
-        obstacleJSONData["volume"] = {}
-
-        coordinateXData = self.distanceToCellFloor(obstacleData.coordinate.x)
-        obstacleJSONData["coordinate"]["X"] = coordinateXData["cellCnt"]
-
-        coordinateYData = self.distanceToCellFloor(obstacleData.coordinate.y)
-        obstacleJSONData["coordinate"]["Y"] = coordinateYData["cellCnt"]
-
-        obstacleJSONData["volume"]["width"] = self.distanceToCellCeil(obstacleData.width +
-                                                                      coordinateXData["remain"])["cellCnt"]
-        obstacleJSONData["volume"]["height"] = self.distanceToCellCeil(obstacleData.height +
-                                                                       coordinateYData["remain"])["cellCnt"]
-
-        obstacleJSONData["id"] = obstacleData.id
-
-        return obstacleJSONData
-
-    # 길이를 cell 로 변환할 때 올림처리 하는 함수
-    # json 으로 리턴
-    def distanceToCellCeil(self, distance):
-        jsonData = {}
-        cellCnt = distance / self.standardSize
-        if distance % self.standardSize != 0:
-            cellCnt = cellCnt + 1
-
-        jsonData["cellCnt"] = cellCnt
-        jsonData["remain"] = distance % self.standardSize
-        return jsonData
-
-    # 길이를 cell 로 변환할 때 내림처리 하는 함수
-    # json 으로 리턴
-    def distanceToCellFloor(self, distance):
-        jsonData = {}
-        cellCnt = distance / self.standardSize
-        jsonData["cellCnt"] = cellCnt
-        jsonData["remain"] = distance % self.standardSize
-        return jsonData
-
-    # 실제 부피로 계산하는 함수
-    def convertRealVolume(self, cellCnt):
-        return cellCnt * self.standardSize * self.standardSize

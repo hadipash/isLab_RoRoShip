@@ -6,35 +6,26 @@
 Interface for position determination module
 """
 
-from GridSearcher import *
 from MaxRects import *
+import common.InitializationCode as ic
 
 
 # 외부에서 알고리즘 결과를 받을 클래스
 class PositionResult:
-    def __init__(self, isAllSetted, remainArea):
-        # 모두 배치되었는지를 저장하는 변수
-        self.isAllSetted = isAllSetted
+    def __init__(self, placedNum, notPlacedNum, totalArea, remainArea):
         # 남은 공간을 저장하는 변수
-        self.remainArea = remainArea
-
-    # 해당 클래스에 담겨있는 정보를 출력하는 함수
-    def getInfo(self):
-        print "isAllSetted : " + str(self.isAllSetted) + ", remainArea : " + str(self.remainArea)
+        self.totalArea = totalArea / 1000000  # convert into m²
+        self.remainArea = remainArea / 1000000
+        self.percent = self.remainArea / (self.totalArea / 100.0)
+        self.placedNum = placedNum
+        self.notPlacedNum = notPlacedNum
 
 
 # 외부에서 사용하는 인터페이스
 class PositionModule:
-    def __init__(self, space, typeList, algoType):
-        self.space = space
-        self.typeList = typeList
-
-        # 상황에 따라 아래 알고리즘 수행
+    def __init__(self):
         # Algorithm for placing cargoes
-        if algoType == 'MaxRects':
-            self.algorithmModule = MaxRects(space, typeList)
-        else:
-            self.algorithmModule = GridSearcher(space, typeList)
+        self.algorithmModule = MaxRects()
 
     # 화물의 리스트를 받아 화물 배치
     def setPosition(self, ObjectList):
@@ -42,50 +33,104 @@ class PositionModule:
         :param ObjectList: 순서가 결정 된 화물 리스트
         :return: 화물 배치 결과를 리턴. PositionResult 라는 객체를 리턴할 계획
         """
-        isSuccess = True
 
-        processedDataCnt = 0
-        usingVertex = 0
+        placedNumber = 0
+        failedNumber = 0
+        usedSpace = 0
 
         # list 에 있는 모든 object 를 배치
-        for object in ObjectList:
+        for f in range(len(ObjectList)):
+            # variable for determining algorithm
+            previous = 0
+            notPlaced = len(ObjectList[f])
 
-            # 배치할 위치 탐색. 탐색에 성공하면 배치할 영역의 좌상단 좌표를 리턴 받는다
-            tlCoordinate = self.setObjectPosition(object)
+            if f == 1:
+                x = 0
 
-            if tlCoordinate != None:
-                # 배치할 위치가 있다면 사용한 영역 계산
-                usingVertex += object.getWidth() * object.getHeight()
-                # 레이아웃 업데이트
-                self.updateLayout(tlCoordinate, object)
-            else:
-                # 배치 실패. 원래 코드.
-                isSuccess = False
-                break
+            # place object till all are placed
+            while notPlaced > 0:
+                # if objects still can be placed line by line
+                if previous != notPlaced:
+                    # initialize variables
+                    previous = notPlaced
+                    notPlaced = 0
 
-            processedDataCnt += 1
+                    # iterate through each object
+                    for i in range(len(ObjectList[f])):
+                        if ObjectList[f][i].id == 'cargo285':
+                            x = 0
+
+                        # check if an object has not been placed
+                        if ObjectList[f][i].coordinates.floor == -1:
+                            rect = self.algorithmModule.getNextRect(f)
+
+                            # check how many objects can be placed in the rectangle
+                            numOfObj = rect.width // (ObjectList[f][i].getWidth() + 2 * sideBound) - 1
+
+                            # if it is possible to place an object into the rectangle
+                            if numOfObj >= 0 and rect.length - (ObjectList[f][i].getLength() + 2 * fbBound) >= 0:
+                                j = i + 1
+                                place = []
+
+                                # scan through object list and find the same objects in the list to place
+                                while j < len(ObjectList[f]) and numOfObj > 0:
+                                    if ObjectList[f][j].type == ObjectList[f][i].type:
+                                        place.append(j)
+                                        numOfObj -= 1
+                                    j += 1
+
+                                if numOfObj == 0:
+                                    placedNumber += len(place) + 1
+                                    usedSpace += (len(place) + 1) * (ObjectList[f][i].getWidth() + 2 * sideBound) \
+                                                 * (ObjectList[f][i].getLength() + 2 * fbBound)
+
+                                    ObjectList[f][i].coordinates.setCoordinates(
+                                        Coordinate(f, rect.bottomLeft.x + sideBound, rect.bottomLeft.y + fbBound))
+                                    self.algorithmModule.updateLayout(ObjectList[f][i])
+
+                                    if len(place) > 0:
+                                        ObjectList[f][place[0]].coordinates. \
+                                            setCoordinates(self.algorithmModule.placeNext(ObjectList[f][i]))
+                                        self.algorithmModule.updateLayout(ObjectList[f][place[0]])
+
+                                        for p in range(1, len(place)):
+                                            ObjectList[f][place[p]].coordinates.setCoordinates(
+                                                self.algorithmModule.placeNext(ObjectList[f][place[p - 1]]))
+                                            self.algorithmModule.updateLayout(ObjectList[f][place[p]])
+
+                                else:
+                                    notPlaced += 1
+                            else:
+                                notPlaced += 1
+                # if objects cannot be placed line by line anymore => use another algorithm
+                else:
+                    notPlaced = 0
+                    # iterate through each object
+                    for i in range(len(ObjectList[f])):
+                        if ObjectList[f][i].id == 'cargo285':
+                            x = 0
+                        # check if an object has not been placed
+                        if ObjectList[f][i].coordinates.floor == -1:
+                            ObjectList[f][i].coordinates.setCoordinates(
+                                self.algorithmModule.searchPosition(ObjectList[f][i], f))
+                            if ObjectList[f][i].coordinates.floor != -1:
+                                placedNumber += 1
+                                self.algorithmModule.updateLayout(ObjectList[f][i])
+                                usedSpace += (ObjectList[f][i].getWidth() + 2 * sideBound) \
+                                             * (ObjectList[f][i].getLength() + 2 * fbBound)
+                            else:
+                                failedNumber += 1
 
         # 남은 공간 계산 및 결과 만들기
-        result = PositionResult(isSuccess, self.space.width * self.space.height - usingVertex)
+        availSpace = 0
+        for floor in ic.floors:
+            availSpace += floor.availSpace
+
+        result = PositionResult(placedNumber, failedNumber, availSpace, availSpace - usedSpace)
         return result
 
-    # 개별 화물을 받아 화물을 배치 시도
-    def setObjectPosition(self, Object):
-        """
-        :param Object: 개별 화물
-        :return: 화물 배치 결과로써 단순히 배치된 좌표를 리턴. 배치를 못 할 경우 좌표가 None.
-        """
+    def placeByLines(self):
+        pass
 
-        coordinate = self.algorithmModule.searchPosition(Object)
-        return coordinate
-
-    # 라우팅 모듈에 화물이 배치되어 레이아웃이 갱신되었음을 알리는 함수
-    def updateLayout(self, coordinate, object):
-        self.space.setObject(object, coordinate)
-        self.algorithmModule.updateLayout(coordinate, object)
-
-    # Gui 프로그램에서 해당 함수를 통해 이벤트를 전달할 수 있는 객체를 준다
-    # 프로그램에서는 해당 객체를 통해 특정 시점에 이벤트를 발생 시킴
-    def setEventEmitter(self, emitter):
-        self.algorithmModule.enableEmitter = True
-        self.algorithmModule.emitter = emitter
+    def placeByRect(self):
+        pass

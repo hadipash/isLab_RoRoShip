@@ -6,7 +6,7 @@ Sample program
 """
 
 from PositionModule import *
-import common.InitializationCode as ic
+from Viewer.testRoRo2DViewer import *
 
 
 def main():
@@ -20,18 +20,24 @@ def main():
     ObjectList = getObjectSampleList()
 
     # 위치 결정 모듈 생성
-    # Initialize positioning module (use 'GridSearch' algorithm as default)
-    positionModule = PositionModule(ic.space, ic.typeList, "GridSearcher")
+    # Initialize positioning module
+    positionModule = PositionModule()
 
     performance.start()
     # 위치결정 모듈 사용. PositionResult 라는 형태의 클래스 리턴. 이 클래스는 PositionModule.py 파일에 정의되어 있음
     positionResult = positionModule.setPosition(ObjectList)
     performance.end()
 
-    print "남은 면적 : " + str(positionResult.remainArea)
-    print "성공 여부 : " + str(positionResult.isAllSetted)
+    print
+    print "Total area: " + str(positionResult.totalArea) + " m²"
+    print "Remain area: " + str(positionResult.remainArea) + " m² (%.2f%%)" % positionResult.percent
+    print "Number of placed cargoes: " + str(positionResult.placedNum)
+    print "Number of failed to place cargoes: " + str(positionResult.notPlacedNum)
+    print
 
     print performance.sPrint()
+
+    drawPlots(ObjectList)
 
 
 if __name__ == '__main__':
