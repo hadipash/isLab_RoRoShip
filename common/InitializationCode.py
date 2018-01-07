@@ -3,7 +3,7 @@
 
 """
 Code for retrieving input data and store it in global variables,
-which later used across all modules
+which later are used across all modules
 """
 
 from Parser import *

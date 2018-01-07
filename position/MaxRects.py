@@ -101,20 +101,33 @@ class MaxRects(PositionAlgorithm):
             # TODO: add lifting decks
 
     def getNextRect(self, floor):
-        return self.rectList[floor][0]
+        if len(self.rectList[floor]) > 0:
+            return self.rectList[floor][0]
+        else:
+            return None
 
-    # 화물을 집어넣을 사각형을 검색하는 함수
+    # Find a position that will generate as much as possible less new rectangles
     def searchPosition(self, obj, floor):
-        placeRect = None
+        placeRect = None                                # rectangle for placing an object
+        numOfRect = len(self.rectList[floor]) + 100     # number of rectangles after placing an object
 
-        # 후보 사각형 리스트를 모두 뒤지면서 비교
-        for rect in self.rectList[floor]:
+        # save the original list
+        tempList = list(self.rectList[floor])
+        # find best position
+        for i in range(len(self.rectList[floor])):
             # check whether it is possible to place an object in a rectangle
-            remainWidth = rect.width - (obj.getWidth() + 2 * sideBound)
-            remainLength = rect.length - (obj.getLength() + 2 * fbBound)
+            remainWidth = self.rectList[floor][i].width - (obj.getWidth() + 2 * sideBound)
+            remainLength = self.rectList[floor][i].length - (obj.getLength() + 2 * fbBound)
             if remainWidth >= 0 and remainLength >= 0:
-                placeRect = rect
-                break
+                # insert in each of 4 corners of each rectangle
+                for j in range(4):
+                    # insert an object and check number of new rectangles
+                    rect = self.insertInCorner(obj, self.rectList[floor][i], j)
+                    # if number of new rectangles smaller than previous best
+                    if len(self.rectList[floor]) < numOfRect:
+                        numOfRect = len(self.rectList[floor])
+                        placeRect = rect
+                    self.rectList[floor] = list(tempList)
 
         if placeRect is not None:
             return Coordinate(floor, placeRect.bottomLeft.x + sideBound, placeRect.bottomLeft.y + fbBound)
@@ -154,6 +167,39 @@ class MaxRects(PositionAlgorithm):
             if rect.isIntersected(insertRect):
                 self.divide(f, rect, insertRect)
 
+    def insertInCorner(self, obj, rect, cor):
+        f = obj.coordinates.floor
+        # 배치된 화물 사각형
+        # left bottom
+        if cor == 0:
+            insertRect = Rectangle(Coordinate(f, rect.bottomLeft.x, rect.bottomLeft.y),
+                                   Coordinate(f, rect.bottomLeft.x + obj.getWidth() + 2 * sideBound,
+                                              rect.bottomLeft.y + obj.getLength() + 2 * fbBound))
+        # right bottom
+        elif cor == 1:
+            insertRect = Rectangle(Coordinate(f, rect.topRight.x - obj.getWidth() - 2 * sideBound, rect.bottomLeft.y),
+                                   Coordinate(f, rect.topRight.x, rect.bottomLeft.y + obj.getLength() + 2 * fbBound))
+        # top right
+        elif cor == 2:
+            insertRect = Rectangle(Coordinate(f, rect.topRight.x - obj.getWidth() - 2 * sideBound,
+                                              rect.topRight.y - obj.getLength() - 2 * fbBound),
+                                   Coordinate(f, rect.topRight.x, rect.topRight.y))
+        # top left
+        else:
+            insertRect = Rectangle(Coordinate(f, rect.bottomLeft.x, rect.topRight.y - obj.getLength() - 2 * fbBound),
+                                   Coordinate(f, rect.bottomLeft.x + obj.getWidth() + 2 * sideBound, rect.topRight.y))
+
+        # 현재 사각형 리스트들과 추가된 사각형들을 비교하며 사각형을 나누는 작업을 한다
+        # Find rectangle(s) in which a cargo will be placed
+        # But before doing it, make a copy of the rectangles list,
+        # because the original one will be modified
+        tempList = list(self.rectList[f])
+        for rect in tempList:
+            if rect.isIntersected(insertRect):
+                self.divide(f, rect, insertRect)
+
+        return insertRect
+
     # 사각형 나누는 함수
     def divide(self, f, targetRect, insertRect):
         self.rectList[f].remove(targetRect)
@@ -169,6 +215,13 @@ class MaxRects(PositionAlgorithm):
         # 각 사각형을 추가한다
         self.addRectangle(f, newRects)
 
+    # 사각형 merge 가능한지 체크하는 함수
+    def isAvailableRectMerge(self, f, newRect):
+        for rect in self.rectList[f]:
+            if rect.isIncluded(newRect):
+                return True
+        return False
+
     # 나누어진 사각형을 사각형 리스트에 추가하는 함수
     def addRectangle(self, f, newRects):
         # 적절한 사각형이 아니라면 추가하지 않는다
@@ -176,13 +229,6 @@ class MaxRects(PositionAlgorithm):
             if newRect.width >= ic.minWidth and newRect.length >= ic.minLength \
                     and not self.isAvailableRectMerge(f, newRect):
                 self.sort(f, newRect)
-
-    # 사각형 merge 가능한지 체크하는 함수
-    def isAvailableRectMerge(self, f, newRect):
-        for rect in self.rectList[f]:
-            if rect.isIncluded(newRect):
-                return True
-        return False
 
     # Sort rectangles in the list (starting from the most far)
     def sort(self, f, newRect):

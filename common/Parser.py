@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-Classes and functions to parse json files
+Classes and functions to parse input json files
 """
 
 import json
@@ -180,7 +180,7 @@ class Parser:
                 # Lifting deck increases available space
                 # availSpace[flNum] += deck["volume"]["width"] * deck["volume"]["length"] - wrong
 
-        # generate dummy elements if last floors do not have obstacles
+        # generate dummy elements if last floors do not have decks
         while len(DeckInfoList) < numOfFl:
             DeckInfoList.append([])
 

@@ -3,7 +3,7 @@
 
 """
 위치결정모듈을 사용하기 위한 interface
-Interface for position determination module
+Position determination module
 """
 
 from MaxRects import *
@@ -41,15 +41,12 @@ class PositionModule:
         # list 에 있는 모든 object 를 배치
         for f in range(len(ObjectList)):
             # variable for determining algorithm
-            previous = 0
+            previous = 0    # number of previously not placed cargoes
             notPlaced = len(ObjectList[f])
 
-            if f == 1:
-                x = 0
-
-            # place object till all are placed
+            # place objects till all are placed
             while notPlaced > 0:
-                # if objects still can be placed line by line
+                # if objects can be placed line by line
                 if previous != notPlaced:
                     # initialize variables
                     previous = notPlaced
@@ -57,47 +54,46 @@ class PositionModule:
 
                     # iterate through each object
                     for i in range(len(ObjectList[f])):
-                        if ObjectList[f][i].id == 'cargo285':
-                            x = 0
-
                         # check if an object has not been placed
                         if ObjectList[f][i].coordinates.floor == -1:
                             rect = self.algorithmModule.getNextRect(f)
 
-                            # check how many objects can be placed in the rectangle
-                            numOfObj = rect.width // (ObjectList[f][i].getWidth() + 2 * sideBound) - 1
+                            if rect is not None:
+                                # check how many objects can be placed in the rectangle
+                                numOfObj = (rect.width // (ObjectList[f][i].getWidth() + 2 * sideBound)) - 1
 
-                            # if it is possible to place an object into the rectangle
-                            if numOfObj >= 0 and rect.length - (ObjectList[f][i].getLength() + 2 * fbBound) >= 0:
-                                j = i + 1
-                                place = []
+                                # if it is possible to place an object into the rectangle
+                                if numOfObj >= 0 and rect.length - (ObjectList[f][i].getLength() + 2 * fbBound) >= 0:
+                                    j = i + 1   # pointer to the next object on the list
+                                    place = []  # list of objects to be placed
 
-                                # scan through object list and find the same objects in the list to place
-                                while j < len(ObjectList[f]) and numOfObj > 0:
-                                    if ObjectList[f][j].type == ObjectList[f][i].type:
-                                        place.append(j)
-                                        numOfObj -= 1
-                                    j += 1
+                                    # scan through the object list and find the same objects in the list to place
+                                    while j < len(ObjectList[f]) and numOfObj > 0:
+                                        if ObjectList[f][j].type == ObjectList[f][i].type:
+                                            place.append(j)
+                                            numOfObj -= 1
+                                        j += 1
 
-                                if numOfObj == 0:
-                                    placedNumber += len(place) + 1
-                                    usedSpace += (len(place) + 1) * (ObjectList[f][i].getWidth() + 2 * sideBound) \
-                                                 * (ObjectList[f][i].getLength() + 2 * fbBound)
+                                    if numOfObj == 0:
+                                        placedNumber += len(place) + 1
+                                        usedSpace += (len(place) + 1) * (ObjectList[f][i].getWidth() + 2 * sideBound) \
+                                                     * (ObjectList[f][i].getLength() + 2 * fbBound)
 
-                                    ObjectList[f][i].coordinates.setCoordinates(
-                                        Coordinate(f, rect.bottomLeft.x + sideBound, rect.bottomLeft.y + fbBound))
-                                    self.algorithmModule.updateLayout(ObjectList[f][i])
+                                        ObjectList[f][i].coordinates.setCoordinates(
+                                            Coordinate(f, rect.bottomLeft.x + sideBound, rect.bottomLeft.y + fbBound))
+                                        self.algorithmModule.updateLayout(ObjectList[f][i])
 
-                                    if len(place) > 0:
-                                        ObjectList[f][place[0]].coordinates. \
-                                            setCoordinates(self.algorithmModule.placeNext(ObjectList[f][i]))
-                                        self.algorithmModule.updateLayout(ObjectList[f][place[0]])
+                                        if len(place) > 0:
+                                            ObjectList[f][place[0]].coordinates.setCoordinates(
+                                                self.algorithmModule.placeNext(ObjectList[f][i]))
+                                            self.algorithmModule.updateLayout(ObjectList[f][place[0]])
 
-                                        for p in range(1, len(place)):
-                                            ObjectList[f][place[p]].coordinates.setCoordinates(
-                                                self.algorithmModule.placeNext(ObjectList[f][place[p - 1]]))
-                                            self.algorithmModule.updateLayout(ObjectList[f][place[p]])
-
+                                            for p in range(1, len(place)):
+                                                ObjectList[f][place[p]].coordinates.setCoordinates(
+                                                    self.algorithmModule.placeNext(ObjectList[f][place[p - 1]]))
+                                                self.algorithmModule.updateLayout(ObjectList[f][place[p]])
+                                    else:
+                                        notPlaced += 1
                                 else:
                                     notPlaced += 1
                             else:
@@ -107,8 +103,6 @@ class PositionModule:
                     notPlaced = 0
                     # iterate through each object
                     for i in range(len(ObjectList[f])):
-                        if ObjectList[f][i].id == 'cargo285':
-                            x = 0
                         # check if an object has not been placed
                         if ObjectList[f][i].coordinates.floor == -1:
                             ObjectList[f][i].coordinates.setCoordinates(
@@ -128,9 +122,3 @@ class PositionModule:
 
         result = PositionResult(placedNumber, failedNumber, availSpace, availSpace - usedSpace)
         return result
-
-    def placeByLines(self):
-        pass
-
-    def placeByRect(self):
-        pass

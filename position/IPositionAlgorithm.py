@@ -3,7 +3,7 @@
 
 """
 MaxRects GridSearcher의 Interface
-Interface for GridSearcher and MaxRects classes
+Superclass for GridSearcher and MaxRects classes
 """
 
 

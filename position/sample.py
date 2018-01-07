@@ -12,7 +12,7 @@ from Viewer.testRoRo2DViewer import *
 def main():
     initialize()
     # 성능 측정기 생성
-    # Declare performance measurement unit
+    # Performance measurement unit
     performance = PerformanceTimer("해 평가 소요 시간")
 
     # 입력 데이터 생성

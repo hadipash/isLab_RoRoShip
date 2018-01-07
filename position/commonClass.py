@@ -17,6 +17,7 @@ CARGO_INPUT_LIST = "../resources/input_cargo_list%d.json"
 # Get list of all objects from a json file
 def getObjectSampleList():
     objectList = []
+    # there are different input files for each floor
     for f in range(len(ic.floors)):
         dataList = Parser.readJSON(CARGO_INPUT_LIST % (f + 1))["data"]
 
@@ -59,51 +60,6 @@ class Rectangle:
         return False
 
 
-# heap 에서 사용하는 클래스
-class ScoreResult:
-    def __init__(self, candidate, targetCoordinate, distScore, effScore):
-        # 평가요소2(간섭도)
-        self.effScore = effScore
-        # 평가요소1(입구와의 거리)
-        self.distScore = distScore
-
-        # 배치할 좌상단 좌표
-        self.coordinate = targetCoordinate
-        # 후보해
-        self.candidate = candidate
-
-        # 점수 계산
-        self.score = self.getScore()
-
-    def getScore(self):
-        score = 0
-        # if(self.candidate.isTransformed == False):
-        #     score += 5
-
-        # 점수는 클수록 좋게 설계함
-        # score += self.distScore - self.effScore
-
-        # self.score = -1 * effScore
-        # self.score = distScore - effScore * 2
-        score += (self.distScore * 30 - self.effScore)
-        # score = self.distScore*1000000 - self.effScore
-        # score += self.distScore
-        return score
-        # self.score += -1 * effScore
-
-    # 점수가 높을수록 좋도록 설계
-    def __cmp__(self, other):
-        if self.score > other.score:
-            return -1
-        elif self.score == other.score:
-            if self.candidate.isTransformed:
-                return 1
-            else:
-                return -1
-        else:
-            return 1
-
-
 # 시간을 재어 성능을 측정하는데 쓰는 클래스
 class PerformanceTimer:
     def __init__(self, title):
@@ -121,16 +77,3 @@ class PerformanceTimer:
 
     def sPrint(self):
         return self.performanceTitle + " : " + str(self.result)
-
-
-# 연산 횟수를 측정하는데 쓰는 클래스
-class PerformanceCounter:
-    def __init__(self, title):
-        self.performanceTitle = title
-        self.count = 0
-
-    def add(self):
-        self.count = self.count + 1
-
-    def sPrint(self):
-        return self.performanceTitle + " : " + str(self.count)
