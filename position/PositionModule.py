@@ -54,14 +54,16 @@ class PositionModule:
 
                     # iterate through each object
                     for i in range(len(ObjectList[f])):
+                        if f == 1 and i == 25:
+                            x = ObjectList[f][i]
                         # check if an object has not been placed
                         if ObjectList[f][i].coordinates.floor == -1:
-                            rect = self.algorithmModule.getNextRect(f)
+                            if ObjectList[f][i].id == 'cargo359' or ObjectList[f][i].id == 'cargo417':
+                                x = 0
+
+                            rect, numOfObj = self.algorithmModule.getNextRect(ObjectList[f][i], f)
 
                             if rect is not None:
-                                # check how many objects can be placed in the rectangle
-                                numOfObj = (rect.width // (ObjectList[f][i].getWidth() + 2 * sideBound)) - 1
-
                                 # if it is possible to place an object into the rectangle
                                 if numOfObj >= 0 and rect.length - (ObjectList[f][i].getLength() + 2 * fbBound) >= 0:
                                     j = i + 1   # pointer to the next object on the list

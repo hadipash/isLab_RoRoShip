@@ -100,11 +100,21 @@ class MaxRects(PositionAlgorithm):
 
             # TODO: add lifting decks
 
-    def getNextRect(self, floor):
+    def getNextRect(self, obj, floor):
         if len(self.rectList[floor]) > 0:
-            return self.rectList[floor][0]
-        else:
-            return None
+            # maxy = self.rectList[floor][0].bottomLeft.y + obj.getLength()
+
+            for rect in self.rectList[floor]:
+                # if rect.bottomLeft.y > maxy:
+                #     break
+
+                numOfObj = rect.width // (obj.getWidth() + 2 * sideBound)
+                if numOfObj > 1:
+                    return rect, numOfObj - 1
+
+            return self.rectList[floor][0], (self.rectList[floor][0].width // (obj.getWidth() + 2 * sideBound)) - 1
+
+        return None, 0
 
     # Find a position that will generate as much as possible less new rectangles
     def searchPosition(self, obj, floor):
@@ -122,7 +132,7 @@ class MaxRects(PositionAlgorithm):
                 # insert in each of 4 corners of each rectangle
                 for j in range(4):
                     # insert an object and check number of new rectangles
-                    rect = self.insertInCorner(obj, self.rectList[floor][i], j)
+                    rect = self.insertInCorner(floor, obj, self.rectList[floor][i], j)
                     # if number of new rectangles smaller than previous best
                     if len(self.rectList[floor]) < numOfRect:
                         numOfRect = len(self.rectList[floor])
@@ -167,8 +177,7 @@ class MaxRects(PositionAlgorithm):
             if rect.isIntersected(insertRect):
                 self.divide(f, rect, insertRect)
 
-    def insertInCorner(self, obj, rect, cor):
-        f = obj.coordinates.floor
+    def insertInCorner(self, f, obj, rect, cor):
         # 배치된 화물 사각형
         # left bottom
         if cor == 0:
